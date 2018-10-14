@@ -19,3 +19,4 @@ class Question(models.Model):
                                        choices=QUESTIONTYPE_CHOICES,
                                        default=MULTICHOICE)
     answer          = models.CharField(_('Answer'), max_length=255, blank=True)
+    question        = models.CharField(_('Question'), max_length=255, null=False, blank=False)

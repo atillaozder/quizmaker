@@ -13,6 +13,7 @@ class QuizParticipant(models.Model):
                                       default=0.0,
                                       max_digits=100,
                                       decimal_places=2)
+
     completion  = models.DecimalField(_('Completion'),
                                       default=0.0,
                                       max_digits=100,
@@ -25,17 +26,17 @@ class QuizParticipant(models.Model):
         verbose_name_plural = _('Quiz Participants')
 
     def __str__(self):
-        return self.student.user.username
+        return self.participant.user.username
 
 class Quiz(models.Model):
     owner           = models.ForeignKey('account.User',
                                         on_delete=models.CASCADE,
                                         related_name='owner')
 
-    course          = models.OneToOneField('course.Course',
-                                           on_delete=models.SET_NULL,
-                                           null=True,
-                                           blank=True)
+    course          = models.ForeignKey('course.Course',
+                                        on_delete=models.SET_NULL,
+                                        null=True,
+                                        blank=True)
 
     questions       = models.ManyToManyField('question.Question', blank=True)
     participants    = models.ManyToManyField('account.User',
@@ -45,6 +46,7 @@ class Quiz(models.Model):
     end             = models.DateTimeField()
     name            = models.CharField(_('Quiz Name'), max_length=50)
     slug            = models.SlugField(unique=True, blank=True, max_length=120)
+    be_graded       = models.BooleanField(default=True)
     percentage      = models.DecimalField(_('Percentage'), default=0.0, max_digits=100, decimal_places=2)
 
     class Meta:
@@ -53,3 +55,14 @@ class Quiz(models.Model):
 
     def __str__(self):
         return self.owner.username
+
+    def update_percentage(self):
+        quizzes = Quiz.objects.all().filter(course=self.course).filter(owner=self.owner)
+        quiz_count = quizzes.count()
+        new_value = 100
+        if quiz_count > 0:
+            new_value = 100 / quiz_count
+
+        for quiz in quizzes:
+            quiz.percentage = new_value
+            quiz.save()

@@ -4,6 +4,6 @@ from utils.utils import unique_slug_generator
 from course.models import Course
 
 @receiver(pre_save, sender=Course)
-def product_pre_save_receiver(sender, instance, *args, **kwargs):
+def course_pre_save_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:
 		instance.slug = unique_slug_generator(instance)

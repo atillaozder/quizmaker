@@ -25,7 +25,7 @@ class Course(models.Model):
                                     blank=True,
                                     related_name='course')
 
-    students    = models.ManyToManyField('account.Student', through='CourseStudent')
+    students    = models.ManyToManyField('account.Student', through='CourseStudent', blank=True)
     name        = models.CharField(_('Course Name'), max_length=50)
     slug        = models.SlugField(unique=True, blank=True, max_length=120)
     timestamp   = models.DateTimeField(auto_now=True)
