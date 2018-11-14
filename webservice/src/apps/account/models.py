@@ -10,7 +10,6 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 
-
 class UserQuerySet(models.query.QuerySet):
     def all(self):
         return self.filter(is_active=True)
@@ -60,18 +59,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     FEMALE = _('female')
     MALE = _('male')
+    UNSPECIFIED = _('unspecified')
 
     GENDER_CHOICES = (
     	(FEMALE, _('Female')),
     	(MALE, _('Male')),
+        (UNSPECIFIED, _('Unspecified'))
     )
 
-    INSTRUCTOR = _('instructor')
-    STUDENT = _('student')
+    DEFAULT = 'D'
+    INSTRUCTOR = 'I'
+    STUDENT = 'S'
 
     USERTYPE_CHOICES = (
         (INSTRUCTOR, _('Instructor')),
-        (STUDENT, _('Student'))
+        (STUDENT, _('Student')),
+        (DEFAULT, _('Default'))
     )
 
     username = models.CharField(_('Username'),
@@ -107,8 +110,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 											' without explicitly assigning them.'
                                             ))
 
-    user_type = models.CharField(_('User Type'), max_length=50, choices=USERTYPE_CHOICES)
-    gender = models.CharField(_('Gender'), max_length=10, choices=GENDER_CHOICES)
+    user_type = models.CharField(_('User Type'), max_length=50, choices=USERTYPE_CHOICES, default=DEFAULT)
+    gender = models.CharField(_('Gender'), max_length=50, choices=GENDER_CHOICES, default=UNSPECIFIED)
 
     EMAIL_FIELD 	 = 'email'
     USERNAME_FIELD 	 = 'username'
@@ -135,20 +138,49 @@ class User(AbstractBaseUser, PermissionsMixin):
         	first_name = self.username
         return first_name
 
+    @property
+    def is_instructor(self):
+        return self.user_type == 'I'
+        
+    @property
+    def is_student(self):
+        return self.user_type == 'S'
+
+class InstructorQuerySet(models.query.QuerySet):
+    def approved(self):
+        return self.filter(is_approved=True)
+
+    def not_approved(self):
+        return self.filter(is_approved=False)
+
+class InstructorManager(models.Manager):
+    def get_queryset(self):
+        return InstructorQuerySet(self.model, using=self._db)
+
 class Instructor(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    is_approved = models.BooleanField(_('Approved Instructor'), default=False)
+    objects = InstructorManager()
 
     def __str__(self):
         return self.user.username
 
 class Student(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     student_id = models.CharField(_('Student ID'),
                                   unique=True,
                                   max_length=50,
                                   error_messages={
                                     'unique': _("The student id is already exist.")
                                   })
+
+    def __str__(self):
+        return self.user.username
+
+class Profile(models.Model):
+    user    = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    quizzes = models.ManyToManyField('quiz.Quiz', blank=True) # quizzes which he participate
+    courses = models.ManyToManyField('course.Course', blank=True) # courses which he attend
 
     def __str__(self):
         return self.user.username

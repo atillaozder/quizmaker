@@ -18,5 +18,26 @@ class Question(models.Model):
                                        max_length=50,
                                        choices=QUESTIONTYPE_CHOICES,
                                        default=MULTICHOICE)
+
     answer          = models.CharField(_('Answer'), max_length=255, blank=True)
     question        = models.CharField(_('Question'), max_length=255, null=False, blank=False)
+
+    def __str__(self):
+        return self.question
+
+class ParticipantAnswer(models.Model):
+    participant = models.ForeignKey('account.User',
+                                    on_delete=models.SET_NULL,
+                                    null=True,
+                                    blank=True)
+
+    quiz        = models.ForeignKey('quiz.Quiz', on_delete=models.CASCADE)
+    question    = models.ForeignKey(Question, on_delete=models.CASCADE)
+    is_correct  = models.BooleanField(_('Correct or not'), default=False)
+    answer      = models.CharField(_('Participant Answer'),
+                                   max_length=255,
+                                   null=True,
+                                   blank=True)
+
+    class Meta:
+        unique_together = ('quiz', 'question', 'participant')
