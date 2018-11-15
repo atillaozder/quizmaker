@@ -7,3 +7,10 @@ from course.models import Course
 def course_pre_save_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:
 		instance.slug = unique_slug_generator(instance)
+
+@receiver(post_save, sender=Course)
+def course_student_post_save_receiver(sender, instance, *args, **kwargs):
+	for student in instance.students.all():
+		profile = student.user.profile
+		profile.courses.add(instance)
+		profile.save()

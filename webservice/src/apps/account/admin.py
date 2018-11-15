@@ -8,7 +8,7 @@ from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.contrib.auth.models import Group
 
 from account.forms import AdminChangeForm, AdminCreationForm
-from account.models import Instructor, Student
+from account.models import Instructor, Student, Profile
 
 User = get_user_model()
 
@@ -68,4 +68,8 @@ class InstructorAdmin(admin.ModelAdmin):
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
     pass
