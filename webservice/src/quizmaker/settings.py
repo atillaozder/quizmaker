@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'course.apps.CourseConfig',
     'question.apps.QuestionConfig',
     'quiz.apps.QuizConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -106,17 +107,26 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'account.user'
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = '/login'
-LOGOUT_REDIRECT_URL = '/login'
+LOGIN_URL = '/admin'
+LOGOUT_REDIRECT_URL = '/admin'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+#SERVER_EMAIL = os.environ.get('EMAIL')
+#DEFAULT_FROM_EMAIL = os.environ.get('EMAIL')
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'se301quizmaker@gmail.com'
+EMAIL_HOST_PASSWORD = 'quizmakerse301'
+EMAIL_USE_TLS = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -132,6 +142,18 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'statics/static'),
     os.path.join(BASE_DIR, 'statics/media')
 ]
+
+# Django Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'account.api.permissions.IsAuthenticated',
+        'account.api.permissions.IsActive',
+        'account.api.permissions.IsOwnerOrReadOnly'
+    ),
+}
 
 # AUTHENTICATION_CASE_SENSITIVE = 'both'
 # AUTHENTICATION_METHOD = 'both'
