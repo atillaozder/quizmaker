@@ -19,8 +19,8 @@ class Question(models.Model):
                                        choices=QUESTIONTYPE_CHOICES,
                                        default=MULTICHOICE)
 
-    answer          = models.CharField(_('Answer'), max_length=255, blank=True)
-    question        = models.CharField(_('Question'), max_length=255, null=False, blank=False)
+    answer          = models.TextField(_('Answer'), blank=True)
+    question        = models.TextField(_('Question'), null=False, blank=False)
 
     def __str__(self):
         return self.question
