@@ -39,6 +39,7 @@
 		FBBFD4DA21A58EE2007197D9 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4D921A58EE2007197D9 /* SignUp.swift */; };
 		FBBFD4DC21A58EEB007197D9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4DB21A58EEB007197D9 /* User.swift */; };
 		FBBFD4DE21A58EF2007197D9 /* UserType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4DD21A58EF2007197D9 /* UserType.swift */; };
+		FBBFD4E021A590D0007197D9 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4DF21A590D0007197D9 /* EditProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		FBBFD4D921A58EE2007197D9 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		FBBFD4DB21A58EEB007197D9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FBBFD4DD21A58EF2007197D9 /* UserType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserType.swift; sourceTree = "<group>"; };
+		FBBFD4DF21A590D0007197D9 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 			children = (
 				FBBFD4C321A58A05007197D9 /* LoginViewModel.swift */,
 				FBBFD4C521A58A12007197D9 /* RegisterViewModel.swift */,
+				FBBFD4DF21A590D0007197D9 /* EditProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 				FBBFD4DE21A58EF2007197D9 /* UserType.swift in Sources */,
 				FBBFD4B221A58944007197D9 /* RegisterViewController.swift in Sources */,
 				FBBFD4C821A58E69007197D9 /* ChangePassword.swift in Sources */,
+				FBBFD4E021A590D0007197D9 /* EditProfileViewModel.swift in Sources */,
 				FBBFD4DA21A58EE2007197D9 /* SignUp.swift in Sources */,
 				FBBFD4AE21A58928007197D9 /* LoginViewController.swift in Sources */,
 				FBBCF40221721A2800A58C74 /* AppDelegate.swift in Sources */,
