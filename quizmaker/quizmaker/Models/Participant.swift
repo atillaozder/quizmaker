@@ -1,9 +1,22 @@
-//
-//  Participant.swift
-//  quizmaker
-//
-//  Created by Atilla Özder on 21.11.2018.
-//  Copyright © 2018 Atilla Özder. All rights reserved.
-//
-
 import Foundation
+
+public struct Participant: Codable {
+    let id: Int
+    let username, firstName, lastName, email: String
+    let isActive: Bool
+    let dateJoined: Date
+    let userType, gender: String
+    let studentID: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, username
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case email
+        case studentID = "student_id"
+        case isActive = "is_active"
+        case dateJoined = "date_joined"
+        case userType = "user_type"
+        case gender
+    }
+}
