@@ -15,6 +15,30 @@
 		FBBFD4A821A587AE007197D9 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBBFD4A721A587AE007197D9 /* RxCocoa.framework */; };
 		FBBFD4AA21A587AE007197D9 /* RxDataSources.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBBFD4A921A587AE007197D9 /* RxDataSources.framework */; };
 		FBBFD4AC21A587AE007197D9 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBBFD4AB21A587AE007197D9 /* RxSwift.framework */; };
+		FBBFD4AE21A58928007197D9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4AD21A58928007197D9 /* LoginViewController.swift */; };
+		FBBFD4B221A58944007197D9 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4B121A58944007197D9 /* RegisterViewController.swift */; };
+		FBBFD4B421A5895A007197D9 /* AdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4B321A5895A007197D9 /* AdminViewController.swift */; };
+		FBBFD4B621A58962007197D9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4B521A58962007197D9 /* HomeViewController.swift */; };
+		FBBFD4B821A5896A007197D9 /* InstructorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4B721A5896A007197D9 /* InstructorViewController.swift */; };
+		FBBFD4BA21A58971007197D9 /* StudentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4B921A58971007197D9 /* StudentViewController.swift */; };
+		FBBFD4BC21A5897A007197D9 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4BB21A5897A007197D9 /* UserViewController.swift */; };
+		FBBFD4BE21A5899E007197D9 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4BD21A5899E007197D9 /* ChangePasswordViewController.swift */; };
+		FBBFD4C021A589A7007197D9 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4BF21A589A7007197D9 /* EditProfileViewController.swift */; };
+		FBBFD4C221A589F1007197D9 /* IndicatorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4C121A589F1007197D9 /* IndicatorButton.swift */; };
+		FBBFD4C421A58A05007197D9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4C321A58A05007197D9 /* LoginViewModel.swift */; };
+		FBBFD4C621A58A12007197D9 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4C521A58A12007197D9 /* RegisterViewModel.swift */; };
+		FBBFD4C821A58E69007197D9 /* ChangePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4C721A58E69007197D9 /* ChangePassword.swift */; };
+		FBBFD4CA21A58E82007197D9 /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4C921A58E82007197D9 /* Course.swift */; };
+		FBBFD4CC21A58E8E007197D9 /* EditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4CB21A58E8E007197D9 /* EditProfile.swift */; };
+		FBBFD4CE21A58E95007197D9 /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4CD21A58E95007197D9 /* Participant.swift */; };
+		FBBFD4D021A58E9E007197D9 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4CF21A58E9E007197D9 /* Question.swift */; };
+		FBBFD4D221A58EA8007197D9 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4D121A58EA8007197D9 /* Quiz.swift */; };
+		FBBFD4D421A58EBA007197D9 /* QuizDetailSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4D321A58EBA007197D9 /* QuizDetailSectionModel.swift */; };
+		FBBFD4D621A58EC9007197D9 /* QuizParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4D521A58EC9007197D9 /* QuizParticipant.swift */; };
+		FBBFD4D821A58ED7007197D9 /* QuizSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4D721A58ED7007197D9 /* QuizSectionModel.swift */; };
+		FBBFD4DA21A58EE2007197D9 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4D921A58EE2007197D9 /* SignUp.swift */; };
+		FBBFD4DC21A58EEB007197D9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4DB21A58EEB007197D9 /* User.swift */; };
+		FBBFD4DE21A58EF2007197D9 /* UserType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4DD21A58EF2007197D9 /* UserType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +54,30 @@
 		FBBFD4A721A587AE007197D9 /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBBFD4A921A587AE007197D9 /* RxDataSources.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxDataSources.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBBFD4AB21A587AE007197D9 /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBBFD4AD21A58928007197D9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		FBBFD4B121A58944007197D9 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		FBBFD4B321A5895A007197D9 /* AdminViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminViewController.swift; sourceTree = "<group>"; };
+		FBBFD4B521A58962007197D9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		FBBFD4B721A5896A007197D9 /* InstructorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorViewController.swift; sourceTree = "<group>"; };
+		FBBFD4B921A58971007197D9 /* StudentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentViewController.swift; sourceTree = "<group>"; };
+		FBBFD4BB21A5897A007197D9 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		FBBFD4BD21A5899E007197D9 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		FBBFD4BF21A589A7007197D9 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		FBBFD4C121A589F1007197D9 /* IndicatorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorButton.swift; sourceTree = "<group>"; };
+		FBBFD4C321A58A05007197D9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		FBBFD4C521A58A12007197D9 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		FBBFD4C721A58E69007197D9 /* ChangePassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassword.swift; sourceTree = "<group>"; };
+		FBBFD4C921A58E82007197D9 /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
+		FBBFD4CB21A58E8E007197D9 /* EditProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfile.swift; sourceTree = "<group>"; };
+		FBBFD4CD21A58E95007197D9 /* Participant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
+		FBBFD4CF21A58E9E007197D9 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
+		FBBFD4D121A58EA8007197D9 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
+		FBBFD4D321A58EBA007197D9 /* QuizDetailSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizDetailSectionModel.swift; sourceTree = "<group>"; };
+		FBBFD4D521A58EC9007197D9 /* QuizParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizParticipant.swift; sourceTree = "<group>"; };
+		FBBFD4D721A58ED7007197D9 /* QuizSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSectionModel.swift; sourceTree = "<group>"; };
+		FBBFD4D921A58EE2007197D9 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
+		FBBFD4DB21A58EEB007197D9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		FBBFD4DD21A58EF2007197D9 /* UserType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +164,18 @@
 			isa = PBXGroup;
 			children = (
 				FBBFD4A421A586F5007197D9 /* ErrorResponse */,
+				FBBFD4C721A58E69007197D9 /* ChangePassword.swift */,
+				FBBFD4C921A58E82007197D9 /* Course.swift */,
+				FBBFD4CB21A58E8E007197D9 /* EditProfile.swift */,
+				FBBFD4CD21A58E95007197D9 /* Participant.swift */,
+				FBBFD4CF21A58E9E007197D9 /* Question.swift */,
+				FBBFD4D121A58EA8007197D9 /* Quiz.swift */,
+				FBBFD4D321A58EBA007197D9 /* QuizDetailSectionModel.swift */,
+				FBBFD4D521A58EC9007197D9 /* QuizParticipant.swift */,
+				FBBFD4D721A58ED7007197D9 /* QuizSectionModel.swift */,
+				FBBFD4D921A58EE2007197D9 /* SignUp.swift */,
+				FBBFD4DB21A58EEB007197D9 /* User.swift */,
+				FBBFD4DD21A58EF2007197D9 /* UserType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -123,6 +183,8 @@
 		FBBFD49A21A58676007197D9 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				FBBFD4C321A58A05007197D9 /* LoginViewModel.swift */,
+				FBBFD4C521A58A12007197D9 /* RegisterViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -130,6 +192,7 @@
 		FBBFD49B21A5867A007197D9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FBBFD4C121A589F1007197D9 /* IndicatorButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -163,6 +226,8 @@
 		FBBFD49F21A586A8007197D9 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				FBBFD4AD21A58928007197D9 /* LoginViewController.swift */,
+				FBBFD4B121A58944007197D9 /* RegisterViewController.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -177,6 +242,8 @@
 		FBBFD4A121A586B5007197D9 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				FBBFD4BD21A5899E007197D9 /* ChangePasswordViewController.swift */,
+				FBBFD4BF21A589A7007197D9 /* EditProfileViewController.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -184,6 +251,11 @@
 		FBBFD4A221A586BA007197D9 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				FBBFD4B321A5895A007197D9 /* AdminViewController.swift */,
+				FBBFD4B521A58962007197D9 /* HomeViewController.swift */,
+				FBBFD4B721A5896A007197D9 /* InstructorViewController.swift */,
+				FBBFD4B921A58971007197D9 /* StudentViewController.swift */,
+				FBBFD4BB21A5897A007197D9 /* UserViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -327,7 +399,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBBFD4CE21A58E95007197D9 /* Participant.swift in Sources */,
+				FBBFD4B621A58962007197D9 /* HomeViewController.swift in Sources */,
+				FBBFD4C221A589F1007197D9 /* IndicatorButton.swift in Sources */,
+				FBBFD4D021A58E9E007197D9 /* Question.swift in Sources */,
+				FBBFD4D821A58ED7007197D9 /* QuizSectionModel.swift in Sources */,
+				FBBFD4BC21A5897A007197D9 /* UserViewController.swift in Sources */,
+				FBBFD4D421A58EBA007197D9 /* QuizDetailSectionModel.swift in Sources */,
+				FBBFD4CC21A58E8E007197D9 /* EditProfile.swift in Sources */,
+				FBBFD4D621A58EC9007197D9 /* QuizParticipant.swift in Sources */,
+				FBBFD4B421A5895A007197D9 /* AdminViewController.swift in Sources */,
+				FBBFD4BE21A5899E007197D9 /* ChangePasswordViewController.swift in Sources */,
+				FBBFD4DE21A58EF2007197D9 /* UserType.swift in Sources */,
+				FBBFD4B221A58944007197D9 /* RegisterViewController.swift in Sources */,
+				FBBFD4C821A58E69007197D9 /* ChangePassword.swift in Sources */,
+				FBBFD4DA21A58EE2007197D9 /* SignUp.swift in Sources */,
+				FBBFD4AE21A58928007197D9 /* LoginViewController.swift in Sources */,
 				FBBCF40221721A2800A58C74 /* AppDelegate.swift in Sources */,
+				FBBFD4C621A58A12007197D9 /* RegisterViewModel.swift in Sources */,
+				FBBFD4C421A58A05007197D9 /* LoginViewModel.swift in Sources */,
+				FBBFD4BA21A58971007197D9 /* StudentViewController.swift in Sources */,
+				FBBFD4D221A58EA8007197D9 /* Quiz.swift in Sources */,
+				FBBFD4DC21A58EEB007197D9 /* User.swift in Sources */,
+				FBBFD4CA21A58E82007197D9 /* Course.swift in Sources */,
+				FBBFD4C021A589A7007197D9 /* EditProfileViewController.swift in Sources */,
+				FBBFD4B821A5896A007197D9 /* InstructorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
