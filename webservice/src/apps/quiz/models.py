@@ -2,9 +2,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 # Create your models here.
 class Quiz(models.Model):
-    owner           = models.ForeignKey('account.User',
+    owner           = models.ForeignKey(User,
                                         on_delete=models.CASCADE,
                                         related_name='owner')
 
@@ -46,10 +49,7 @@ class Quiz(models.Model):
 
 class QuizParticipant(models.Model):
     quiz        = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    participant = models.ForeignKey('account.User',
-                                    on_delete=models.SET_NULL,
-                                    null=True,
-                                    blank=True)
+    participant = models.ForeignKey(User, on_delete=models.CASCADE)
 
     grade       = models.DecimalField(_('Quiz Grade'),
                                       default=0.0,
@@ -61,11 +61,12 @@ class QuizParticipant(models.Model):
                                       max_digits=100,
                                       decimal_places=2)
 
-    finished_in = models.DateTimeField(null=True, blank=True)
+    finished_in = models.CharField(_('Completion Time'), max_length=50)
 
     class Meta:
         verbose_name = _('Quiz Participant')
         verbose_name_plural = _('Quiz Participants')
+        unique_together = ("quiz", "participant")
 
     def __str__(self):
         return self.quiz.owner.username

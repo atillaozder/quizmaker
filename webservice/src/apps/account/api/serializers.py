@@ -143,6 +143,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 class UserSerializer(serializers.ModelSerializer):
+    student_id = serializers.SerializerMethodField(read_only=True, allow_null=True)
 
     class Meta:
         model = User
@@ -151,12 +152,18 @@ class UserSerializer(serializers.ModelSerializer):
             'username',
             'first_name',
             'last_name',
+            'student_id',
             'email',
             'is_active',
             'date_joined',
             'user_type',
             'gender',
         )
+
+    def get_student_id(self, instance):
+        if instance.is_student:
+            return instance.student.student_id
+        return None
 
 class UserUpdateSerializer(serializers.ModelSerializer):
 
@@ -226,7 +233,13 @@ class ParticipantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name',)
+        fields = (
+            'id',
+            'username',
+            'email',
+            'first_name',
+            'last_name'
+        )
 
 class StudentSerializer(serializers.ModelSerializer):
     id = serializers.SerializerMethodField()

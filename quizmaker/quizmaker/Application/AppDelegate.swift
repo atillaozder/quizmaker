@@ -15,7 +15,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let defaults = UserDefaults.standard
+        var viewController: UIViewController
+        
+        if let _ = defaults.getUserIdentifier(), defaults.isLogged() {
+            var tempViewController: UIViewController
+            
+            if let type = defaults.getUserType(), let userType = UserType(rawValue: type) {
+                
+                switch userType {
+                case .admin:
+                    tempViewController = AdminViewController()
+                case .instructor:
+                    tempViewController = InstructorViewController()
+                case .normal:
+                    tempViewController = UserViewController()
+                case .student:
+                    tempViewController = StudentViewController()
+                }
+                
+                viewController = UINavigationController(rootViewController: tempViewController)
+            } else {
+                viewController = LoginViewController()
+            }
+        } else {
+            viewController = LoginViewController()
+        }
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.backgroundColor = .white
+        window?.rootViewController = viewController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
