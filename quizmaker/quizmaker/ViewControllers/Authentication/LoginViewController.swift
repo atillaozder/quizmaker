@@ -256,6 +256,8 @@ class LoginViewController: UIViewController, KeyboardHandler {
     private func registerTapped(_ sender: UIButton) {
         DispatchQueue.main.async {
             self.view.endEditing(true)
+            NetworkManager.shared.cancel()
+            self.loginButton.hideLoading()
         }
         
         let viewController = RegisterViewController()
