@@ -10,6 +10,7 @@ extension UserDefaults {
         self.setEmail(email: signUp.email)
         self.setFirstname(name: signUp.firstName)
         self.setLastname(name: signUp.lastName)
+        self.synchronize()
     }
     
     func set(_ user: EditProfile) {
@@ -17,6 +18,7 @@ extension UserDefaults {
         self.setFirstname(name: user.firstName)
         self.setLastname(name: user.lastName)
         self.setGender(gender: user.gender)
+        self.synchronize()
     }
     
     func getUserType() -> String? {
@@ -81,6 +83,14 @@ extension UserDefaults {
     
     func logout() {
         self.set(false, forKey: "isLogged")
-        self.set(nil, forKey: "id")
+        self.removeObject(forKey: "id")
+        self.removeObject(forKey: "gender")
+        self.removeObject(forKey: "lastname")
+        self.removeObject(forKey: "firstname")
+        self.removeObject(forKey: "email")
+        self.removeObject(forKey: "password")
+        self.removeObject(forKey: "type")
+        self.removeObject(forKey: "username")
+        self.synchronize()
     }
 }

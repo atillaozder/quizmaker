@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Count
 from datetime import datetime
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -182,16 +183,24 @@ class QuizAppendView(UpdateAPIView):
                 {'message': _('You cannot participate in a private quiz.')},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        if object.end < datetime.now():
+        if object.end < timezone.now():
             return Response(
                 {'message': _('Quiz has ended.')},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        if object.start > datetime.now():
+        if object.start > timezone.now():
             return Response(
                 {'message': _('Quiz has not started yet.')},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+        qs = QuizParticipant.objects.filter(quiz=object).filter(participant=request.user)
+        if qs.exists():
+            return Response(
+                {'message': _('You have already participate in this quiz.')},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         return self.partial_update(request, *args, **kwargs)
 
     def perform_update(self, serializer):

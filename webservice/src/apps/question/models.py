@@ -24,6 +24,7 @@ class Question(models.Model):
 
     answer          = models.TextField(_('Answer'), blank=True)
     question        = models.TextField(_('Question'), null=False, blank=False)
+    point           = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.question
@@ -37,6 +38,7 @@ class ParticipantAnswer(models.Model):
     quiz        = models.ForeignKey('quiz.Quiz', on_delete=models.CASCADE)
     question    = models.ForeignKey(Question, on_delete=models.CASCADE)
     is_correct  = models.BooleanField(_('Correct or not'), default=False)
+    point       = models.PositiveIntegerField(default=0)
     answer      = models.CharField(_('Participant Answer'),
                                    max_length=255,
                                    null=True,

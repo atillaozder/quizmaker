@@ -9,15 +9,22 @@ from quiz.models import QuizParticipant
 def answer_pre_save_receiver(sender, instance, *args, **kwargs):
     if instance.answer == instance.question.answer:
         instance.is_correct = True
+        instance.point = instance.question.point
     else:
         instance.is_correct = False
+        instance.point = 0
 
 @receiver(post_save, sender=ParticipantAnswer)
 def answer_post_save_receiver(sender, instance, created, *args, **kwargs):
     if instance.is_correct:
-        question_count = instance.quiz.questions.count()
-        count_correct_answers = ParticipantAnswer.objects.filter(quiz=instance.quiz).filter(participant=instance.participant).filter(is_correct=True).count()
+        correct_answers = ParticipantAnswer.objects.filter(quiz=instance.quiz).filter(participant=instance.participant).filter(is_correct=True)
         p, created = QuizParticipant.objects.get_or_create(quiz=instance.quiz, participant=instance.participant)
-        if count_correct_answers <= question_count:
-            p.grade = (count_correct_answers / question_count) * 100
-            p.save()
+        overall_grade = 0
+        for answer in correct_answers:
+            overall_grade = overall_grade + answer.point
+
+        if overall_grade > 100:
+            overall_grade = 100
+
+        p.grade = overall_grade
+        p.save()
