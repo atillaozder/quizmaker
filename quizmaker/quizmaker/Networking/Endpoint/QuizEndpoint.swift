@@ -6,6 +6,7 @@ public enum QuizEndpoint {
     case detail(quizID: Int)
     case delete(quizID: Int)
     case participants(quizID: Int)
+    case create(quiz: Quiz)
     case update(quizID: Int)
     case owner
 }
@@ -22,6 +23,8 @@ extension QuizEndpoint: EndpointType {
         switch self {
         case .course:
             return ""
+        case .create:
+            return "create"
         case .delete(let quizID):
             return "delete/\(quizID)"
         case .detail(let quizID):
@@ -39,6 +42,8 @@ extension QuizEndpoint: EndpointType {
         switch self {
         case .course:
             return .get
+        case .create:
+            return .post
         case .detail:
             return .get
         case .owner:
@@ -60,6 +65,28 @@ extension QuizEndpoint: EndpointType {
             ]
             
             return .requestParameters(encoding: .urlEncoding, bodyParameters: nil, urlParameters: parameters)
+        case .create(let quiz):
+            var parameters: [String: Any] = [
+                "name": quiz.name,
+                "start": quiz.startStr,
+                "end": quiz.endStr,
+                "be_graded": quiz.beGraded,
+                "questions": quiz.questions,
+                ]
+            
+            if let desc = quiz.description {
+                parameters["description"] = desc
+            }
+            
+            if quiz.beGraded, let perc = Double(quiz.percentage) {
+                parameters["percentage"] = perc
+            }
+            
+            if let course = quiz.courseID {
+                parameters["course"] = course
+            }
+            
+            return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
         case .participants(let quizID):
             let parameters = [
                 "quiz_id": quizID

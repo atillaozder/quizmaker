@@ -171,6 +171,11 @@ final class NetworkManager {
                     
                     let errorResponse = try decoder.decode(ErrorMessage.self, from: data)
                     completion(.apiMessage(response: errorResponse))
+                    
+                case .quizCreate:
+                    
+                    let errorResponse = try decoder.decode(QuizCreateErrorResponse.self, from: data)
+                    completion(.quiz(.create(response: errorResponse)))
                 }
             }
         } catch {

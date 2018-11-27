@@ -24,8 +24,8 @@ def quiz_post_save_receiver(sender, instance, created, *args, **kwargs):
 			students = course.students.all()
 			emails = []
 			for student in students:
-				participant = QuizParticipant(quiz=instance, participant=student.user)
-				participant.save()
+				# participant = QuizParticipant(quiz=instance, participant=student.user)
+				# participant.save()
 				emails.append(student.user.email)
 
 			send_mail(

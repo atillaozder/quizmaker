@@ -48,10 +48,12 @@ class QuizSerializer(serializers.ModelSerializer):
         return None
 
 class QuizCreateUpdateSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Quiz
         fields = (
+            'id',
             'name',
             'description',
             'course',

@@ -18,6 +18,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             'quiz_id',
             'question',
             'question_type',
+            'point',
             'answer',
         )
 
@@ -33,6 +34,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         question = Question(
             question=validated_data['question'],
             question_type=validated_data['question_type'],
+            point=validated_data['point'],
             answer=validated_data['answer']
         )
 

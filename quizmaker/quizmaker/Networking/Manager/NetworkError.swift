@@ -8,6 +8,7 @@ public enum ErrorType {
     case register
     case changePassword
     case editProfile
+    case quizCreate
 }
 
 public enum Result<T, U> where U: Error {
@@ -26,6 +27,7 @@ public enum NetworkError: Error {
     case apiMessage(response: ErrorMessage)
     case auth(AuthAPIError)
     case update(UpdateAPIError)
+    case quiz(QuizAPIError)
     
     public enum ClientError: Error {
         case jsonDecodingFailure
@@ -36,6 +38,10 @@ public enum NetworkError: Error {
     public enum AuthAPIError: Error {
         case login(response: FieldErrorResponse)
         case register(response: RegisterErrorResponse)
+    }
+    
+    public enum QuizAPIError: Error {
+        case create(response: QuizCreateErrorResponse)
     }
     
     public enum UpdateAPIError: Error {
@@ -52,6 +58,7 @@ public enum NetworkError: Error {
         case .shouldLogout: return "403 or 401 Error Response Should Logout Immediately"
         case .api(let response): return response.errorDesc
         case .apiMessage(let response): return response.message
+        case .quiz(.create): return "Quiz Create Error"
         case .auth(.register): return "Register Request Failed"
         case .auth(.login): return "Login Request Failed"
         case .update(.changePassword): return "Update Password Request Failure"
