@@ -28,7 +28,6 @@
 		FB18D71521ADF8C300B9BACB /* MyQuizListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D71421ADF8C300B9BACB /* MyQuizListViewController.swift */; };
 		FB18D71721ADF8EE00B9BACB /* QuizDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D71621ADF8EE00B9BACB /* QuizDetailViewController.swift */; };
 		FB18D71921ADF91600B9BACB /* QuizParticipantsAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D71821ADF91600B9BACB /* QuizParticipantsAnswerViewController.swift */; };
-		FB18D71B21ADF92B00B9BACB /* QuizUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D71A21ADF92B00B9BACB /* QuizUpdateViewController.swift */; };
 		FB18D71D21ADF9BE00B9BACB /* QuestionCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D71C21ADF9BE00B9BACB /* QuestionCreateViewController.swift */; };
 		FB18D71F21ADF9CD00B9BACB /* QuizCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D71E21ADF9CD00B9BACB /* QuizCreateViewController.swift */; };
 		FB18D72121ADF9E700B9BACB /* QuizCreateQuestionTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D72021ADF9E700B9BACB /* QuizCreateQuestionTableCell.swift */; };
@@ -119,7 +118,6 @@
 		FB18D71421ADF8C300B9BACB /* MyQuizListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuizListViewController.swift; sourceTree = "<group>"; };
 		FB18D71621ADF8EE00B9BACB /* QuizDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizDetailViewController.swift; sourceTree = "<group>"; };
 		FB18D71821ADF91600B9BACB /* QuizParticipantsAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizParticipantsAnswerViewController.swift; sourceTree = "<group>"; };
-		FB18D71A21ADF92B00B9BACB /* QuizUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUpdateViewController.swift; sourceTree = "<group>"; };
 		FB18D71C21ADF9BE00B9BACB /* QuestionCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCreateViewController.swift; sourceTree = "<group>"; };
 		FB18D71E21ADF9CD00B9BACB /* QuizCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCreateViewController.swift; sourceTree = "<group>"; };
 		FB18D72021ADF9E700B9BACB /* QuizCreateQuestionTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCreateQuestionTableCell.swift; sourceTree = "<group>"; };
@@ -417,7 +415,6 @@
 				FB18D71421ADF8C300B9BACB /* MyQuizListViewController.swift */,
 				FB18D71621ADF8EE00B9BACB /* QuizDetailViewController.swift */,
 				FB18D71821ADF91600B9BACB /* QuizParticipantsAnswerViewController.swift */,
-				FB18D71A21ADF92B00B9BACB /* QuizUpdateViewController.swift */,
 				FB18D71C21ADF9BE00B9BACB /* QuestionCreateViewController.swift */,
 				FB18D71E21ADF9CD00B9BACB /* QuizCreateViewController.swift */,
 			);
@@ -625,7 +622,6 @@
 				FBBFD4D621A58EC9007197D9 /* QuizParticipant.swift in Sources */,
 				FBBFD4B421A5895A007197D9 /* AdminViewController.swift in Sources */,
 				FB2C467F21A5A1BC00CF2F54 /* QuizEndpoint.swift in Sources */,
-				FB18D71B21ADF92B00B9BACB /* QuizUpdateViewController.swift in Sources */,
 				FBBFD4BE21A5899E007197D9 /* ChangePasswordViewController.swift in Sources */,
 				FBBFD4DE21A58EF2007197D9 /* UserType.swift in Sources */,
 				FB18D70321ADF76D00B9BACB /* QuizListTableCell.swift in Sources */,
