@@ -3,6 +3,8 @@ import Foundation
 
 public enum QuestionEndpoint {
     case create(question: Question)
+    case update(question: Question)
+    case delete(id: Int)
 }
 
 extension QuestionEndpoint: EndpointType {
@@ -17,6 +19,10 @@ extension QuestionEndpoint: EndpointType {
         switch self {
         case .create:
             return "create"
+        case .update(let q):
+            return "update/\(q.id)"
+        case .delete(let id):
+            return "delete/\(id)"
         }
     }
     
@@ -24,6 +30,10 @@ extension QuestionEndpoint: EndpointType {
         switch self {
         case .create:
             return .post
+        case .update:
+            return .put
+        case .delete:
+            return .delete
         }
     }
     
@@ -39,6 +49,18 @@ extension QuestionEndpoint: EndpointType {
             ]
             
             return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
+        case .update(let question):
+            let parameters: [String: Any] = [
+                "question_type": question.questionType,
+                "question": question.question,
+                "answer": question.answer,
+                "quiz_id": question.quizId!,
+                "point": question.point!
+            ]
+            
+            return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
+        default:
+            return .request
         }
     }
     

@@ -18,7 +18,7 @@ from question.api.serializers import (
     ParticipantValidateSerializer
 )
 
-from question.models import ParticipantAnswer
+from question.models import ParticipantAnswer, Question
 
 class QuestionCreateAPIView(CreateAPIView):
     serializer_class = QuestionSerializer
@@ -37,6 +37,21 @@ class QuestionCreateAPIView(CreateAPIView):
         #         status=status.HTTP_400_BAD_REQUEST
         #     )
         return super(QuestionCreateAPIView, self).create(request, *args, **kwargs)
+
+class QuestionUpdateAPIView(UpdateAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+class QuestionDeleteAPIView(DestroyAPIView):
+    queryset = Question.objects.all()
+    permission_classes = (IsAuthenticated,)
+    
+    def delete(self, request, *args, **kwargs):
+        return super(QuestionDeleteAPIView, self).delete(request, *args, **kwargs)
 
 class ParticipantAnswerCreateAPIView(CreateAPIView):
     serializer_class = ParticipantAnswerSerializer

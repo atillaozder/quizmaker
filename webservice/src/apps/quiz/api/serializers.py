@@ -24,6 +24,7 @@ class QuizSerializer(serializers.ModelSerializer):
             'id',
             'owner_id',
             'owner_name',
+            'course',
             'course_name',
             'name',
             'description',

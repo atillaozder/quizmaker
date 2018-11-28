@@ -7,7 +7,7 @@ from quiz.models import QuizParticipant
 
 @receiver(pre_save, sender=ParticipantAnswer)
 def answer_pre_save_receiver(sender, instance, *args, **kwargs):
-    if instance.answer == instance.question.answer:
+    if instance.answer.lower() == instance.question.answer.lower():
         instance.is_correct = True
         instance.point = instance.question.point
     else:

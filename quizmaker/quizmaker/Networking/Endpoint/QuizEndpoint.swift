@@ -7,7 +7,7 @@ public enum QuizEndpoint {
     case delete(quizID: Int)
     case participants(quizID: Int)
     case create(quiz: Quiz)
-    case update(quizID: Int)
+    case update(quiz: Quiz)
     case owner
 }
 
@@ -29,8 +29,8 @@ extension QuizEndpoint: EndpointType {
             return "delete/\(quizID)"
         case .detail(let quizID):
             return "\(quizID)"
-        case .update(let quizID):
-            return "update/\(quizID)"
+        case .update(let quiz):
+            return "update/\(quiz.id)"
         case .participants:
             return "participants"
         case .owner:
@@ -66,13 +66,51 @@ extension QuizEndpoint: EndpointType {
             
             return .requestParameters(encoding: .urlEncoding, bodyParameters: nil, urlParameters: parameters)
         case .create(let quiz):
+            var questions: [Int] = []
+            quiz.questions.forEach { (question) in
+                questions.append(question.id)
+            }
+            
             var parameters: [String: Any] = [
                 "name": quiz.name,
                 "start": quiz.startStr,
                 "end": quiz.endStr,
                 "be_graded": quiz.beGraded,
-                "questions": quiz.questions,
                 ]
+            
+            if questions.count > 0 {
+                parameters["questions"] = questions
+            }
+            
+            if let desc = quiz.description {
+                parameters["description"] = desc
+            }
+            
+            if quiz.beGraded, let perc = Double(quiz.percentage) {
+                parameters["percentage"] = perc
+            }
+            
+            if let course = quiz.courseID {
+                parameters["course"] = course
+            }
+            
+            return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
+        case .update(let quiz):
+            var questions: [Int] = []
+            quiz.questions.forEach { (question) in
+                questions.append(question.id)
+            }
+            
+            var parameters: [String: Any] = [
+                "name": quiz.name,
+                "start": quiz.startStr,
+                "end": quiz.endStr,
+                "be_graded": quiz.beGraded,
+                ]
+            
+            if questions.count > 0 {
+                parameters["questions"] = questions
+            }
             
             if let desc = quiz.description {
                 parameters["description"] = desc

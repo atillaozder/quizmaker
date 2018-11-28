@@ -3,7 +3,7 @@ import Foundation
 
 public struct Quiz: Codable {
     let ownerID: Int
-    let id: Int
+    var id: Int
     let name, ownerName: String
     let description: String?
     let courseName: String?
@@ -12,7 +12,7 @@ public struct Quiz: Codable {
     let percentage: String
     let isPrivate: Bool
     let participants: [User]
-    let questions: [Question]
+    var questions: [Question]
     let courseID: Int?
     
     var startStr: String {
@@ -58,7 +58,7 @@ public struct Quiz: Codable {
         case percentage
         case isPrivate = "is_private"
         case participants, questions
-        case courseID = "course_id"
+        case courseID = "course"
     }
     
     public init(from decoder: Decoder) throws {
