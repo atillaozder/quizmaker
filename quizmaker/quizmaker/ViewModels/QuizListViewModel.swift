@@ -68,4 +68,17 @@ class QuizListViewModel {
                 }
             }).disposed(by: disposeBag)
     }
+    
+    func append(_ quizId: Int) {
+        let endpoint = QuizEndpoint.append(quizID: quizId)
+        NetworkManager.shared.requestJSON(endpoint, .apiMessage)
+            .subscribe(onNext: { [weak self] (result) in
+                switch result {
+                case .success:
+                    self?.success.onNext(())
+                case .failure(let error):
+                    self?.failure.onNext(error)
+                }
+            }).disposed(by: disposeBag)
+    }
 }
