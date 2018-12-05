@@ -26,6 +26,8 @@ class UserViewController: HomeViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        showJoinedQuizzesButton.addTarget(self, action: #selector(showJoinedQuizzes), for: .touchUpInside)
+        showPublicQuizzesButton.addTarget(self, action: #selector(showPublicQuizzes), for: .touchUpInside)
     }
     
     override func setupViews() {
@@ -43,5 +45,17 @@ class UserViewController: HomeViewController {
         view.addSubview(lastStackView)
         lastStackView.addArrangedSubview(editProfileButton)
         lastStackView.setAnchors(top: stackView.bottomAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
+    }
+    
+    @objc
+    private func showJoinedQuizzes() {
+        let viewController = JoinedQuizzesChoiceViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    @objc
+    private func showPublicQuizzes() {
+        let viewController = PublicQuizListViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
