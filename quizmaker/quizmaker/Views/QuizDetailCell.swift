@@ -29,7 +29,15 @@ class QuizDetailTableCell: UITableViewCell {
     let ownerNameLabel: UILabel = {
         return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
     }()
+
+    let numberOfParticipantsLabel: UILabel = {
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+    }()
     
+    let numberOfQuestionsLabel: UILabel = {
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+    }()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
@@ -43,6 +51,8 @@ class QuizDetailTableCell: UITableViewCell {
             startDateLabel,
             endDateLabel,
             percentageLabel,
+            numberOfQuestionsLabel,
+            numberOfParticipantsLabel,
             ]
         
         let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
@@ -68,6 +78,10 @@ class QuizDetailTableCell: UITableViewCell {
             courseNameLabel.text = "Course Name: \(courseName)"
         }
         
+        if !element.beGraded || !element.isPrivate {
+            percentageLabel.isHidden = true
+        }
+        
         percentageLabel.text = "Percentage: \(element.percentage)"
         
         let startDate = DateFormatter.localizedString(from: element.start, dateStyle: .medium, timeStyle: .medium)
@@ -75,5 +89,8 @@ class QuizDetailTableCell: UITableViewCell {
         
         let endDate = DateFormatter.localizedString(from: element.end, dateStyle: .medium, timeStyle: .medium)
         endDateLabel.text = "Ends: \(endDate)"
+        
+        numberOfParticipantsLabel.text = "Number of Participants: \(element.participants.count)"
+        numberOfQuestionsLabel.text = "Number of Questions: \(element.questions.count)"
     }
 }
