@@ -2,6 +2,7 @@
 import Foundation
 
 public enum QuizEndpoint {
+    case all
     case course(id: Int)
     case detail(quizID: Int)
     case delete(quizID: Int)
@@ -9,6 +10,9 @@ public enum QuizEndpoint {
     case create(quiz: Quiz)
     case update(quiz: Quiz)
     case owner
+    case participantEnd
+    case participantWaiting
+    case append(quizID: Int)
 }
 
 extension QuizEndpoint: EndpointType {
@@ -21,6 +25,8 @@ extension QuizEndpoint: EndpointType {
     
     var path: String {
         switch self {
+        case .all:
+            return ""
         case .course:
             return ""
         case .create:
@@ -35,12 +41,18 @@ extension QuizEndpoint: EndpointType {
             return "participants"
         case .owner:
             return "owner"
+        case .participantWaiting:
+            return "participator/waiting"
+        case .participantEnd:
+            return "participator/end"
+        case .append(let quizID):
+            return "append/\(quizID)"
         }
     }
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .course:
+        case .course, .all:
             return .get
         case .create:
             return .post
@@ -54,6 +66,12 @@ extension QuizEndpoint: EndpointType {
             return .put
         case .participants:
             return .get
+        case .participantEnd:
+            return .get
+        case .participantWaiting:
+            return .get
+        case .append:
+            return .put
         }
     }
     

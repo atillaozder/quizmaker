@@ -4,6 +4,7 @@ import Foundation
 public enum CourseEndpoint {
     case owner
     case appendStudent(courseID: Int, students: [User])
+    case myLectures
 }
 
 extension CourseEndpoint: EndpointType {
@@ -20,12 +21,14 @@ extension CourseEndpoint: EndpointType {
             return "owner"
         case .appendStudent(let courseID, _):
             return "update/\(courseID)"
+        case .myLectures:
+            return "participator"
         }
     }
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .owner:
+        case .owner, .myLectures:
             return .get
         case .appendStudent:
             return .put
@@ -34,12 +37,12 @@ extension CourseEndpoint: EndpointType {
     
     var task: HTTPTask {
         switch self {
-        case .owner:
+        case .owner, .myLectures:
             return .request
         case .appendStudent(_, let students):
-            var arrayOfStudents: [[String: Int]] = []
+            var arrayOfStudents: [Int] = []
             students.forEach { (student) in
-                arrayOfStudents.append(["id": student.id])
+                arrayOfStudents.append(student.id)
             }
             
             let parameters = [

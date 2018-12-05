@@ -92,6 +92,14 @@
 		FBBFD4DC21A58EEB007197D9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4DB21A58EEB007197D9 /* User.swift */; };
 		FBBFD4DE21A58EF2007197D9 /* UserType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4DD21A58EF2007197D9 /* UserType.swift */; };
 		FBBFD4E021A590D0007197D9 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBFD4DF21A590D0007197D9 /* EditProfileViewModel.swift */; };
+		FBEE563321B7EAA4002BBE22 /* MyLecturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563221B7EAA4002BBE22 /* MyLecturesViewController.swift */; };
+		FBEE563521B7EAB4002BBE22 /* CourseQuizListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563421B7EAB4002BBE22 /* CourseQuizListViewController.swift */; };
+		FBEE563721B7EACB002BBE22 /* JoinedQuizzesChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563621B7EACB002BBE22 /* JoinedQuizzesChoiceViewController.swift */; };
+		FBEE563921B7EAD9002BBE22 /* JoinedQuizzesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563821B7EAD9002BBE22 /* JoinedQuizzesViewController.swift */; };
+		FBEE563B21B7EAF1002BBE22 /* PublicQuizListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563A21B7EAF1002BBE22 /* PublicQuizListViewController.swift */; };
+		FBEE563D21B7EB0A002BBE22 /* PublicQuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563C21B7EB0A002BBE22 /* PublicQuizViewModel.swift */; };
+		FBEE563F21B7EB2D002BBE22 /* JoinedQuizzesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563E21B7EB2D002BBE22 /* JoinedQuizzesViewModel.swift */; };
+		FBEE564121B7EB3A002BBE22 /* MyLecturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE564021B7EB3A002BBE22 /* MyLecturesViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -184,6 +192,14 @@
 		FBBFD4DB21A58EEB007197D9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FBBFD4DD21A58EF2007197D9 /* UserType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserType.swift; sourceTree = "<group>"; };
 		FBBFD4DF21A590D0007197D9 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		FBEE563221B7EAA4002BBE22 /* MyLecturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLecturesViewController.swift; sourceTree = "<group>"; };
+		FBEE563421B7EAB4002BBE22 /* CourseQuizListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseQuizListViewController.swift; sourceTree = "<group>"; };
+		FBEE563621B7EACB002BBE22 /* JoinedQuizzesChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedQuizzesChoiceViewController.swift; sourceTree = "<group>"; };
+		FBEE563821B7EAD9002BBE22 /* JoinedQuizzesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedQuizzesViewController.swift; sourceTree = "<group>"; };
+		FBEE563A21B7EAF1002BBE22 /* PublicQuizListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicQuizListViewController.swift; sourceTree = "<group>"; };
+		FBEE563C21B7EB0A002BBE22 /* PublicQuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicQuizViewModel.swift; sourceTree = "<group>"; };
+		FBEE563E21B7EB2D002BBE22 /* JoinedQuizzesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedQuizzesViewModel.swift; sourceTree = "<group>"; };
+		FBEE564021B7EB3A002BBE22 /* MyLecturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLecturesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -342,6 +358,9 @@
 				FB18D6FA21ADF73C00B9BACB /* QuizListViewModel.swift */,
 				FB18D70C21ADF85B00B9BACB /* CourseAppendStudentViewModel.swift */,
 				FB18D72221ADF9F700B9BACB /* QuizCreateViewModel.swift */,
+				FBEE563C21B7EB0A002BBE22 /* PublicQuizViewModel.swift */,
+				FBEE563E21B7EB2D002BBE22 /* JoinedQuizzesViewModel.swift */,
+				FBEE564021B7EB3A002BBE22 /* MyLecturesViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -417,6 +436,9 @@
 				FB18D71821ADF91600B9BACB /* QuizParticipantsAnswerViewController.swift */,
 				FB18D71C21ADF9BE00B9BACB /* QuestionCreateViewController.swift */,
 				FB18D71E21ADF9CD00B9BACB /* QuizCreateViewController.swift */,
+				FBEE563621B7EACB002BBE22 /* JoinedQuizzesChoiceViewController.swift */,
+				FBEE563821B7EAD9002BBE22 /* JoinedQuizzesViewController.swift */,
+				FBEE563A21B7EAF1002BBE22 /* PublicQuizListViewController.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -447,6 +469,8 @@
 			children = (
 				FB18D70E21ADF87A00B9BACB /* CourseViewController.swift */,
 				FB18D71221ADF8A600B9BACB /* CourseAppendStudentViewController.swift */,
+				FBEE563221B7EAA4002BBE22 /* MyLecturesViewController.swift */,
+				FBEE563421B7EAB4002BBE22 /* CourseQuizListViewController.swift */,
 			);
 			path = Course;
 			sourceTree = "<group>";
@@ -590,6 +614,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBEE563D21B7EB0A002BBE22 /* PublicQuizViewModel.swift in Sources */,
 				FB18D6FD21ADF75200B9BACB /* Checkbox.swift in Sources */,
 				FB2C467321A5A16200CF2F54 /* NetworkLogger.swift in Sources */,
 				FBBFD4CE21A58E95007197D9 /* Participant.swift in Sources */,
@@ -604,17 +629,21 @@
 				FBBFD4D021A58E9E007197D9 /* Question.swift in Sources */,
 				FBBFD4D821A58ED7007197D9 /* QuizSectionModel.swift in Sources */,
 				FB18D70721ADF79700B9BACB /* QuizParticipantTableCell.swift in Sources */,
+				FBEE563321B7EAA4002BBE22 /* MyLecturesViewController.swift in Sources */,
 				FB2C468B21A5A21200CF2F54 /* BodyParameterEncoder.swift in Sources */,
 				FBBFD4BC21A5897A007197D9 /* UserViewController.swift in Sources */,
 				FB2C465521A5A05E00CF2F54 /* UserDefaults+Helpers.swift in Sources */,
 				FB2C467B21A5A1A100CF2F54 /* NetworkError.swift in Sources */,
+				FBEE563F21B7EB2D002BBE22 /* JoinedQuizzesViewModel.swift in Sources */,
 				FB18D71D21ADF9BE00B9BACB /* QuestionCreateViewController.swift in Sources */,
 				FBBFD4D421A58EBA007197D9 /* QuizDetailSectionModel.swift in Sources */,
 				FB18D70F21ADF87A00B9BACB /* CourseViewController.swift in Sources */,
 				FB2C468521A5A1E600CF2F54 /* AuthenticationEndpoint.swift in Sources */,
 				FB2C467121A5A15600CF2F54 /* NetworkRouter.swift in Sources */,
+				FBEE563B21B7EAF1002BBE22 /* PublicQuizListViewController.swift in Sources */,
 				FB2C465B21A5A09100CF2F54 /* UIColor+Custom.swift in Sources */,
 				FB2C466121A5A0C100CF2F54 /* FieldErrorResponse.swift in Sources */,
+				FBEE563521B7EAB4002BBE22 /* CourseQuizListViewController.swift in Sources */,
 				FBBFD4CC21A58E8E007197D9 /* EditProfile.swift in Sources */,
 				FB2C465921A5A08300CF2F54 /* UIView+Helpers.swift in Sources */,
 				FB2C467521A5A17600CF2F54 /* HTTPTask.swift in Sources */,
@@ -636,6 +665,7 @@
 				FB2C468D21A5A25C00CF2F54 /* KeyboardHandler.swift in Sources */,
 				FB2C465D21A5A0A300CF2F54 /* DateFormatter+iso8601.swift in Sources */,
 				FB2C466F21A5A14700CF2F54 /* SessionDelegate.swift in Sources */,
+				FBEE564121B7EB3A002BBE22 /* MyLecturesViewModel.swift in Sources */,
 				FBBFD4DA21A58EE2007197D9 /* SignUp.swift in Sources */,
 				FB18D72321ADF9F700B9BACB /* QuizCreateViewModel.swift in Sources */,
 				FB2C465F21A5A0B300CF2F54 /* RegisterErrorResponse.swift in Sources */,
@@ -663,6 +693,8 @@
 				FBBFD4CA21A58E82007197D9 /* Course.swift in Sources */,
 				FB2C466921A5A0FA00CF2F54 /* APIErrorResponse.swift in Sources */,
 				FBBFD4C021A589A7007197D9 /* EditProfileViewController.swift in Sources */,
+				FBEE563921B7EAD9002BBE22 /* JoinedQuizzesViewController.swift in Sources */,
+				FBEE563721B7EACB002BBE22 /* JoinedQuizzesChoiceViewController.swift in Sources */,
 				FB2C467921A5A19400CF2F54 /* NetworkManager.swift in Sources */,
 				FB18D71F21ADF9CD00B9BACB /* QuizCreateViewController.swift in Sources */,
 				FB2C468721A5A1F600CF2F54 /* UrlParameterEncoder.swift in Sources */,

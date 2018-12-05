@@ -46,6 +46,22 @@ class CourseOwnerListAPIView(ListAPIView):
         if self.request.user.is_instructor:
             return Course.objects.filter(owner=self.request.user.instructor).all()
 
+class CourseStudentOwnListAPIView(ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+    def get(self, request, *args, **kwargs):
+        if request.user.user_type != 'S':
+            return Response(
+                {'message': _('Courses is not available for this user type.')},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return super(CourseStudentOwnListAPIView, self).get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        if self.request.user.is_student:
+            return Course.objects.filter(students__user=self.request.user).all()
+
 class CourseListAPIView(ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
