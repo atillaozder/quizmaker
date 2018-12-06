@@ -54,7 +54,7 @@ class PublicQuizListViewController: UIViewController {
         
         viewModel.success
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] () in
+            .subscribe(onNext: { () in
                 // Go to Question Page
             }).disposed(by: disposeBag)
         

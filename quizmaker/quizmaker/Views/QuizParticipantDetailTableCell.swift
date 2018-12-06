@@ -73,7 +73,7 @@ class QuizParticipantDetailTableCell: UITableViewCell {
         gradesLabel.text = "Grade: \(element.grade)"
         
         if let finishedIn = element.finishedIn {
-            finishedInLabel.text = "Finished in†\(finishedIn)"
+            finishedInLabel.text = "Finished in \(finishedIn)"
         }
     }
 }

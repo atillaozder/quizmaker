@@ -29,11 +29,11 @@ extension UserDefaults {
         return self.bool(forKey: "isLogged")
     }
     
-    func getUserIdentifier() -> String? {
-        return self.string(forKey: "id")
+    func getUserIdentifier() -> Int? {
+        return self.integer(forKey: "id")
     }
     
-    func setUserIdentifier(userId: String) {
+    func setUserIdentifier(userId: Int) {
         self.set(userId, forKey: "id")
     }
     
