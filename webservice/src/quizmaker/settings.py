@@ -128,6 +128,11 @@ EMAIL_HOST_USER = 'se301quizmaker@gmail.com'
 EMAIL_HOST_PASSWORD = 'quizmakerse301'
 EMAIL_USE_TLS = True
 
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER':
+        'account.serializers.PasswordResetSerializer',
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

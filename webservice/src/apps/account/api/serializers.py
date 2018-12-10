@@ -77,6 +77,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     id          = serializers.IntegerField(read_only=True)
     password    = serializers.CharField(min_length=8, style={'input_type': 'password'}, write_only=True)
     student_id  = serializers.CharField(required=False, allow_blank=True)
+    is_staff    = serializers.BooleanField(required=False, read_only=True)
 
     class Meta:
         model = User
@@ -88,7 +89,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             'email',
             'password',
             'user_type',
-            'student_id'
+            'student_id',
+            'is_staff',
         )
 
     def validate(self, data):
@@ -200,7 +202,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 class PasswordResetSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password_reset_form_class = PasswordResetForm
-    subject_template_name = 'apps/account/registration/password_reset_subject.txt'
+    subject_template_name = 'apps/account/templates/account/registration/password_reset_subject.txt'
 
     class Meta:
         model = User
@@ -223,7 +225,6 @@ class PasswordResetSerializer(serializers.ModelSerializer):
             'from_email': getattr(settings, 'DEFAULT_FROM_EMAIL'),
             'request': request,
             'subject_template_name': self.subject_template_name,
-            'domain_override': 'QuizMaker'
         }
 
         opts.update(self.get_email_options())
