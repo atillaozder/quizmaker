@@ -37,10 +37,9 @@ class ParticipantAnswer(models.Model):
 
     quiz        = models.ForeignKey('quiz.Quiz', on_delete=models.CASCADE)
     question    = models.ForeignKey(Question, on_delete=models.CASCADE)
-    is_correct  = models.BooleanField(_('Correct or not'), default=False)
+    is_correct  = models.BooleanField(_('Correct or not'), null=True, blank=True)
     point       = models.PositiveIntegerField(default=0)
-    answer      = models.CharField(_('Participant Answer'),
-                                   max_length=255,
+    answer      = models.TextField(_('Participant Answer'),
                                    null=True,
                                    blank=True)
 

@@ -7,12 +7,13 @@ from quiz.models import QuizParticipant
 
 @receiver(pre_save, sender=ParticipantAnswer)
 def answer_pre_save_receiver(sender, instance, *args, **kwargs):
-    if instance.answer.lower() == instance.question.answer.lower():
-        instance.is_correct = True
-        instance.point = instance.question.point
-    else:
-        instance.is_correct = False
-        instance.point = 0
+    if instance.question.question_type != "text":
+        if instance.answer.lower() == instance.question.answer.lower():
+            instance.is_correct = True
+            instance.point = instance.question.point
+        else:
+            instance.is_correct = False
+            instance.point = 0
 
 @receiver(post_save, sender=ParticipantAnswer)
 def answer_post_save_receiver(sender, instance, created, *args, **kwargs):

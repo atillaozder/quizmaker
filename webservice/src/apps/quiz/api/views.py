@@ -95,18 +95,61 @@ class QuizParticipantAnswerAPIView(APIView):
                         a_qs = ParticipantAnswer.objects.filter(question=question).filter(participant=request.user)
                         if a_qs.exists():
                             serializer = QuizParticipantAnswerSerializer(a_qs, many=True)
-                            data.append(serializer.data)
+                            data.append(serializer.data[0])
 
                     if len(data) > 0:
                         return Response(data, status=status.HTTP_200_OK)
                     else:
                         return Response(
-                            {'message': _('You should answer some questions before see the results.')},
+                            {'message': _('You cannot see the results because you have not answer any questions.')},
                             status=status.HTTP_404_NOT_FOUND
                         )
                 else:
                     return Response(
                         {'message': _('You are not in the list of participants.')},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+            else:
+                return Response(
+                    {'message': _('The quiz has not finished yet.')},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        else:
+            return Response(
+                {'message': _('Quiz is not found')},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+class QuizOwnerGetAnswersAPIView(APIView):
+
+    def get(self, request, format='json', *args, **kwargs):
+        quiz_id = request.GET.get("quiz_id")
+        user_id = request.GET.get("user_id")
+        qs = Quiz.objects.all().filter(id=quiz_id)
+
+        if qs.exists():
+            end_qs = qs.filter(end__lte=datetime.now())
+            if end_qs.exists():
+                quiz = end_qs.first()
+                is_participant = QuizParticipant.objects.filter(quiz=quiz).filter(participant__id=user_id)
+                if is_participant:
+                    data = []
+                    for question in quiz.questions.all():
+                        a_qs = ParticipantAnswer.objects.filter(question=question).filter(participant__id=user_id)
+                        if a_qs.exists():
+                            serializer = QuizParticipantAnswerSerializer(a_qs, many=True)
+                            data.append(serializer.data[0])
+
+                    if len(data) > 0:
+                        return Response(data, status=status.HTTP_200_OK)
+                    else:
+                        return Response(
+                            {'message': _('Participant not answer any questions.')},
+                            status=status.HTTP_404_NOT_FOUND
+                        )
+                else:
+                    return Response(
+                        {'message': _('User is not in the list of participants.')},
                         status=status.HTTP_400_BAD_REQUEST
                     )
             else:

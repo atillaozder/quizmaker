@@ -1,6 +1,8 @@
 
 import Foundation
 
+import Foundation
+
 public enum QuizEndpoint {
     case all
     case course(id: Int)
@@ -12,6 +14,8 @@ public enum QuizEndpoint {
     case owner
     case participantEnd
     case participantWaiting
+    case participantAnswer(quizID: Int)
+    case ownerParticipantAnswer(quizID: Int, userID: Int)
     case append(quizID: Int)
 }
 
@@ -45,6 +49,10 @@ extension QuizEndpoint: EndpointType {
             return "participator/waiting"
         case .participantEnd:
             return "participator/end"
+        case .participantAnswer:
+            return "participator/answers"
+        case .ownerParticipantAnswer:
+            return "owner/answers"
         case .append(let quizID):
             return "append/\(quizID)"
         }
@@ -52,7 +60,7 @@ extension QuizEndpoint: EndpointType {
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .course, .all:
+        case .course, .all, .ownerParticipantAnswer, .participantAnswer:
             return .get
         case .create:
             return .post
@@ -144,6 +152,19 @@ extension QuizEndpoint: EndpointType {
             
             return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
         case .participants(let quizID):
+            let parameters = [
+                "quiz_id": quizID
+            ]
+            
+            return .requestParameters(encoding: .urlEncoding, bodyParameters: nil, urlParameters: parameters)
+        case .ownerParticipantAnswer(let quizID, let userID):
+            let parameters = [
+                "quiz_id": quizID,
+                "user_id": userID
+            ]
+            
+            return .requestParameters(encoding: .urlEncoding, bodyParameters: nil, urlParameters: parameters)
+        case .participantAnswer(let quizID):
             let parameters = [
                 "quiz_id": quizID
             ]

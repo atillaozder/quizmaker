@@ -1,3 +1,4 @@
+
 import RxSwift
 import RxCocoa
 
@@ -6,12 +7,14 @@ class PublicQuizViewModel {
     private let disposeBag = DisposeBag()
     
     let items: BehaviorRelay<[QuizSectionModel]>
+    let filtered: BehaviorRelay<[QuizSectionModel]>
     let success: PublishSubject<Void>
     let failure: PublishSubject<NetworkError>
     let loadPageTrigger: PublishSubject<Void>
     
     init() {
         items = BehaviorRelay(value: [])
+        filtered = BehaviorRelay(value: [])
         failure = PublishSubject()
         success = PublishSubject()
         loadPageTrigger = PublishSubject()
@@ -36,6 +39,7 @@ class PublicQuizViewModel {
                             sectionModel.append(.quiz(item: quiz))
                         })
                         
+                        strongSelf.filtered.accept(sectionModel)
                         observer.onNext(sectionModel)
                     case .failure(let error):
                         strongSelf.failure.onNext(error)

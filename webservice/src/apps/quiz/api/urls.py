@@ -14,6 +14,7 @@ from .views import (
     QuizParticipantAnswerAPIView,
     QuizOwnerAnswerAPIView,
     QuizParticipantStatAPIView,
+    QuizOwnerGetAnswersAPIView,
 )
 
 app_name = "api_quizzes"
@@ -22,6 +23,7 @@ urlpatterns = [
     path('', QuizListAPIView.as_view(), name='quizzes'),
     path('create', QuizCreateAPIView.as_view()),
     path('owner', QuizOwnerListAPIView.as_view()),
+    path('owner/answers', QuizOwnerGetAnswersAPIView.as_view()),
     path('answers', QuizOwnerAnswerAPIView.as_view()),
     path('participants', QuizParticipantsListAPIView.as_view()),
     path('participator/end', QuizEndListAPIView.as_view()),

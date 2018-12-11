@@ -61,7 +61,7 @@ class QuizParticipant(models.Model):
                                       max_digits=100,
                                       decimal_places=2)
 
-    finished_in = models.CharField(_('Completion Time'), max_length=50)
+    finished_in = models.CharField(_('Completion Time'), max_length=50, blank=True)
 
     class Meta:
         verbose_name = _('Quiz Participant')
