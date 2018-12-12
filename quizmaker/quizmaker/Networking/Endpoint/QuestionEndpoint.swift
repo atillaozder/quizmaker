@@ -1,9 +1,28 @@
 
 import Foundation
 
+/// An endpoint provider to communicate with the API for performing question tasks such as create, update or delete.
 public enum QuestionEndpoint {
+    /**
+     Performs creation of given question instance.
+     
+     - Parameters:
+        - question: The question instance.
+     */
     case create(question: Question)
+    /**
+     Updates the given question.
+     
+     - Parameters:
+        - question: The question instance.
+     */
     case update(question: Question)
+    /**
+     Deletes the question.
+     
+     - Parameters:
+        - id: Identifier of the question.
+     */
     case delete(id: Int)
 }
 

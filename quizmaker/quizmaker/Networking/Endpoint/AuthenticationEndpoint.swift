@@ -1,9 +1,31 @@
 
 import Foundation
 
+/// An endpoint provider to communicate with the API to perform authentication such as login, register or forgot password.
 public enum AuthenticationEndpoint {
+    /**
+     Logs the user into system.
+     
+     - Parameters:
+        - username: The users username.
+        - password: The users password.
+     */
     case login(username: String, password: String)
-    case register(signUp: SignUp)
+    
+    /**
+     Registers the visitor into system.
+     
+     - Parameters:
+        - user: The user instance.
+     */
+    case register(user: SignUp)
+    
+    /**
+     Calling this method will request for an email to reset the password.
+     
+     - Parameters:
+        - email: The users email.
+     */
     case forgotPassword(email: String)
 }
 
@@ -38,17 +60,17 @@ extension AuthenticationEndpoint: EndpointType {
         ]
         
         switch self {
-        case .register(let signUp):
+        case .register(let user):
             parameters = [
-                "username": signUp.username,
-                "password": signUp.password,
-                "first_name": signUp.firstName,
-                "last_name": signUp.lastName,
-                "email": signUp.email,
-                "user_type": signUp.userType.rawValue
+                "username": user.username,
+                "password": user.password,
+                "first_name": user.firstName,
+                "last_name": user.lastName,
+                "email": user.email,
+                "user_type": user.userType.rawValue
             ]
             
-            if let studentId = signUp.studentId {
+            if let studentId = user.studentId {
                 parameters["student_id"] = studentId
             }
             
