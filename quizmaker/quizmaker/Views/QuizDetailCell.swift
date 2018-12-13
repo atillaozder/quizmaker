@@ -3,39 +3,39 @@ import UIKit
 class QuizDetailTableCell: UITableViewCell {
     
     let nameLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .boldSystemFont(ofSize: 14), true, false)
     }()
     
     let descriptionLabel: UILabel = {
-        return UILabel.uiLabel(0, .byWordWrapping, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(0, .byWordWrapping, "", .left, .black, .systemFont(ofSize: 12), true, false)
     }()
     
     let startDateLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 13), true, false)
     }()
     
     let endDateLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 13), true, false)
     }()
     
     let courseNameLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .boldSystemFont(ofSize: 13), true, false)
     }()
     
     let percentageLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 13), true, false)
     }()
     
     let ownerNameLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 13), true, false)
     }()
 
     let numberOfParticipantsLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .gray, .systemFont(ofSize: 12), true, false)
     }()
     
     let numberOfQuestionsLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .gray, .systemFont(ofSize: 12), true, false)
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -71,7 +71,7 @@ class QuizDetailTableCell: UITableViewCell {
     
     func configure(_ element: Quiz) {
         nameLabel.text = "Name: \(element.name)"
-        descriptionLabel.text = "Description:\n\(element.description ?? "")"
+        descriptionLabel.text = "Description: \(element.description ?? "")"
         ownerNameLabel.text = "Quiz Created By: \(element.ownerName)"
         
         if let courseName = element.courseName {
