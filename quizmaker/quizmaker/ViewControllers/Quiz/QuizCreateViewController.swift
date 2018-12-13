@@ -1,6 +1,11 @@
+
 import UIKit
 import RxSwift
 import RxCocoa
+
+protocol UpdateQuizDelegate: class {
+    func updateQuiz(q: Quiz)
+}
 
 private let quizCreateQuestionCellId = "quizCreateQuestionCellId"
 
@@ -110,6 +115,7 @@ class QuizCreateViewController: UIViewController, KeyboardHandler {
         let button = CheckBox()
         button.setTitle("Will Be Graded", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 13)
         button.contentHorizontalAlignment = .left
         return button
     }()
@@ -149,7 +155,7 @@ class QuizCreateViewController: UIViewController, KeyboardHandler {
         tf.autocorrectionType = .no
         tf.borderStyle = .roundedRect
         tf.clearButtonMode = .whileEditing
-        tf.keyboardType = .numberPad
+        tf.keyboardType = .decimalPad
         tf.returnKeyType = .next
         tf.tag = 0
         return tf
@@ -180,6 +186,8 @@ class QuizCreateViewController: UIViewController, KeyboardHandler {
         tv.separatorInset = .zero
         return tv
     }()
+    
+    weak var delegate: UpdateQuizDelegate?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -304,6 +312,7 @@ class QuizCreateViewController: UIViewController, KeyboardHandler {
         let addQuestionButton = UIButton(type: .system)
         addQuestionButton.setTitleColor(.black, for: .normal)
         addQuestionButton.setTitle("Add Question (+)", for: .normal)
+        addQuestionButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         addQuestionButton.contentHorizontalAlignment = .left
         addQuestionButton.addTarget(self, action: #selector(appendQuestion), for: .touchUpInside)
         
@@ -387,35 +396,52 @@ class QuizCreateViewController: UIViewController, KeyboardHandler {
         
         percentageTextField.rx.text
             .orEmpty
-            .map { [unowned self] (text) -> Double? in
+            .distinctUntilChanged()
+            .map { [unowned self] (text) -> Double in
+                
                 if var percentage = Double(text) {
+                    
+                    if floor(percentage) != percentage {
+                        percentage = (percentage * 100).rounded() / 100
+                        self.percentageTextField.text = "\(percentage)"
+                    }
+                    
                     if percentage == 0 {
-                        self.percentageTextField.text = "0"
+                        percentage = 1
+                        self.percentageTextField.text = "\(percentage)"
                     }
                     
                     if percentage > 100 {
-                        self.percentageTextField.text = "100"
                         percentage = 100
+                        self.percentageTextField.text = "\(percentage)"
                     }
-
+                    
                     return percentage
                 }
                 
                 self.percentageTextField.text = ""
-                return nil
+                return -1
             }.bind(to: viewModel.percentage)
             .disposed(by: disposeBag)
+        
+        let set = CharacterSet(charactersIn: "abcçdefgğhıijklmnoöpqrsştuüvwxyzABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789 ")
         
         Observable.combineLatest(viewModel.name.asObservable(), viewModel.course.asObservable(), viewModel.start.asObservable(), viewModel.end.asObservable(), viewModel.beGraded.asObservable(), viewModel.percentage.asObservable())
             .map { [unowned self] (name, courseID, startDate, endDate, beGraded, percentage) -> Bool in
                 
                 if name.isEmpty {
-                    self.nameErrorLabel.text = "Name cannot be empty"
+                    self.nameErrorLabel.text = "Quiz name cannot be empty"
                     self.nameErrorWrapper.isHidden = false
                     return false
                 } else {
-                    self.nameErrorLabel.text = ""
-                    self.nameErrorWrapper.isHidden = true
+                    if name.rangeOfCharacter(from: set.inverted) != nil {
+                        self.nameErrorLabel.text = "Quiz name can contains only letters and numbers"
+                        self.nameErrorWrapper.isHidden = false
+                        return false
+                    } else {
+                        self.nameErrorLabel.text = ""
+                        self.nameErrorWrapper.isHidden = true
+                    }
                 }
                 
                 if UserDefaults.standard.getUserType() == UserType.instructor.rawValue {
@@ -535,6 +561,13 @@ class QuizCreateViewController: UIViewController, KeyboardHandler {
             .drive(tableView.rx.items(cellIdentifier: quizCreateQuestionCellId, cellType: QuizCreateQuestionTableCell.self)) { (row, element, cell) in
                 cell.configure(element)
             }.disposed(by: disposeBag)
+        
+        viewModel.updated.asObservable()
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (q) in
+                guard let strongSelf = self else { return }
+                strongSelf.delegate?.updateQuiz(q: q)
+            }).disposed(by: disposeBag)
         
         Observable.zip(tableView.rx.itemSelected, tableView.rx.modelSelected(Question.self))
             .subscribe(onNext: { [weak self] (indexPath, item) in
