@@ -93,7 +93,6 @@ class QuizDetailViewController: UIViewController {
             .drive(tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        
         viewModel.failure
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] (error) in
@@ -140,10 +139,17 @@ class QuizDetailViewController: UIViewController {
     @objc
     private func updateTapped() {
         let now = Date()
-        if viewModel.quiz.start < now && viewModel.quiz.end > now {
+        let quiz = viewModel.quiz
+        
+        if quiz.start < now && quiz.end > now {
             self.showErrorAlert(message: "The quiz has already started and not finished yet. You have to wait until its finishes.")
-        } else {
-            let viewController = QuizCreateViewController(quiz: viewModel.quiz)
+        } else if quiz.start < now && quiz.end < now {
+            let viewController = QuizPercentageUpdateViewController(quiz: quiz)
+            viewController.delegate = self
+            self.navigationController?.pushViewController(viewController, animated: true)
+        } else if quiz.start > now && quiz.end > now {
+            let viewController = QuizCreateViewController(quiz: quiz)
+            viewController.delegate = self
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
@@ -175,7 +181,19 @@ extension QuizDetailViewController: UITableViewDelegate {
 extension QuizDetailViewController: QuizParticipantTableCellDelegate {
     func didTapParticipant(_ participant: QuizParticipant) {
         guard let user = participant.participant else { return }
-        let viewController = QuizParticipantAnswersViewController(id: user.id, name: user.username)
+        let viewController = QuizParticipantAnswersViewController(quizID: participant.quiz, userID: user.id, name: user.username)
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
+extension QuizDetailViewController: PercentageUpdateDelegate {
+    func updateQuiz(quiz: Quiz) {
+        viewModel.updateQuiz(quiz: quiz)
+    }
+}
+
+extension QuizDetailViewController: UpdateQuizDelegate {
+    func updateQuiz(q: Quiz) {
+        viewModel.updateQuiz(quiz: q, questions: q.questions)
     }
 }
