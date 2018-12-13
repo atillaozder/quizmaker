@@ -1,3 +1,4 @@
+
 import UIKit
 import RxSwift
 
@@ -159,6 +160,16 @@ class ChangePasswordViewController: UIViewController, KeyboardHandler {
         scrollView.showsVerticalScrollIndicator = false
         
         self.navigationItem.title = "Change Password"
+        
+        if #available(iOS 12, *) {
+            oldPasswordTextField.textContentType = .oneTimeCode
+            newPasswordTextField.textContentType = .oneTimeCode
+            confirmPasswordTextField.textContentType = .oneTimeCode
+        } else {
+            oldPasswordTextField.textContentType = .init(rawValue: "")
+            newPasswordTextField.textContentType = .init(rawValue: "")
+            confirmPasswordTextField.textContentType = .init(rawValue: "")
+        }
         
         let subviews = [
             oldPasswordTextField,
