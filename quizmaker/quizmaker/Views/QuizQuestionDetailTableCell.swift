@@ -3,11 +3,11 @@ import UIKit
 class QuizQuestionDetailTableCell: UITableViewCell {
     
     let questionLabel: UILabel = {
-        return UILabel.uiLabel(2, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .subheadline), true, false)
+        return UILabel.uiLabel(2, .byTruncatingTail, "", .left, .black, .boldSystemFont(ofSize: 14), true, false)
     }()
     
     let questionTypeLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .gray, .preferredFont(forTextStyle: .footnote), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .gray, .systemFont(ofSize: 12), true, false)
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

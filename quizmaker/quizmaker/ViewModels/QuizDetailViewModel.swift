@@ -3,7 +3,7 @@ import RxCocoa
 
 class QuizDetailViewModel {
     
-    let quiz: Quiz
+    var quiz: Quiz
     
     let items: BehaviorRelay<[DetailSectionModel]>
     private let disposeBag = DisposeBag()
@@ -59,6 +59,23 @@ class QuizDetailViewModel {
             }).disposed(by: disposeBag)
     }
     
+    func updateQuiz(quiz: Quiz) {
+        self.quiz = quiz
+        var currentSections = items.value
+        currentSections.remove(at: 0)
+        currentSections.insert(.detail(item: .detail(item: quiz)), at: 0)
+        self.items.accept(currentSections)
+    }
+    
+    func updateQuiz(quiz: Quiz, questions: [Question]) {
+        self.quiz = quiz
+        var currentSections = items.value
+        currentSections.remove(at: 0)
+        currentSections.insert(.detail(item: .detail(item: quiz)), at: 0)
+        currentSections.remove(at: 1)
+        currentSections.insert(.questions(item: .questions(item: questions)), at: 1)
+        self.items.accept(currentSections)
+    }
     
     private func delete() {
         let endpoint = QuizEndpoint.delete(quizID: quiz.id)
