@@ -87,7 +87,8 @@ class JoinedQuizzesViewController: UIViewController {
                 strongSelf.tableView.deselectRow(at: indexPath, animated: true)
                 
                 if !strongSelf.viewModel.waiting {
-                    // Show Answers and Grade
+                    let viewController = MyAnswersViewController(quizID: item.id)
+                    strongSelf.navigationController?.pushViewController(viewController, animated: true)
                 }
                 
             }).disposed(by: disposeBag)
