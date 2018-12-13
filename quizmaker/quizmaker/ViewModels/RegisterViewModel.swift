@@ -42,7 +42,7 @@ class RegisterViewModel {
             .subscribe(onNext: { [unowned self] () in
                 let signUp = SignUp(username: self.username.value, firstName: self.firstName.value, lastName: self.lastName.value, email: self.email.value, password: self.password.value, userType: self.userType.value, studentId: self.studentId.value)
                 
-                let endpoint = AuthenticationEndpoint.register(signUp: signUp)
+                let endpoint = AuthenticationEndpoint.register(user: signUp)
                 NetworkManager.shared.request(endpoint, SignUp.self, ErrorType.register)
                     .subscribe(onNext: { (result) in
                         switch result {
