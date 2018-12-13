@@ -34,8 +34,10 @@ class MyQuizListViewController: UIViewController {
         self.viewModel = QuizListViewModel(courseID: courseID)
         
         self.navigationItem.title = "\(courseName)'s Quizzes"
-        let appendStudent = UIBarButtonItem(title: "Add Student", style: .plain, target: self, action: #selector(appendStudent(_:)))
-        self.navigationItem.setRightBarButton(appendStudent, animated: false)
+//        let appendStudent = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(appendStudent(_:)))
+//        let removeStudent = UIBarButtonItem(title: "Remove", style: .plain, target: self, action: #selector(removeStudent(_:)))
+//        
+//        self.navigationItem.setRightBarButtonItems([appendStudent, removeStudent], animated: false)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -114,6 +116,7 @@ class MyQuizListViewController: UIViewController {
         viewModel.loadPageTrigger.onNext(())
     }
     
+    
     private func deleteTapped(_ indexPath: IndexPath) {
         guard indexPath.section < viewModel.items.value.count else { return }
         let section = viewModel.items.value[indexPath.section]
@@ -139,17 +142,28 @@ class MyQuizListViewController: UIViewController {
         let now = Date()
         if quiz.start < now && quiz.end > now {
             self.showErrorAlert(message: "The quiz has already started and not finished yet. You have to wait until its finishes.")
-        } else {
+        } else if quiz.start < now && quiz.end < now {
+            let viewController = QuizPercentageUpdateViewController(quiz: quiz)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        } else if quiz.start > now && quiz.end > now {
             let viewController = QuizCreateViewController(quiz: quiz)
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
-    @objc
-    private func appendStudent(_ sender: UIBarButtonItem) {
-        let appendStudentViewController = CourseAppendStudentViewController(courseID: viewModel.courseID!)
-        self.navigationController?.pushViewController(appendStudentViewController, animated: true)
-    }
+//    @objc
+//    private func appendStudent(_ sender: UIBarButtonItem) {
+//        guard let courseId = viewModel.courseID else { return }
+//        let viewController = CourseAppendStudentViewController(courseID: courseId)
+//        self.navigationController?.pushViewController(viewController, animated: true)
+//    }
+//    
+//    @objc
+//    private func removeStudent(_ sender: UIBarButtonItem) {
+//        guard let courseId = viewModel.courseID else { return }
+//        let viewController = CourseRemoveStudentsViewController(courseID: courseId)
+//        self.navigationController?.pushViewController(viewController, animated: true)
+//    }
 }
 
 extension MyQuizListViewController: UITableViewDelegate {
