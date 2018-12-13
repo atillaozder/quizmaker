@@ -8,6 +8,9 @@ public enum QuestionEndpoint {
      
      - Parameters:
         - question: The question instance.
+     
+     - SeeAlso:
+        [Question](https://example.com)
      */
     case create(question: Question)
     /**
@@ -15,6 +18,9 @@ public enum QuestionEndpoint {
      
      - Parameters:
         - question: The question instance.
+     
+     - SeeAlso:
+        [Question](https://example.com)
      */
     case update(question: Question)
     /**
@@ -24,17 +30,41 @@ public enum QuestionEndpoint {
         - id: Identifier of the question.
      */
     case delete(id: Int)
+    /**
+     Performs creation of answers for corresponding questions after appending a quiz.
+     
+     - Parameters:
+        - id: Identifier of quiz.
+        - finishedIn: The completion time in quiz '5 min'.
+        - answers: Array of answer instance.
+     
+     - SeeAlso:
+        [Answer](https://example.com)
+     */
+    case answer(id: Int, finishedIn: String, answers: [Answer])
+    /**
+     Performs validation of quiz questions for participant. It can be only done by instructor who owns the quiz instance.
+     
+     - Parameters:
+        - quizID: Identifier of quiz.
+        - userID: Identifier of participant.
+        - answers: Array of answer instance.
+     
+     - SeeAlso:
+        [Answer](https://example.com)
+     */
+    case validate(quizID: Int, userID: Int, answers: [Answer])
 }
 
 extension QuestionEndpoint: EndpointType {
-    var baseURL: URL {
+    public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/question/") else {
             fatalError("Base URL cannot be configured properly.")
         }
         return url
     }
     
-    var path: String {
+    public var path: String {
         switch self {
         case .create:
             return "create"
@@ -42,10 +72,14 @@ extension QuestionEndpoint: EndpointType {
             return "update/\(q.id)"
         case .delete(let id):
             return "delete/\(id)"
+        case .answer:
+            return "answers/create"
+        case .validate:
+            return "answers/validate"
         }
     }
     
-    var httpMethod: HTTPMethod {
+    public var httpMethod: HTTPMethod {
         switch self {
         case .create:
             return .post
@@ -53,10 +87,14 @@ extension QuestionEndpoint: EndpointType {
             return .put
         case .delete:
             return .delete
+        case .answer:
+            return .post
+        case .validate:
+            return .post
         }
     }
     
-    var task: HTTPTask {
+    public var task: HTTPTask {
         switch self {
         case .create(let question):
             let parameters: [String: Any] = [
@@ -78,12 +116,46 @@ extension QuestionEndpoint: EndpointType {
             ]
             
             return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
+        case .answer(let quizID, let finishedIn, let answers):
+            var dict: [String: Any] = [:]
+            var array: [[String: Any]] = []
+            
+            answers.forEach { (a) in
+                dict["answer"] = a.answer
+                dict["question_id"] = a.questionID
+                array.append(dict)
+            }
+            
+            let parameters: [String: Any] = [
+                "quiz_id": quizID,
+                "finished_in": finishedIn,
+                "answers": array
+            ]
+            
+            return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
+        case .validate(let quizID, let userID, let answers):
+            var dict: [String: Any] = [:]
+            var array: [[String: Any]] = []
+            
+            answers.forEach { (a) in
+                dict["point"] = a.point
+                dict["question_id"] = a.questionID
+                array.append(dict)
+            }
+            
+            let parameters: [String: Any] = [
+                "quiz_id": quizID,
+                "participant_id": userID,
+                "answers": array
+            ]
+            
+            return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
         default:
             return .request
         }
     }
     
-    var headers: HTTPHeaders? {
+    public var headers: HTTPHeaders? {
         guard let username = UserDefaults.standard.getUsername() else { return nil }
         guard let password = UserDefaults.standard.getPassword() else { return nil }
         let loginString = String(format: "%@:%@", username, password)

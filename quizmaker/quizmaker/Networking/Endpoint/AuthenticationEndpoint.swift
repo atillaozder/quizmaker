@@ -30,14 +30,14 @@ public enum AuthenticationEndpoint {
 }
 
 extension AuthenticationEndpoint: EndpointType {
-    var baseURL: URL {
+    public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/accounts/") else {
             fatalError("Base URL cannot be configured properly.")
         }
         return url
     }
     
-    var path: String {
+    public var path: String {
         switch self {
         case .login:
             return "login"
@@ -48,11 +48,11 @@ extension AuthenticationEndpoint: EndpointType {
         }
     }
     
-    var httpMethod: HTTPMethod {
+    public var httpMethod: HTTPMethod {
         return .post
     }
     
-    var task: HTTPTask {
+    public var task: HTTPTask {
         var parameters: Parameters = [:]
         let additional: HTTPHeaders = [
             "Content-Type": "application/x-www-form-urlencoded",
@@ -86,7 +86,7 @@ extension AuthenticationEndpoint: EndpointType {
         return .requestParametersAndHeaders(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil, additionalHeaders: additional)
     }
     
-    var headers: HTTPHeaders? {
+    public var headers: HTTPHeaders? {
         return nil
     }
 }

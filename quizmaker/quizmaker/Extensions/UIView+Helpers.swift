@@ -1,4 +1,15 @@
+
 import UIKit
+
+extension UIButton {
+    convenience init(image: String) {
+        self.init(type: .system)
+        let image = UIImage(imageLiteralResourceName: image)
+        self.setImage(image, for: .normal)
+        self.tintColor = .lightGray
+        self.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+    }
+}
 
 extension UIView {
     
@@ -160,7 +171,7 @@ extension UILabel {
                         _ lineBreakMode: NSLineBreakMode = .byWordWrapping,
                         _ text: String?,
                         _ textAlignment: NSTextAlignment = .natural,
-                        _ textColor: UIColor?,
+                        _ textColor: UIColor? = nil,
                         _ font: UIFont,
                         _ adjustFontSizeCategory: Bool = true,
                         _ userInteraction: Bool = false) -> UILabel {

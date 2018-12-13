@@ -1,15 +1,16 @@
+
 import Foundation
 
 extension UserDefaults {
     
-    func set(_ signUp: SignUp) {
+    func set(_ user: SignUp) {
         self.set(true, forKey: "isLogged")
-        self.set(signUp.id, forKey: "id")
-        self.set(signUp.username, forKey: "username")
-        self.set(signUp.userType.rawValue, forKey: "type")
-        self.setEmail(email: signUp.email)
-        self.setFirstname(name: signUp.firstName)
-        self.setLastname(name: signUp.lastName)
+        self.set(user.id, forKey: "id")
+        self.set(user.username, forKey: "username")
+        self.set(user.userType.rawValue, forKey: "type")
+        self.setEmail(email: user.email)
+        self.setFirstname(name: user.firstName)
+        self.setLastname(name: user.lastName)
         self.synchronize()
     }
     

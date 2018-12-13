@@ -1,13 +1,14 @@
+
 import UIKit
 import RxSwift
 import RxCocoa
 
 private let quizAnswerCell = "quizAnswerCell"
 
-class MyAnswersViewController: UIViewController {
+public class MyAnswersViewController: UIViewController {
     
     let disposeBag = DisposeBag()
-    let viewModel: ParticipantAnswerViewModel
+    let viewModel: MyAnswerListViewModel
     
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
@@ -23,7 +24,7 @@ class MyAnswersViewController: UIViewController {
     }()
     
     init(quizID: Int) {
-        viewModel = ParticipantAnswerViewModel(quizID: quizID)
+        viewModel = MyAnswerListViewModel(quizID: quizID)
         super.init(nibName: nil, bundle: nil)
         self.navigationItem.title = "Your Answers"
     }
@@ -32,10 +33,13 @@ class MyAnswersViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-
+        
+        let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
         tableView.register(QuizParticipantAnswerTableCell.self, forCellReuseIdentifier: quizAnswerCell)
         self.view.addSubview(tableView)
         tableView.fillSafeArea()
@@ -65,7 +69,7 @@ class MyAnswersViewController: UIViewController {
             }.disposed(by: disposeBag)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())
     }

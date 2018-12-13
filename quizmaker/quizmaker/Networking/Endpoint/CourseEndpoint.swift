@@ -8,14 +8,14 @@ public enum CourseEndpoint {
 }
 
 extension CourseEndpoint: EndpointType {
-    var baseURL: URL {
+    public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/course/") else {
             fatalError("Base URL cannot be configured properly.")
         }
         return url
     }
     
-    var path: String {
+    public var path: String {
         switch self {
         case .owner:
             return "owner"
@@ -26,7 +26,7 @@ extension CourseEndpoint: EndpointType {
         }
     }
     
-    var httpMethod: HTTPMethod {
+    public var httpMethod: HTTPMethod {
         switch self {
         case .owner, .myLectures:
             return .get
@@ -35,7 +35,7 @@ extension CourseEndpoint: EndpointType {
         }
     }
     
-    var task: HTTPTask {
+    public var task: HTTPTask {
         switch self {
         case .owner, .myLectures:
             return .request
@@ -52,7 +52,7 @@ extension CourseEndpoint: EndpointType {
         }
     }
     
-    var headers: HTTPHeaders? {
+    public var headers: HTTPHeaders? {
         guard let username = UserDefaults.standard.getUsername() else { return nil }
         guard let password = UserDefaults.standard.getPassword() else { return nil }
         let loginString = String(format: "%@:%@", username, password)

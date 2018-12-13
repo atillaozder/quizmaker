@@ -1,6 +1,7 @@
+
 import UIKit
 
-class HomeViewController: UIViewController {
+public class HomeViewController: UIViewController {
     
     let createQuizButton: UIButton = {
         let button = UIButton(type: .system)
@@ -20,7 +21,7 @@ class HomeViewController: UIViewController {
     
     let showMyQuizzesButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("My Quizzes", for: .normal)
+        button.setTitle("Created Quizzes", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
         return button
@@ -35,22 +36,25 @@ class HomeViewController: UIViewController {
         return sv
     }()
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         showMyQuizzesButton.roundCorners(.allCorners, radius: 5)
         editProfileButton.roundCorners(.allCorners, radius: 5)
         createQuizButton.roundCorners(.allCorners, radius: 5)
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
     
-    func setupViews() {
+    public func setupViews() {
         self.navigationItem.title = "Home"
         let logoutBarButton = UIBarButtonItem(title: "Sign Out", style: .done, target: self, action: #selector(logoutTapped(_:)))
         self.navigationItem.setRightBarButton(logoutBarButton, animated: false)
+        
+        let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         let stackView = UIStackView(arrangedSubviews: [createQuizButton, showMyQuizzesButton])
         stackView.distribution = .fillEqually
@@ -64,6 +68,8 @@ class HomeViewController: UIViewController {
         editProfileButton.addTarget(self, action: #selector(editProfileTapped(_:)), for: .touchUpInside)
         
         showMyQuizzesButton.addTarget(self, action: #selector(showMyQuizzesTapped(_:)), for: .touchUpInside)
+        
+        createQuizButton.addTarget(self, action: #selector(createQuizTapped(_:)), for: .touchUpInside)
     }
     
     @objc
@@ -80,6 +86,12 @@ class HomeViewController: UIViewController {
     @objc
     func showMyQuizzesTapped(_ sender: UIButton) {
         let viewController = MyQuizListViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    @objc
+    func createQuizTapped(_ sender: UIButton) {
+        let viewController = QuizCreateViewController()
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

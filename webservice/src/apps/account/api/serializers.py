@@ -168,6 +168,7 @@ class UserSerializer(serializers.ModelSerializer):
         return None
 
 class UserUpdateSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
 
     class Meta:
         model = User
@@ -177,6 +178,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'email',
             'gender',
         )
+
+    def validate_email(self, email):
+        if User.objects \
+            .exclude(pk=self.context.get("request").user.pk) \
+            .filter(email__iexact=email).exists():
+            raise ValidationError("This email has already exists.")
+        return email.lower()
 
     def update(self, instance, validated_data):
         instance.first_name = validated_data.get('first_name', instance.first_name)

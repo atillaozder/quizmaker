@@ -2,66 +2,38 @@
 import UIKit
 import RxSwift
 
-import RxCocoa
-class ChangePasswordViewModel {
-    
-    private let disposeBag = DisposeBag()
-    let oldPassword: BehaviorRelay<String>
-    let newPassword: BehaviorRelay<String>
-    let confirmPassword: BehaviorRelay<String>
-    
-    var success: (() -> Void)?
-    var failure: ((NetworkError) -> Void)?
-    
-    let changePasswordTrigger: PublishSubject<Void>
-    
-    init() {
-        oldPassword = BehaviorRelay(value: "")
-        newPassword = BehaviorRelay(value: "")
-        confirmPassword = BehaviorRelay(value: "")
-        
-        changePasswordTrigger = PublishSubject()
-        changePasswordTrigger.asObservable()
-            .subscribe(onNext: { [unowned self] () in
-                
-                let model = ChangePassword(old: self.oldPassword.value, new: self.newPassword.value, confirm: self.confirmPassword.value)
-                
-                let endpoint = UserEndpoint.changePassword(model: model)
-                NetworkManager.shared.requestJSON(endpoint, .changePassword)
-                    .subscribe(onNext: { (result) in
-                        switch result {
-                        case .success:
-                            UserDefaults.standard.setPassword(password: self.newPassword.value)
-                            self.success?()
-                        case .failure(let error):
-                            self.failure?(error)
-                        }
-                    }).disposed(by: self.disposeBag)
-            }).disposed(by: disposeBag)
-    }
-    
-}
-
-class ChangePasswordViewController: UIViewController, KeyboardHandler {
+public class ChangePasswordViewController: UIViewController, KeyboardHandler {
     
     private let viewModel = ChangePasswordViewModel()
     private let disposeBag = DisposeBag()
     
-    let scrollView: UIScrollView = UIScrollView()
-    let contentView: UIView = UIView()
-
+    public let scrollView: UIScrollView = UIScrollView()
+    public let contentView: UIView = UIView()
+    
     private let oldPasswordTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Old Password"
+        tf.placeholder = "Old Password*"
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.isSecureTextEntry = true
         tf.textContentType = UITextContentType(rawValue: "")
         tf.borderStyle = .roundedRect
-        tf.clearButtonMode = .whileEditing
         tf.keyboardType = .default
         tf.returnKeyType = .next
         tf.tag = 0
+        
+        let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        icon.image = UIImage(imageLiteralResourceName: "password").withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .lightGray
+        icon.contentMode = .right
+        tf.leftViewMode = .always
+        tf.leftView = icon
+        
+        let button = UIButton(image: "show-password")
+        button.tag = tf.tag
+        button.addTarget(self, action: #selector(oldPasswordShowPassword(_:)), for: .touchUpInside)
+        tf.rightView = button
+        tf.rightViewMode = .always
         return tf
     }()
     
@@ -75,16 +47,28 @@ class ChangePasswordViewController: UIViewController, KeyboardHandler {
     
     private let newPasswordTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "New Password"
+        tf.placeholder = "New Password*"
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.isSecureTextEntry = true
         tf.textContentType = UITextContentType(rawValue: "")
         tf.borderStyle = .roundedRect
-        tf.clearButtonMode = .whileEditing
         tf.keyboardType = .default
         tf.returnKeyType = .next
         tf.tag = 1
+        
+        let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 25))
+        icon.image = UIImage(imageLiteralResourceName: "password").withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .lightGray
+        icon.contentMode = .right
+        tf.leftViewMode = .always
+        tf.leftView = icon
+        
+        let button = UIButton(image: "show-password")
+        button.tag = tf.tag
+        button.addTarget(self, action: #selector(newPasswordShowPassword(_:)), for: .touchUpInside)
+        tf.rightView = button
+        tf.rightViewMode = .always
         return tf
     }()
     
@@ -98,16 +82,28 @@ class ChangePasswordViewController: UIViewController, KeyboardHandler {
     
     private let confirmPasswordTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Confirm Password"
+        tf.placeholder = "Confirm Password*"
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.isSecureTextEntry = true
         tf.textContentType = UITextContentType(rawValue: "")
         tf.borderStyle = .roundedRect
-        tf.clearButtonMode = .whileEditing
         tf.keyboardType = .default
         tf.returnKeyType = .next
         tf.tag = 2
+        
+        let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 25))
+        icon.image = UIImage(imageLiteralResourceName: "password").withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .lightGray
+        icon.contentMode = .right
+        tf.leftViewMode = .always
+        tf.leftView = icon
+        
+        let button = UIButton(image: "show-password")
+        button.tag = tf.tag
+        button.addTarget(self, action: #selector(confirmPasswordShowPassword(_:)), for: .touchUpInside)
+        tf.rightView = button
+        tf.rightViewMode = .always
         return tf
     }()
     
@@ -127,23 +123,23 @@ class ChangePasswordViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
         self.bindUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeObservers()
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateContent()
         changePasswordButton.layoutIfNeeded()
@@ -155,7 +151,10 @@ class ChangePasswordViewController: UIViewController, KeyboardHandler {
         oldPasswordTextField.delegate = self
         newPasswordTextField.delegate = self
         confirmPasswordTextField.delegate = self
-
+        
+        let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
         setupViews()
         scrollView.showsVerticalScrollIndicator = false
         
@@ -197,7 +196,7 @@ class ChangePasswordViewController: UIViewController, KeyboardHandler {
             oldPasswordTextField.heightAnchor.constraint(equalTo: changePasswordButton.heightAnchor),
             newPasswordTextField.heightAnchor.constraint(equalTo: changePasswordButton.heightAnchor),
             confirmPasswordTextField.heightAnchor.constraint(equalTo: changePasswordButton.heightAnchor),
-
+            
             oldPasswordErrorWrapper.heightAnchor.constraint(equalToConstant: 20),
             newPasswordErrorWrapper.heightAnchor.constraint(equalToConstant: 20),
             confirmPasswordErrorWrapper.heightAnchor.constraint(equalToConstant: 20),
@@ -261,6 +260,24 @@ class ChangePasswordViewController: UIViewController, KeyboardHandler {
         self.view.endEditing(true)
     }
     
+    @objc
+    private func oldPasswordShowPassword(_ sender: UIButton) {
+        oldPasswordTextField.isSecureTextEntry = !oldPasswordTextField.isSecureTextEntry
+        sender.tintColor = oldPasswordTextField.isSecureTextEntry ? .lightGray : UIColor.AppColors.main.rawValue
+    }
+    
+    @objc
+    private func newPasswordShowPassword(_ sender: UIButton) {
+        newPasswordTextField.isSecureTextEntry = !newPasswordTextField.isSecureTextEntry
+        sender.tintColor = newPasswordTextField.isSecureTextEntry ? .lightGray : UIColor.AppColors.main.rawValue
+    }
+    
+    @objc
+    private func confirmPasswordShowPassword(_ sender: UIButton) {
+        confirmPasswordTextField.isSecureTextEntry = !confirmPasswordTextField.isSecureTextEntry
+        sender.tintColor = confirmPasswordTextField.isSecureTextEntry ? .lightGray : UIColor.AppColors.main.rawValue
+    }
+    
     private func handleError(_ response: ChangePasswordErrorResponse) {
         if let old = response.oldPassword?.first {
             oldPasswordErrorLabel.text = old
@@ -282,12 +299,12 @@ class ChangePasswordViewController: UIViewController, KeyboardHandler {
 }
 
 extension ChangePasswordViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if string == " " { return false }
         return true
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField, !nextField.isHidden {
             DispatchQueue.main.async {
                 nextField.becomeFirstResponder()

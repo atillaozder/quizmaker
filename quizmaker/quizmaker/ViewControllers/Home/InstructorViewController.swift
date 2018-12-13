@@ -1,6 +1,7 @@
+
 import UIKit
 
-class InstructorViewController: HomeViewController {
+public class InstructorViewController: HomeViewController {
     
     let myCoursesButton: UIButton = {
         let button = UIButton(type: .system)
@@ -10,16 +11,16 @@ class InstructorViewController: HomeViewController {
         return button
     }()
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         myCoursesButton.roundCorners(.allCorners, radius: 5)
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    override func setupViews() {
+    override public func setupViews() {
         super.setupViews()
         
         view.addSubview(lastStackView)

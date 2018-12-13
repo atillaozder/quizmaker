@@ -3,13 +3,13 @@ import Foundation
 
 public typealias RouterCompletion = (_ data: Data?, _ response: URLResponse?, _ error: Error?) -> ()
 
-protocol Router: class {
+public protocol Router: class {
     func request(_ endpoint: EndpointType, completion: @escaping RouterCompletion)
     func invalidateSession()
     func cancel()
 }
 
-final class NetworkRouter {
+public final class NetworkRouter {
     
     private var session: URLSession
     private var task: URLSessionTask?
@@ -18,7 +18,7 @@ final class NetworkRouter {
     init() {
         let configuration = URLSessionConfiguration.default
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
-        if #available(iOS 11.0, *) { configuration.waitsForConnectivity = true }
+//        if #available(iOS 11.0, *) { configuration.waitsForConnectivity = true }
         
         delegate = SessionDelegate()
         session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: OperationQueue.main)
@@ -67,7 +67,7 @@ final class NetworkRouter {
 
 extension NetworkRouter: Router {
     
-    func request(_ endpoint: EndpointType, completion: @escaping RouterCompletion) {
+    public func request(_ endpoint: EndpointType, completion: @escaping RouterCompletion) {
         var request = URLRequest(url: endpoint.baseURL.appendingPathComponent(endpoint.path))
         prepare(request: &request, endpoint)
         
@@ -85,11 +85,11 @@ extension NetworkRouter: Router {
         self.task?.resume()
     }
     
-    func cancel() {
+    public func cancel() {
         self.task?.cancel()
     }
     
-    func invalidateSession() {
+    public func invalidateSession() {
         self.session.invalidateAndCancel()
     }
 }

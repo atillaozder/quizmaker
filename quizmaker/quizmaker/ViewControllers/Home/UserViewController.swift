@@ -1,6 +1,7 @@
+
 import UIKit
 
-class UserViewController: HomeViewController {
+public class UserViewController: HomeViewController {
     
     let showPublicQuizzesButton: UIButton = {
         let button = UIButton(type: .system)
@@ -18,19 +19,19 @@ class UserViewController: HomeViewController {
         return button
     }()
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         showPublicQuizzesButton.roundCorners(.allCorners, radius: 5)
         showJoinedQuizzesButton.roundCorners(.allCorners, radius: 5)
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         showJoinedQuizzesButton.addTarget(self, action: #selector(showJoinedQuizzes), for: .touchUpInside)
         showPublicQuizzesButton.addTarget(self, action: #selector(showPublicQuizzes), for: .touchUpInside)
     }
     
-    override func setupViews() {
+    override public func setupViews() {
         super.setupViews()
         
         let stackView = UIStackView(arrangedSubviews: [showJoinedQuizzesButton, showPublicQuizzesButton])

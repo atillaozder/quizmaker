@@ -1,14 +1,7 @@
-//
-//  KeyboardHandler.swift
-//  QuizApp
-//
-//  Created by Atilla Özder on 12.11.2018.
-//  Copyright © 2018 Atilla Özder. All rights reserved.
-//
 
 import UIKit
 
-protocol KeyboardHandler {
+public protocol KeyboardHandler {
     var scrollView: UIScrollView { get }
     var contentView: UIView { get }
     
@@ -24,7 +17,7 @@ protocol KeyboardHandler {
 
 extension KeyboardHandler where Self: UIViewController {
     
-    func setupViews() {
+    public func setupViews() {
         view.addSubview(scrollView)
         scrollView.fillSafeArea()
         scrollView.addSubview(contentView)
@@ -33,7 +26,7 @@ extension KeyboardHandler where Self: UIViewController {
         scrollView.isScrollEnabled = true
     }
     
-    func addObservers() {
+    public func addObservers() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let strongSelf = self else { return }
             strongSelf.keyboardWillShow(notification: notification)
@@ -45,11 +38,11 @@ extension KeyboardHandler where Self: UIViewController {
         }
     }
     
-    func removeObservers() {
+    public func removeObservers() {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func keyboardWillShow(notification: Notification) {
+    public func keyboardWillShow(notification: Notification) {
         //        guard let userInfo = notification.userInfo,
         //            let frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
         //                return
@@ -80,7 +73,7 @@ extension KeyboardHandler where Self: UIViewController {
         }, completion: nil)
     }
     
-    func keyboardWillHide(notification: Notification) {
+    public func keyboardWillHide(notification: Notification) {
         guard let userInfo = notification.userInfo,
             let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
                 return
@@ -101,7 +94,7 @@ extension KeyboardHandler where Self: UIViewController {
         }, completion: nil)
     }
     
-    func updateContent() {
+    public func updateContent() {
         var contentRect = CGRect.zero
         contentView.subviews.forEach({ contentRect = contentRect.union($0.frame) })
         contentRect.size.height += 10

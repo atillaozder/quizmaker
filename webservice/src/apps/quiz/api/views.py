@@ -35,21 +35,21 @@ class QuizEndListAPIView(ListAPIView):
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__lte=datetime.now()).all()
+        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__lte=datetime.now()).order_by('end')
 
 class QuizWaitingListAPIView(ListAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__gt=datetime.now()).all()
+        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__gt=datetime.now()).order_by('end')
 
 class QuizOwnerListAPIView(ListAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        return Quiz.objects.filter(owner=self.request.user).all()
+        return Quiz.objects.filter(owner=self.request.user).order_by('-end').all()
 
 class QuizRetrieveAPIView(RetrieveAPIView):
     queryset = Quiz.objects.all()
@@ -62,9 +62,9 @@ class QuizListAPIView(ListAPIView):
     def get_queryset(self):
         course_id = self.request.GET.get("course_id")
         if course_id:
-            return Quiz.objects.filter(course_id=course_id).all()
+            return Quiz.objects.filter(course_id=course_id).order_by('end')
         else:
-            return Quiz.objects.annotate(num_questions=Count('questions')).filter(num_questions__gt=0).filter(is_private=False).filter(end__gt=datetime.now())
+            return Quiz.objects.annotate(num_questions=Count('questions')).filter(num_questions__gt=0).filter(is_private=False).filter(end__gt=datetime.now()).order_by('end')
 
 class QuizParticipantsListAPIView(ListAPIView):
     queryset = QuizParticipant.objects.none()
@@ -275,7 +275,6 @@ class QuizUpdateAPIView(UpdateAPIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         return self.partial_update(request, *args, **kwargs)
-
 
 class QuizCreateAPIView(CreateAPIView):
     serializer_class = QuizCreateUpdateSerializer

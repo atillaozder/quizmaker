@@ -1,10 +1,11 @@
+
 import UIKit
 import RxSwift
 import RxDataSources
 
 private let courseQuizCell = "courseQuizCell"
 
-class CourseQuizListViewController: UIViewController {
+public class CourseQuizListViewController: UIViewController {
     
     private var viewModel: QuizListViewModel
     private let disposeBag = DisposeBag()
@@ -32,13 +33,16 @@ class CourseQuizListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
         tableView.register(QuizDetailTableCell.self, forCellReuseIdentifier: courseQuizCell)
         self.view.addSubview(tableView)
         tableView.fillSafeArea()
+        
+        let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         var frame = CGRect.zero
         frame.size.height = .leastNormalMagnitude
@@ -50,7 +54,7 @@ class CourseQuizListViewController: UIViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: courseQuizCell, for: indexPath) as? QuizDetailTableCell else { return UITableViewCell() }
             
             cell.configure(quiz)
-
+            
             var notParticipateYet = true
             quiz.participants.forEach({ (user) in
                 if user.id == UserDefaults.standard.getUserIdentifier() {
@@ -111,7 +115,7 @@ class CourseQuizListViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())
     }

@@ -1,16 +1,16 @@
 
 import Foundation
 
-protocol ErrorResponse {
+public protocol ErrorResponse {
     var error: String { get }
     var errorDesc: String { get }
     var errorCode: Int? { get }
 }
 
 public struct APIErrorResponse: ErrorResponse {
-    var error: String
-    var errorDesc: String
-    var errorCode: Int?
+    public var error: String
+    public var errorDesc: String
+    public var errorCode: Int?
 }
 
 extension APIErrorResponse: Decodable {

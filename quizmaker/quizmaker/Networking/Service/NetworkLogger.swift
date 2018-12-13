@@ -1,7 +1,7 @@
 
 import Foundation
 
-final class NetworkLogger {
+public final class NetworkLogger {
     
     static func log(request: URLRequest) {
         let urlString = request.url?.absoluteString ?? ""

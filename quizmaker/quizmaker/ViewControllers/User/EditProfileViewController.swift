@@ -1,15 +1,16 @@
+
 import UIKit
 import RxSwift
 
-class EditProfileViewController: UIViewController, KeyboardHandler {
+public class EditProfileViewController: UIViewController, KeyboardHandler {
     
     private let viewModel = EditProfileViewModel()
     private let disposeBag = DisposeBag()
     
     private let genderTypes: [Gender] = [.unspecified, .male, .female]
     
-    let scrollView: UIScrollView = UIScrollView()
-    let contentView: UIView = UIView()
+    public let scrollView: UIScrollView = UIScrollView()
+    public let contentView: UIView = UIView()
     
     private let emailTextField: UITextField = {
         let tf = UITextField()
@@ -21,6 +22,13 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
         tf.keyboardType = .emailAddress
         tf.returnKeyType = .next
         tf.tag = 0
+        
+        let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        icon.image = UIImage(imageLiteralResourceName: "email").withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .lightGray
+        icon.contentMode = .right
+        tf.leftViewMode = .always
+        tf.leftView = icon
         return tf
     }()
     
@@ -34,7 +42,7 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
     
     private let firstNameTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "First Name"
+        tf.placeholder = "First Name*"
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.borderStyle = .roundedRect
@@ -42,6 +50,14 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
         tf.keyboardType = .default
         tf.returnKeyType = .next
         tf.tag = 1
+        
+        let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        icon.image = UIImage(imageLiteralResourceName: "name").withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .lightGray
+        icon.contentMode = .right
+        tf.leftViewMode = .always
+        tf.leftView = icon
+        
         return tf
     }()
     
@@ -55,7 +71,7 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
     
     private let lastNameTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Last Name"
+        tf.placeholder = "Last Name*"
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.borderStyle = .roundedRect
@@ -63,6 +79,14 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
         tf.keyboardType = .default
         tf.returnKeyType = .next
         tf.tag = 2
+        
+        let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        icon.image = UIImage(imageLiteralResourceName: "name").withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .lightGray
+        icon.contentMode = .right
+        tf.leftViewMode = .always
+        tf.leftView = icon
+        
         return tf
     }()
     
@@ -125,23 +149,23 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
         self.bindUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeObservers()
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateContent()
         updateButton.layoutIfNeeded()
@@ -154,6 +178,9 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
         emailTextField.delegate = self
         firstNameTextField.delegate = self
         lastNameTextField.delegate = self
+        
+        let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         if #available(iOS 12, *) {
             emailTextField.textContentType = .oneTimeCode
@@ -184,7 +211,7 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
         scrollView.showsVerticalScrollIndicator = false
         
         self.navigationItem.title = "Update Profile"
-
+        
         let subviews = [
             emailTextField,
             emailErrorWrapper,
@@ -196,7 +223,7 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
             genderErrorWrapper,
             updateButton,
             changePasswordButton
-            ]
+        ]
         
         let stackView = UIView.uiStackView(arrangedSubviews: subviews, .fill, .center, .vertical, 20)
         
@@ -265,9 +292,9 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
             .bind(to: viewModel.email)
             .disposed(by: disposeBag)
         
-        Observable.combineLatest(viewModel.email.asObservable(), viewModel.gender.asObservable())
-            .map { (email, _) -> Bool in
-                return !email.isEmpty
+        Observable.combineLatest(viewModel.email.asObservable(), viewModel.gender.asObservable(), viewModel.firstname.asObservable(), viewModel.lastname.asObservable())
+            .map { (email, _, fname, lname) -> Bool in
+                return !email.isEmpty && !fname.isEmpty && !lname.isEmpty
             }.do(onNext: { [unowned self] (enabled) in
                 self.updateButton.alpha = enabled ? 1.0 : 0.5
             }).bind(to: updateButton.rx.isEnabled)
@@ -362,7 +389,7 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
         selectedRow = 0
         emailErrorLabel.text = ""
         firstNameErrorLabel.text = ""
-        lastNameErrorLabel.text = ""        
+        lastNameErrorLabel.text = ""
         emailErrorWrapper.isHidden = true
         firstNameErrorWrapper.isHidden = true
         lastNameErrorWrapper.isHidden = true
@@ -370,7 +397,7 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
 }
 
 extension EditProfileViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == firstNameTextField || textField == lastNameTextField {
             if string.isNumeric {
                 return false
@@ -381,7 +408,7 @@ extension EditProfileViewController: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField, !nextField.isHidden {
             DispatchQueue.main.async {
                 nextField.becomeFirstResponder()
@@ -397,26 +424,26 @@ extension EditProfileViewController: UITextFieldDelegate {
 
 // MARK: Picker View Data Source
 extension EditProfileViewController: UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return genderTypes.count
     }
 }
 
 // MARK: Picker View Delegate
 extension EditProfileViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRow = row
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return genderTypes[row].description
     }
     
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    public func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 30
     }
 }

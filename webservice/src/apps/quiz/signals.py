@@ -45,15 +45,3 @@ def quiz_post_save_receiver(sender, instance, created, *args, **kwargs):
 	#
 	# if instance.be_graded and instance.percentage == 0:
 	# 	instance.update_percentage()
-
-@receiver(post_save, sender=QuizParticipant)
-def quiz_participant_post_save(sender, instance, created, *args, **kwargs):
-	if not created:
-		email = instance.participant.email
-		send_mail(
-		    "A QUIZ HAS BEEN GRADED",
-		    "Hello from QuizMaker. The quiz you have added was graded.",
-		    'se301quizmaker@gmail.com',
-		    [email],
-		    fail_silently=False,
-		)

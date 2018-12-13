@@ -5,7 +5,7 @@ import RxSwift
 public typealias JSON = [String: Any]
 public typealias JSONResponse = Result<JSON, NetworkError>
 
-final class NetworkManager {
+public final class NetworkManager {
     
     private typealias RequestCompletion = (_ data: Data?, _ error: NetworkError?) -> Void
     private typealias NetworkErrorCompletionBlock = (NetworkError) -> Void
@@ -19,11 +19,11 @@ final class NetworkManager {
         router.invalidateSession()
     }
     
-    func cancel() {
+    public func cancel() {
         router.cancel()
     }
     
-    func request<T: Decodable>(_ endpoint: EndpointType,
+    public func request<T: Decodable>(_ endpoint: EndpointType,
                                _ success: T.Type,
                                _ type: ErrorType = .api) -> Observable<Result<T, NetworkError>> {
         
@@ -56,7 +56,7 @@ final class NetworkManager {
         })
     }
     
-    func requestJSON(_ endpoint: EndpointType,
+    public func requestJSON(_ endpoint: EndpointType,
                      _ type: ErrorType = .api) -> Observable<JSONResponse> {
         
         return Observable<JSONResponse>.create({ [weak self] observer in

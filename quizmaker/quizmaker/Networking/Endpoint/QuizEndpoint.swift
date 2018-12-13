@@ -1,8 +1,6 @@
 
 import Foundation
 
-import Foundation
-
 public enum QuizEndpoint {
     case all
     case course(id: Int)
@@ -20,14 +18,14 @@ public enum QuizEndpoint {
 }
 
 extension QuizEndpoint: EndpointType {
-    var baseURL: URL {
+    public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/quiz/") else {
             fatalError("Base URL cannot be configured properly.")
         }
         return url
     }
     
-    var path: String {
+    public var path: String {
         switch self {
         case .all:
             return ""
@@ -58,9 +56,15 @@ extension QuizEndpoint: EndpointType {
         }
     }
     
-    var httpMethod: HTTPMethod {
+    public var httpMethod: HTTPMethod {
         switch self {
-        case .course, .all, .ownerParticipantAnswer, .participantAnswer:
+        case .course:
+            return .get
+        case .participantAnswer:
+            return .get
+        case .ownerParticipantAnswer:
+            return .get
+        case .all:
             return .get
         case .create:
             return .post
@@ -83,7 +87,7 @@ extension QuizEndpoint: EndpointType {
         }
     }
     
-    var task: HTTPTask {
+    public var task: HTTPTask {
         switch self {
         case .course(let id):
             let parameters = [
@@ -175,7 +179,7 @@ extension QuizEndpoint: EndpointType {
         }
     }
     
-    var headers: HTTPHeaders? {
+    public var headers: HTTPHeaders? {
         guard let username = UserDefaults.standard.getUsername() else { return nil }
         guard let password = UserDefaults.standard.getPassword() else { return nil }
         let loginString = String(format: "%@:%@", username, password)

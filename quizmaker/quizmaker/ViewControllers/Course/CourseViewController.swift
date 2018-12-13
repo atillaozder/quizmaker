@@ -1,18 +1,19 @@
+
 import UIKit
 import RxCocoa
 import RxSwift
 
 private let courseCell = "courseCell"
 
-class CourseViewController: UIViewController {
+public class CourseViewController: UIViewController {
     
-    private let viewModel = CourseViewModel()
+    private let viewModel = CourseListViewModel()
     private let disposeBag = DisposeBag()
     
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.backgroundColor = .white
-        tv.rowHeight = 50
+        tv.rowHeight = UITableView.automaticDimension
         tv.estimatedRowHeight = 50
         tv.sectionHeaderHeight = 0
         tv.sectionFooterHeight = 0
@@ -22,10 +23,13 @@ class CourseViewController: UIViewController {
         return tv
     }()
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "My Courses"
         self.view.backgroundColor = .white
+        
+        let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         tableView.delegate = self
         tableView.register(CourseTableCell.self, forCellReuseIdentifier: courseCell)
@@ -42,9 +46,7 @@ class CourseViewController: UIViewController {
         viewModel.items
             .asDriver()
             .drive(tableView.rx.items(cellIdentifier: courseCell, cellType: CourseTableCell.self)) { (_, element, cell) in
-                cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.text = element.name
-                cell.detailTextLabel?.text = "Number of students: \(element.students.count)"
+                cell.configure(element)
             }.disposed(by: disposeBag)
         
         viewModel.failure
@@ -71,27 +73,27 @@ class CourseViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())
     }
     
     private func appendTapped(_ indexPath: IndexPath) {
         let course = viewModel.items.value[indexPath.row]
-        let viewController = CourseAppendStudentViewController(courseID: course.id)
+        let viewController = CourseAddStudentViewController(courseID: course.id)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     private func removeTapped(_ indexPath: IndexPath) {
         let course = viewModel.items.value[indexPath.row]
-        let viewController = CourseRemoveStudentsViewController(course: course)
+        let viewController = CourseRemoveStudentViewController(course: course)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
 extension CourseViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let appendStudent = UITableViewRowAction(style: .normal, title: "Append Students") { (action, indexPath) in
             self.appendTapped(indexPath)
@@ -108,7 +110,7 @@ extension CourseViewController: UITableViewDelegate {
         return [appendStudent, removeStudent]
     }
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let appendStudent = UIContextualAction(style: .normal, title: "Append Student") { (_, _, _) in
             self.appendTapped(indexPath)
         }
@@ -126,7 +128,7 @@ extension CourseViewController: UITableViewDelegate {
         return configuration
     }
     
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         return nil
     }
 }

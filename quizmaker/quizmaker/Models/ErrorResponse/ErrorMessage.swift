@@ -3,6 +3,10 @@ import Foundation
 
 public struct ErrorMessage {
     var message: String
+    
+    init(message: String) {
+        self.message = message
+    }
 }
 
 extension ErrorMessage: Decodable {

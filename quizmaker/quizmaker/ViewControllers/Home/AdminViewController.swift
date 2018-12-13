@@ -1,12 +1,13 @@
+
 import UIKit
 
-class AdminViewController: HomeViewController {
+public class AdminViewController: HomeViewController {
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    override func setupViews() {
+    override public func setupViews() {
         self.navigationItem.title = "Home"
         let logoutBarButton = UIBarButtonItem(title: "Sign Out", style: .done, target: self, action: #selector(logoutTapped(_:)))
         self.navigationItem.setRightBarButton(logoutBarButton, animated: false)

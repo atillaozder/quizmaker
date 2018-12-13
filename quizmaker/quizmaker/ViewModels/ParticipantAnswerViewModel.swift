@@ -1,15 +1,16 @@
+
 import Foundation
 import RxSwift
 import RxCocoa
 
-class ParticipantAnswerViewModel {
+public class ParticipantAnswerViewModel {
     
     let disposeBag = DisposeBag()
     let answers: BehaviorRelay<[ParticipantAnswer]>
     let loadPageTrigger: PublishSubject<Void>
     let failure: PublishSubject<NetworkError>
     
-    init(quizID: Int) {
+    init(quizID: Int, userID: Int) {
         
         answers = BehaviorRelay(value: [])
         loadPageTrigger = PublishSubject()
@@ -18,7 +19,7 @@ class ParticipantAnswerViewModel {
         loadPageTrigger.asObservable()
             .flatMap({ [weak self] (_) -> Observable<[ParticipantAnswer]> in
                 guard let strongSelf = self else { return .empty() }
-                let endpoint = QuizEndpoint.participantAnswer(quizID: quizID)
+                let endpoint = QuizEndpoint.ownerParticipantAnswer(quizID: quizID, userID: userID)
                 return strongSelf.fetch(endpoint)
             }).bind(to: answers)
             .disposed(by: disposeBag)

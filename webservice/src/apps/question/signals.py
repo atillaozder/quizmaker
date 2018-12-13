@@ -17,15 +17,14 @@ def answer_pre_save_receiver(sender, instance, *args, **kwargs):
 
 @receiver(post_save, sender=ParticipantAnswer)
 def answer_post_save_receiver(sender, instance, created, *args, **kwargs):
-    if instance.is_correct:
-        correct_answers = ParticipantAnswer.objects.filter(quiz=instance.quiz).filter(participant=instance.participant).filter(is_correct=True)
-        p, created = QuizParticipant.objects.get_or_create(quiz=instance.quiz, participant=instance.participant)
-        overall_grade = 0
-        for answer in correct_answers:
-            overall_grade = overall_grade + answer.point
-
-        if overall_grade > 100:
-            overall_grade = 100
-
-        p.grade = overall_grade
-        p.save()
+    # all_answers = ParticipantAnswer.objects.filter(quiz=instance.quiz).filter(participant=instance.participant)
+    # overall_grade = 0
+    # for answer in all_answers:
+    #     overall_grade = overall_grade + answer.point
+    #
+    # if overall_grade > 100:
+    #     overall_grade = 100
+    
+    p, created = QuizParticipant.objects.get_or_create(quiz=instance.quiz, participant=instance.participant)
+    p.grade = p.grade + instance.grade
+    p.save()
