@@ -4,7 +4,10 @@ import RxCocoa
 
 private let studentTableCell = "studentTableCell"
 
-class CourseAppendStudentViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class CourseAppendStudentViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, KeyboardHandler {
+    
+    var scrollView: UIScrollView = UIScrollView()
+    var contentView: UIView = UIView()
     
     private let disposeBag = DisposeBag()
     let viewModel: CourseAppendStudentViewModel
@@ -87,6 +90,16 @@ class CourseAppendStudentViewController: UIViewController, UITableViewDataSource
                     self.showErrorAlert()
                 }
             }).disposed(by: disposeBag)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addObservers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeObservers()
     }
     
     @objc
@@ -176,6 +189,31 @@ class CourseAppendStudentViewController: UIViewController, UITableViewDataSource
                 selectedCount.title = "\(viewModel.selectedStudents.value.count) Append"
             }
         }
+    }
+    
+    func keyboardWillShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            var frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
+        }
+        
+        if #available(iOS 11.0, *) {
+            frame.size.height -= view.safeAreaInsets.bottom
+        } else {
+            frame.size.height -= bottomLayoutGuide.length
+        }
+        
+        var contentInset: UIEdgeInsets = .zero
+        contentInset.bottom = frame.size.height
+        tableView.contentInset = contentInset
+        tableView.scrollIndicatorInsets = contentInset
+    }
+    
+    func keyboardWillHide(notification: Notification) {
+        var contentInset: UIEdgeInsets = self.tableView.contentInset
+        contentInset.bottom = 50
+        tableView.contentInset = contentInset
+        tableView.scrollIndicatorInsets = .zero
     }
 }
 
