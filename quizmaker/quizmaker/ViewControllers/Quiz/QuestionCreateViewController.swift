@@ -232,7 +232,7 @@ class QuestionCreateViewController: UIViewController, KeyboardHandler {
                 var point = pointStr
                 if let p = Int(pointStr) {
                     if p == 0 {
-                        self.pointTextField.text = "\(0)"
+                        self.pointTextField.text = "\(1)"
                     }
                     
                     if p > 100 {
