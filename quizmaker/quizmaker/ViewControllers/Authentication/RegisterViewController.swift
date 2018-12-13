@@ -1,3 +1,4 @@
+
 import UIKit
 import RxSwift
 
@@ -226,6 +227,20 @@ class RegisterViewController: UIViewController, KeyboardHandler {
         loginRedirectLabel.textAlignment = .center
         loginRedirectLabel.isUserInteractionEnabled = true
         
+        if #available(iOS 12, *) {
+            usernameTextField.textContentType = .oneTimeCode
+            emailTextField.textContentType = .oneTimeCode
+            firstNameTextField.textContentType = .oneTimeCode
+            lastNameTextField.textContentType = .oneTimeCode
+            passwordTextField.textContentType = .oneTimeCode
+        } else {
+            usernameTextField.textContentType = .init(rawValue: "")
+            emailTextField.textContentType = .init(rawValue: "")
+            firstNameTextField.textContentType = .init(rawValue: "")
+            lastNameTextField.textContentType = .init(rawValue: "")
+            passwordTextField.textContentType = .init(rawValue: "")
+        }
+        
         let titleLabel = UILabel()
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
@@ -345,8 +360,8 @@ class RegisterViewController: UIViewController, KeyboardHandler {
             .bind(to: viewModel.studentId)
             .disposed(by: disposeBag)
         
-        Observable.combineLatest(viewModel.username.asObservable(), viewModel.password.asObservable(), viewModel.email.asObservable(), viewModel.studentId.asObservable())
-            .map { (username, password, email, studentId) -> Bool in
+        Observable.combineLatest(viewModel.username.asObservable(), viewModel.password.asObservable(), viewModel.firstName.asObservable(), viewModel.lastName.asObservable(), viewModel.email.asObservable(), viewModel.studentId.asObservable())
+            .map { (username, password, firstname, lastname, email, studentId) -> Bool in
 
                 if self.userTypes[self.selectedRow] == .student {
                     if let id = studentId {
@@ -358,7 +373,7 @@ class RegisterViewController: UIViewController, KeyboardHandler {
                     }
                 }
                 
-                return !username.isEmpty && !password.isEmpty && !email.isEmpty
+                return !username.isEmpty && !password.isEmpty && !email.isEmpty && !firstname.isEmpty && !lastname.isEmpty
             }.do(onNext: { [unowned self] (enabled) in
                 self.registerButton.alpha = enabled ? 1.0 : 0.5
             }).bind(to: registerButton.rx.isEnabled)
@@ -490,7 +505,12 @@ class RegisterViewController: UIViewController, KeyboardHandler {
 
 extension RegisterViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == firstNameTextField { return true }
+        if textField == firstNameTextField || textField == lastNameTextField {
+            if string.isNumeric {
+                return false
+            }
+        }
+        
         if string == " " { return false }
         return true
     }
@@ -532,5 +552,13 @@ extension RegisterViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 30
+    }
+}
+
+extension String {
+    var isNumeric: Bool {
+        guard self.count > 0 else { return false }
+        let nums: Set<Character> = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        return Set(self).isSubset(of: nums)
     }
 }
