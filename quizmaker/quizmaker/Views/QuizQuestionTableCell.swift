@@ -74,9 +74,10 @@ class QuizQuestionTableCell: UITableViewCell, UITableViewDataSource, UITableView
             heightConstraint?.constant = tableView.contentSize.height
         }
         
-        tableView.layoutIfNeeded()
-        tableView.needsUpdateConstraints()
-        updateConstraints()
+        
+//        tableView.layoutIfNeeded()
+//        tableView.needsUpdateConstraints()
+//        updateConstraints()
         layoutIfNeeded()
     }
     
