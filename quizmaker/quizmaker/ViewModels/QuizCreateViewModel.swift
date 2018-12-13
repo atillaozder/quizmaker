@@ -22,10 +22,12 @@ class QuizCreateViewModel {
     let createTrigger: PublishSubject<Void>
     let failure: PublishSubject<NetworkError>
     let success: PublishSubject<Void>
+    let updated: PublishSubject<Quiz>
     let courses: PublishSubject<[Course]>
     
     init() {
         percentage = BehaviorRelay(value: nil)
+        updated = PublishSubject()
         name = BehaviorRelay(value: "")
         desc = BehaviorRelay(value: "")
         start = BehaviorRelay(value: nil)
@@ -97,13 +99,14 @@ class QuizCreateViewModel {
         guard let start = start.value else { return }
         guard let end = end.value else { return }
         
-        var quizModel = Quiz(name: name.value, start: start, end: end, beGraded: beGraded.value, questions: [], courseID: course.value, percentage: percentage.value, description: desc.value)
+        var model = Quiz(name: name.value, start: start, end: end, beGraded: beGraded.value, questions: [], courseID: course.value, percentage: percentage.value, description: desc.value)
+        model.ownerName = UserDefaults.standard.getUsername() ?? ""
         
         if let q = self.quiz {
-            quizModel.id = q.id
-            updateQuiz(quizModel)
+            model.id = q.id
+            updateQuiz(model)
         } else {
-            let endpoint = QuizEndpoint.create(quiz: quizModel)
+            let endpoint = QuizEndpoint.create(quiz: model)
             createQuiz(endpoint)
         }
     }
@@ -115,8 +118,9 @@ class QuizCreateViewModel {
                 switch result {
                 case .success(let JSON):
                     if let id = JSON["id"] as? Int {
-                        if strongSelf.questions.value.count > 0 {
-                            strongSelf.createQuestions(quizID: id)
+                        let qs = strongSelf.questions.value
+                        if qs.count > 0 {
+                            strongSelf.requestQuestion(qs, index: 0, id: id)
                         } else {
                             strongSelf.success.onNext(())
                         }
@@ -127,11 +131,14 @@ class QuizCreateViewModel {
             }).disposed(by: disposeBag)
     }
     
+    let group = DispatchGroup()
+
     private func updateQuiz(_ quiz: Quiz) {
         var created: [Question] = []
         var updated: [Question] = []
         var deleted: [Question] = []
         
+        // Sets the updated and newly created questions
         questions.value.forEach { (q) in
             var copy = q
             copy.quizId = quiz.id
@@ -148,94 +155,93 @@ class QuizCreateViewModel {
             }
         }
         
-        created.forEach { (c) in
-            let endpoint = QuestionEndpoint.create(question: c)
-            NetworkManager.shared.requestJSON(endpoint)
-                .subscribe(onNext: { (result) in
-                    switch result {
-                    case .success:
-                        break
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                        break
-                    }
-                }).disposed(by: disposeBag)
-        }
+        group.enter()
+        requestQuestion(created, index: 0)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            updated.forEach { (u) in
-                let endpoint = QuestionEndpoint.update(question: u)
-                NetworkManager.shared.requestJSON(endpoint)
-                    .subscribe(onNext: { (result) in
-                        switch result {
-                        case .success:
-                            break
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                            break
-                        }
-                    }).disposed(by: self.disposeBag)
-            }
-        }
-       
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            let endpoint = QuizEndpoint.update(quiz: quiz)
-            NetworkManager.shared.requestJSON(endpoint, .quizCreate)
-                .flatMap({ [weak self] (result) -> Observable<Void> in
-                    switch result {
-                    case .success:
-                        break
-                    case .failure(let error):
-                        self?.failure.onNext(error)
-                    }
-                    return .just(())
-                }).subscribe(onNext: { [weak self] (_) in
-                    guard let strongSelf = self else { return }
-                    if deleted.count > 0 {
-                        deleted.forEach { (d) in
-                            let endpoint = QuestionEndpoint.delete(id: d.id)
-                            NetworkManager.shared.requestJSON(endpoint)
-                                .subscribe(onNext: { (result) in
-                                    switch result {
-                                    case .success:
-                                        strongSelf.success.onNext(())
-                                    case .failure(let error):
-                                        print(error.localizedDescription)
-                                        break
-                                    }
-                                }).disposed(by: strongSelf.disposeBag)
-                        }
-                    } else {
-                        strongSelf.success.onNext(())
-                    }
-                }).disposed(by: self.disposeBag)
+        group.notify(queue: .main) {
+            self.group.enter()
+            self.requestUpdateQuestion(updated, index: 0)
+            
+            self.group.notify(queue: .main, execute: {
+                self.group.enter()
+                self.requestDeleteQuestion(deleted, index: 0)
+                
+                self.group.notify(queue: .main, execute: {
+                    self.requestQuiz(quiz)
+                })
+            })
         }
     }
     
-    private func createQuestions(quizID: Int) {
-        var qs = questions.value
-        var count = 0
-        
-        for (index, _) in qs.enumerated() {
-            qs[index].quizId = quizID
-            let endpoint = QuestionEndpoint.create(question: qs[index])
-            NetworkManager.shared.requestJSON(endpoint)
-                .flatMap({ (result) -> Observable<Int> in
-                    count += 1
-                    switch result {
-                    case .success:
-                        break
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                        break
-                    }
-                    
-                    return .just(count)
-                }).subscribe(onNext: { [unowned self] (count) in
-                    if count == self.questions.value.count {
-                        self.success.onNext(())
-                    }
-                }).disposed(by: disposeBag)
+    private func requestQuiz(_ q: Quiz) {
+        let endpoint = QuizEndpoint.update(quiz: q)
+        NetworkManager.shared.requestJSON(endpoint, .quizCreate)
+            .subscribe(onNext: { [weak self] (result) in
+                guard let strongSelf = self else { return }
+                switch result {
+                case .success:
+                    strongSelf.success.onNext(())
+                    var mutableCopy = q
+                    mutableCopy.questions = strongSelf.questions.value
+                    strongSelf.updated.onNext(mutableCopy)
+                case .failure(let error):
+                    strongSelf.failure.onNext(error)
+                }
+            }).disposed(by: disposeBag)
+    }
+    
+    private func requestQuestion(_ qs: [Question], index: Int) {
+        if index == qs.count {
+            group.leave()
+            return
         }
+        
+        let endpoint = QuestionEndpoint.create(question: qs[index])
+        NetworkManager.shared.requestJSON(endpoint)
+            .subscribe(onNext: { (_) in
+                self.requestQuestion(qs, index: index + 1)
+            }).disposed(by: disposeBag)
+    }
+    
+    private func requestUpdateQuestion(_ qs: [Question], index: Int) {
+        if index == qs.count {
+            group.leave()
+            return
+        }
+        
+        let endpoint = QuestionEndpoint.update(question: qs[index])
+        NetworkManager.shared.requestJSON(endpoint)
+            .subscribe(onNext: { (_) in
+                self.requestUpdateQuestion(qs, index: index + 1)
+            }).disposed(by: disposeBag)
+    }
+    
+    private func requestDeleteQuestion(_ qs: [Question], index: Int) {
+        if index == qs.count {
+            group.leave()
+            return
+        }
+        
+        let endpoint = QuestionEndpoint.delete(id: qs[index].id)
+        NetworkManager.shared.requestJSON(endpoint)
+            .subscribe(onNext: { (_) in
+                self.requestDeleteQuestion(qs, index: index + 1)
+            }).disposed(by: disposeBag)
+    }
+    
+    private func requestQuestion(_ qs: [Question], index: Int, id: Int) {
+        if index == qs.count {
+            self.success.onNext(())
+            return
+        }
+        
+        var q = qs[index]
+        q.quizId = id
+        let endpoint = QuestionEndpoint.create(question: q)
+        
+        NetworkManager.shared.requestJSON(endpoint)
+            .subscribe(onNext: { (_) in
+                self.requestQuestion(qs, index: index + 1, id: id)
+            }).disposed(by: disposeBag)
     }
 }
