@@ -99,6 +99,14 @@ class LoginViewController: UIViewController, KeyboardHandler {
         scrollView.isScrollEnabled = true
         scrollView.showsVerticalScrollIndicator = false
         
+        if #available(iOS 12, *) {
+            usernameOrEmailTextField.textContentType = .oneTimeCode
+            passwordTextField.textContentType = .oneTimeCode
+        } else {
+            usernameOrEmailTextField.textContentType = .init(rawValue: "")
+            passwordTextField.textContentType = .init(rawValue: "")
+        }
+        
         let subviews = [
             usernameOrEmailTextField,
             passwordTextField,
@@ -256,8 +264,6 @@ class LoginViewController: UIViewController, KeyboardHandler {
     private func registerTapped(_ sender: UIButton) {
         DispatchQueue.main.async {
             self.view.endEditing(true)
-            NetworkManager.shared.cancel()
-            self.loginButton.hideLoading()
         }
         
         let viewController = RegisterViewController()
