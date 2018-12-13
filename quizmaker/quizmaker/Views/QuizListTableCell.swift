@@ -3,19 +3,19 @@ import UIKit
 class QuizListTableCell: UITableViewCell {
     
     let nameLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .preferredFont(forTextStyle: .body), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .boldSystemFont(ofSize: 14), true, false)
     }()
     
     let startDateLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .gray, .preferredFont(forTextStyle: .footnote), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 13), true, false)
     }()
     
     let endDateLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .gray, .preferredFont(forTextStyle: .footnote), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 13), true, false)
     }()
     
     let differenceLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .gray, .preferredFont(forTextStyle: .footnote), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .gray, .systemFont(ofSize: 12), true, false)
     }()
 //
 //    let numberOfParticipantsLabel: UILabel = {
