@@ -155,6 +155,16 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
         firstNameTextField.delegate = self
         lastNameTextField.delegate = self
         
+        if #available(iOS 12, *) {
+            emailTextField.textContentType = .oneTimeCode
+            firstNameTextField.textContentType = .oneTimeCode
+            lastNameTextField.textContentType = .oneTimeCode
+        } else {
+            emailTextField.textContentType = .init(rawValue: "")
+            firstNameTextField.textContentType = .init(rawValue: "")
+            lastNameTextField.textContentType = .init(rawValue: "")
+        }
+        
         emailTextField.text = UserDefaults.standard.getEmail()
         firstNameTextField.text = UserDefaults.standard.getFirstname()
         lastNameTextField.text = UserDefaults.standard.getLastname()
@@ -361,7 +371,12 @@ class EditProfileViewController: UIViewController, KeyboardHandler {
 
 extension EditProfileViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == firstNameTextField { return true }
+        if textField == firstNameTextField || textField == lastNameTextField {
+            if string.isNumeric {
+                return false
+            }
+        }
+        
         if string == " " { return false }
         return true
     }
