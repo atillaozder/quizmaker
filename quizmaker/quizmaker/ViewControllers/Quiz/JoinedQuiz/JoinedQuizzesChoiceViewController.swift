@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class JoinedQuizzesChoiceViewController: UIViewController {
     
     let finishedButton: UIButton = {

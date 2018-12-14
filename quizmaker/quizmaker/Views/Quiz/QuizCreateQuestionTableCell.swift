@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class QuizCreateQuestionTableCell: UITableViewCell {
     
     private let questionLabel: UILabel = {

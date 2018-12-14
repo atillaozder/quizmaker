@@ -3,6 +3,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+/// :nodoc:
 protocol UpdateQuizDelegate: class {
     func updateQuiz(q: Quiz)
 }
@@ -12,8 +13,9 @@ private let quizCreateQuestionCellId = "quizCreateQuestionCellId"
 public class QuizCreateViewController: UIViewController, KeyboardHandler {
     
     private let disposeBag = DisposeBag()
-    private var viewModel = QuizCreateViewModel()
+    var viewModel = QuizCreateViewModel()
     
+    /// :nodoc:
     var courses: [Course] = [] {
         didSet {
             coursePickerView.reloadAllComponents()
@@ -26,10 +28,14 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /// :nodoc:
     public let scrollView = UIScrollView()
+    
+    /// :nodoc:
     public let contentView = UIView()
     
-    let quizNameTextField: UITextField = {
+    
+    private let quizNameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Name*"
         tf.autocapitalizationType = .none
@@ -42,7 +48,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
-    let quizDescriptionTextView: UITextView = {
+    private let quizDescriptionTextView: UITextView = {
         let tv = UITextView()
         tv.autocapitalizationType = .none
         tv.autocorrectionType = .no
@@ -55,7 +61,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         return tv
     }()
     
-    let coursePickerButton: UIButton = {
+    private let coursePickerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Select Course*", for: .normal)
         button.backgroundColor = UIColor.AppColors.complementary.rawValue
@@ -63,23 +69,23 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
-    let coursePickerTextField: UITextField = UITextField()
-    lazy var coursePickerView: UIPickerView = {
+    private let coursePickerTextField: UITextField = UITextField()
+    private lazy var coursePickerView: UIPickerView = {
         let pv = UIPickerView()
         pv.delegate = self
         pv.dataSource = self
         return pv
     }()
     
-    let courseErrorLabel: UILabel = {
+    private let courseErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
-    lazy var courseErrorWrapper: UIView = {
+    private lazy var courseErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: courseErrorLabel)
     }()
     
-    let startDateButton: UIButton = {
+    private let startDateButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Select Start*", for: .normal)
         button.backgroundColor = UIColor.AppColors.complementary.rawValue
@@ -87,15 +93,15 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
-    let startDateTextField: UITextField = UITextField()
-    let startDatePicker: UIDatePicker = {
+    private let startDateTextField: UITextField = UITextField()
+    private let startDatePicker: UIDatePicker = {
         let dp = UIDatePicker()
         dp.datePickerMode = .dateAndTime
         dp.date = Date()
         return dp
     }()
     
-    let endDateButton: UIButton = {
+    private let endDateButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Select End*", for: .normal)
         button.backgroundColor = UIColor.AppColors.complementary.rawValue
@@ -103,15 +109,15 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
-    let endDateTextField: UITextField = UITextField()
-    let endDatePicker: UIDatePicker = {
+    private let endDateTextField: UITextField = UITextField()
+    private let endDatePicker: UIDatePicker = {
         let dp = UIDatePicker()
         dp.datePickerMode = .dateAndTime
         dp.date = Date()
         return dp
     }()
     
-    let beGradedButton: CheckBox = {
+    private let beGradedButton: CheckBox = {
         let button = CheckBox()
         button.setTitle("Will Be Graded", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -120,35 +126,35 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         return UIStackView.uiStackView(arrangedSubviews: [], .fill, .fill, .vertical, 15)
     }()
     
-    let nameErrorLabel: UILabel = {
+    private let nameErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
-    lazy var nameErrorWrapper: UIView = {
+    private lazy var nameErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: nameErrorLabel)
     }()
     
-    let startErrorLabel: UILabel = {
+    private let startErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
-    lazy var startErrorWrapper: UIView = {
+    private lazy var startErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: startErrorLabel)
     }()
     
-    let endErrorLabel: UILabel = {
+    private let endErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
-    lazy var endErrorWrapper: UIView = {
+    private lazy var endErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: endErrorLabel)
     }()
     
-    let percentageTextField: UITextField = {
+    private let percentageTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Percentage* Ex: '15.25'"
         tf.autocapitalizationType = .none
@@ -161,19 +167,19 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
-    let percentageErrorLabel: UILabel = {
+    private let percentageErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
-    lazy var percentageErrorWrapper: UIView = {
+    private lazy var percentageErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: percentageErrorLabel)
     }()
     
-    lazy var createButton: UIBarButtonItem = {
+    private lazy var createButton: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
     }()
     
-    let tableView: UITableView = {
+    private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.sectionHeaderHeight = 0
         tv.sectionHeaderHeight = 0
@@ -187,8 +193,10 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         return tv
     }()
     
+    /// :nodoc:
     weak var delegate: UpdateQuizDelegate?
     
+    /// :nodoc:
     init() {
         super.init(nibName: nil, bundle: nil)
         self.navigationItem.title = "Create Quiz"
@@ -200,10 +208,12 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         self.navigationItem.title = "Update Quiz"
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         coursePickerButton.roundCorners(.allCorners, radius: 10)
@@ -212,23 +222,26 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         updateContent()
     }
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         setup()
         bindUI()
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
     }
     
+    /// :nodoc:
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeObservers()
     }
     
-    private func setup() {
+    public func setup() {
         self.view.backgroundColor = .white
         self.navigationItem.setRightBarButton(createButton, animated: true)
         
@@ -245,7 +258,11 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         frame.size.height = CGFloat.leastNonzeroMagnitude
         tableView.tableFooterView = UIView(frame: frame)
         
-        setupViews()
+        view.addSubview(scrollView)
+        scrollView.fillSafeArea()
+        scrollView.addSubview(contentView)
+        contentView.fillSuperView()
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
         
         let startToolbar = UIToolbar()
         startToolbar.sizeToFit()
@@ -339,11 +356,18 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
             stackView.addArrangedSubview(subview)
         }
         
-        contentView.addSubview(stackView)
-        stackView.setAnchors(top: nil, bottom: nil, leading: contentView.leadingAnchor, trailing: contentView.trailingAnchor, spacing: .init(top: 20, left: 20, bottom: 0, right: -20))
-        stackView.setCenter()
-        let width = self.view.frame.width - 40
-        stackView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        let wrapper = UIView()
+        wrapper.addSubview(stackView)
+        
+        stackView.setAnchors(top: wrapper.topAnchor, bottom: nil, leading: wrapper.leadingAnchor, trailing: wrapper.trailingAnchor)
+        
+        let heightConstraint = stackView.heightAnchor.constraint(lessThanOrEqualTo: wrapper.heightAnchor, multiplier: 1)
+        heightConstraint.priority = .init(999)
+        heightConstraint.isActive = true
+        
+        contentView.addSubview(wrapper)
+        wrapper.fillSuperView(spacing: .init(top: 20, left: 16, bottom: 0, right: -16), size: .zero)
+        
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -353,7 +377,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
             quizNameTextField.heightAnchor.constraint(equalToConstant: 40),
             nameErrorWrapper.heightAnchor.constraint(equalToConstant: 20),
             label.heightAnchor.constraint(equalToConstant: 20),
-            quizDescriptionTextView.heightAnchor.constraint(equalToConstant: 100),
+            quizDescriptionTextView.heightAnchor.constraint(equalToConstant: 50),
             coursePickerButton.heightAnchor.constraint(equalToConstant: 40),
             courseErrorWrapper.heightAnchor.constraint(equalToConstant: 20),
             startDateButton.heightAnchor.constraint(equalToConstant: 40),
@@ -369,7 +393,6 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         
         beGradedButton.isChecked = false
         
-        
         if let q = viewModel.quiz {
             quizNameTextField.text = q.name
             quizDescriptionTextView.text = q.description
@@ -380,11 +403,11 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
             let end = DateFormatter.localizedString(from: q.end, dateStyle: .medium, timeStyle: .medium)
             endDateButton.setTitle(end, for: .normal)
             beGradedButton.isChecked = q.beGraded
-            percentageTextField.text = q.percentage
+            percentageTextField.text = "\(q.percentage)"
         }
     }
     
-    private func bindUI() {
+    public func bindUI() {
         viewModel.loadPageTrigger.onNext(())
         
         quizNameTextField.rx.text
@@ -576,7 +599,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
             .subscribe(onNext: { [weak self] (indexPath, item) in
                 guard let strongSelf = self else { return }
                 strongSelf.tableView.deselectRow(at: indexPath, animated: true)
-                let viewController = QuestionCreateViewController(question: item, questionCount: indexPath.row + 1)
+                let viewController = QuestionCreateViewController(question: item)
                 viewController.delegate = self
                 strongSelf.navigationController?.pushViewController(viewController, animated: true)
             }).disposed(by: disposeBag)
@@ -624,9 +647,28 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         }
     }
     
-    public func keyboardWillShow(notification: Notification) {}
-    
-    public func keyboardWillHide(notification: Notification) {}
+    /// :nodoc:
+    public func keyboardWillShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            var frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
+        }
+        
+        frame.size.height -= view.safeAreaInsets.bottom
+        var contentInset: UIEdgeInsets = .zero
+        contentInset.bottom = frame.size.height
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
+
+    /// :nodoc:
+    public func keyboardWillHide(notification: Notification) {
+        var contentInset: UIEdgeInsets = self.scrollView.contentInset
+        contentInset.bottom = 16
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = .zero
+        scrollView.setContentOffset(.zero, animated: true)
+    }
     
     @objc
     private func appendQuestion() {
@@ -642,6 +684,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         updateContent()
     }
     
+    /// :nodoc:
     @objc
     func checkboxTapped(_ sender: UIButton) {
         beGradedButton.isChecked = !beGradedButton.isChecked
@@ -684,7 +727,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
     
     @objc
     private func doneStartDatePicker() {
-        let str = DateFormatter.localizedString(from: startDatePicker.date, dateStyle: .medium, timeStyle: .medium)
+        let str = DateFormatter.localizedString(from: startDatePicker.date, dateStyle: .medium, timeStyle: .short)
         startDateButton.setTitle("Start: \(str)", for: .normal)
         viewModel.start.accept(startDatePicker.date)
         dismissKeyboard()
@@ -692,7 +735,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
     
     @objc
     private func doneEndDatePicker() {
-        let str = DateFormatter.localizedString(from: endDatePicker.date, dateStyle: .medium, timeStyle: .medium)
+        let str = DateFormatter.localizedString(from: endDatePicker.date, dateStyle: .medium, timeStyle: .short)
         endDateButton.setTitle("Until: \(str)", for: .normal)
         viewModel.end.accept(endDatePicker.date)
         dismissKeyboard()
@@ -711,6 +754,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
     }
 }
 
+/// :nodoc:
 extension QuizCreateViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -729,6 +773,7 @@ extension QuizCreateViewController: UIPickerViewDataSource, UIPickerViewDelegate
     }
 }
 
+/// :nodoc:
 extension QuizCreateViewController: UITextFieldDelegate {
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         updateContent()
@@ -736,6 +781,7 @@ extension QuizCreateViewController: UITextFieldDelegate {
     }
 }
 
+/// :nodoc:
 extension QuizCreateViewController: UITextViewDelegate {
     public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         updateContent()
@@ -743,6 +789,7 @@ extension QuizCreateViewController: UITextViewDelegate {
     }
 }
 
+/// :nodoc:
 extension QuizCreateViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension

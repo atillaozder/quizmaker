@@ -2,6 +2,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class CheckBox: UIButton {
     
     let checkedImage: UIImage = UIImage(imageLiteralResourceName: "checkbox_checked")

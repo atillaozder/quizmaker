@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class QuizListTableCell: UITableViewCell {
     
     let customImageView: UIImageView = {

@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// :nodoc:
 public enum ErrorType {
     case api
     case apiMessage
@@ -49,6 +50,7 @@ public enum NetworkError: Error {
         case editProfile(response: EditProfileErrorResponse)
     }
     
+    /// :nodoc:
     var localizedDescription: String {
         switch self {
         case .invalidData: return "Invalid Data"

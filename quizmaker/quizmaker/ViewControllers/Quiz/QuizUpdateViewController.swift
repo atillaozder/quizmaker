@@ -3,16 +3,18 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+/// :nodoc:
 protocol PercentageUpdateDelegate: class {
     func updateQuiz(quiz: Quiz)
 }
 
 public class QuizUpdateViewController: UIViewController {
     
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
+    
     let viewModel: QuizUpdateViewModel
     
-    let percentageTextField: UITextField = {
+    private let percentageTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Percentage* Ex: '15.25'"
         tf.autocapitalizationType = .none
@@ -25,22 +27,25 @@ public class QuizUpdateViewController: UIViewController {
         return tf
     }()
     
-    lazy var createButton: UIBarButtonItem = {
+    private lazy var createButton: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
     }()
     
+    /// :nodoc:
     weak var delegate: PercentageUpdateDelegate?
     
     init(quiz: Quiz) {
         viewModel = QuizUpdateViewModel(quiz: quiz)
-        self.percentageTextField.text = quiz.percentage
+        self.percentageTextField.text = "\(quiz.percentage)"
         super.init(nibName: nil, bundle: nil)
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -53,7 +58,10 @@ public class QuizUpdateViewController: UIViewController {
         view.addSubview(percentageTextField)
         percentageTextField.setAnchors(top: view.safeAreaLayoutGuide.topAnchor, bottom: nil, leading: view.leadingAnchor, trailing: view.trailingAnchor, spacing: UIEdgeInsets.init(top: 10, left: 16, bottom: 0, right: -16))
         percentageTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
+        bindUI()
+    }
+    
+    public func bindUI() {
         percentageTextField.rx.text
             .orEmpty
             .distinctUntilChanged()
@@ -92,7 +100,7 @@ public class QuizUpdateViewController: UIViewController {
                 let alertController = UIAlertController(title: "Are you sure?", message: "This operation cannot be undo", preferredStyle: .alert)
                 let ok = UIAlertAction(title: title, style: .default, handler: { (_) in
                     self.createButton.isEnabled = false
-                    self.viewModel.createTrigger.onNext(())
+                    self.viewModel.updateTrigger.onNext(())
                 })
                 
                 let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)

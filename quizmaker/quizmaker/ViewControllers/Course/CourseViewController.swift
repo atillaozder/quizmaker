@@ -7,9 +7,12 @@ private let courseCell = "courseCell"
 
 public class CourseViewController: UIViewController {
     
-    private let viewModel = CourseListViewModel()
+    let viewModel = CourseListViewModel()
+    
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// :nodoc:
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.backgroundColor = .white
@@ -23,6 +26,7 @@ public class CourseViewController: UIViewController {
         return tv
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "My Courses"
@@ -42,7 +46,10 @@ public class CourseViewController: UIViewController {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
-        
+        bindUI()
+    }
+    
+    public func bindUI() {
         viewModel.items
             .asDriver()
             .drive(tableView.rx.items(cellIdentifier: courseCell, cellType: CourseTableCell.self)) { (_, element, cell) in
@@ -73,17 +80,20 @@ public class CourseViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())
     }
     
+    /// :nodoc:
     private func appendTapped(_ indexPath: IndexPath) {
         let course = viewModel.items.value[indexPath.row]
         let viewController = CourseAddStudentViewController(courseID: course.id)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// :nodoc:
     private func removeTapped(_ indexPath: IndexPath) {
         let course = viewModel.items.value[indexPath.row]
         let viewController = CourseRemoveStudentViewController(course: course)
@@ -91,6 +101,7 @@ public class CourseViewController: UIViewController {
     }
 }
 
+/// :nodoc:
 extension CourseViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {

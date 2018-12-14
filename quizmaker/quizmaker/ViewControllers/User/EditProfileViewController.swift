@@ -4,12 +4,16 @@ import RxSwift
 
 public class EditProfileViewController: UIViewController, KeyboardHandler {
     
-    private let viewModel = EditProfileViewModel()
+    let viewModel = EditProfileViewModel()
+    
     private let disposeBag = DisposeBag()
     
     private let genderTypes: [Gender] = [.unspecified, .male, .female]
     
+    /// :nodoc:
     public let scrollView: UIScrollView = UIScrollView()
+    
+    /// :nodoc:
     public let contentView: UIView = UIView()
     
     private let emailTextField: UITextField = {
@@ -149,22 +153,26 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
         self.bindUI()
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
     }
     
+    /// :nodoc:
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeObservers()
     }
     
+    /// :nodoc:
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateContent()
@@ -172,7 +180,7 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
         updateButton.roundCorners(.allCorners, radius: updateButton.frame.size.height / 2)
     }
     
-    private func setup() {
+    public func setup() {
         self.view.backgroundColor = .white
         setupPickerView()
         emailTextField.delegate = self
@@ -276,7 +284,7 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
         textField.inputAccessoryView?.backgroundColor = .white
     }
     
-    private func bindUI() {
+    public func bindUI() {
         firstNameTextField.rx.text
             .orEmpty
             .bind(to: viewModel.firstname)
@@ -396,6 +404,7 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
     }
 }
 
+/// :nodoc:
 extension EditProfileViewController: UITextFieldDelegate {
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == firstNameTextField || textField == lastNameTextField {
@@ -422,7 +431,7 @@ extension EditProfileViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: Picker View Data Source
+/// :nodoc:
 extension EditProfileViewController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -433,7 +442,7 @@ extension EditProfileViewController: UIPickerViewDataSource {
     }
 }
 
-// MARK: Picker View Delegate
+/// :nodoc:
 extension EditProfileViewController: UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRow = row

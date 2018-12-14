@@ -3,6 +3,7 @@ import Foundation
 import UIKit
 import RxDataSources
 
+/// :nodoc:
 public enum QuizDetailSectionModel {
     case detail(item: Quiz)
     case participants(item: [QuizParticipant])
@@ -20,12 +21,14 @@ public enum QuizDetailSectionModel {
     }
 }
 
+/// :nodoc:
 public enum DetailSectionModel {
     case detail(item: QuizDetailSectionModel)
     case participants(item: QuizDetailSectionModel)
     case questions(item: QuizDetailSectionModel)
 }
 
+/// :nodoc:
 extension DetailSectionModel: SectionModelType {
     public typealias Item = QuizDetailSectionModel
     

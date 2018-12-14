@@ -1,11 +1,13 @@
 
 import Foundation
 
+/// :nodoc:
 public struct ChangePasswordErrorResponse {
     let oldPassword: [String]?
     let newPassword: [String]?
 }
 
+/// :nodoc:
 extension ChangePasswordErrorResponse: Decodable {
     private enum CodingKeys: String, CodingKey {
         case oldPassword = "old_password"

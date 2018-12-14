@@ -5,9 +5,16 @@ import RxSwift
 
 public class CourseListViewModel {
     
+    /// :nodoc:
     private let disposeBag = DisposeBag()
+    
+    /// :nodoc:
     let items: BehaviorRelay<[Course]>
+    
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
+    
+    /// :nodoc:
     let loadPageTrigger: PublishSubject<Void>
     
     init() {
@@ -22,7 +29,7 @@ public class CourseListViewModel {
             .disposed(by: disposeBag)
     }
     
-    private func fetch() -> Observable<[Course]> {
+    public func fetch() -> Observable<[Course]> {
         return Observable.create({ [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }
             let endpoint = CourseEndpoint.owner

@@ -8,9 +8,13 @@ private let publicQuizCell = "publicQuizCell"
 
 public class PublicQuizListViewController: UIViewController, KeyboardHandler {
     
+    /// :nodoc:
     public var scrollView: UIScrollView = UIScrollView()
+    
+    /// :nodoc:
     public var contentView: UIView = UIView()
     
+    /// :nodoc:
     let disposeBag = DisposeBag()
     let viewModel = PublicQuizListViewModel()
     
@@ -27,6 +31,7 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         return tv
     }()
     
+    /// :nodoc:
     lazy var searchController: UISearchController = {
         let sv = UISearchController(searchResultsController: nil)
         sv.dimsBackgroundDuringPresentation = false
@@ -39,6 +44,7 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         return sv
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -61,7 +67,10 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
-        
+        bindUI()
+    }
+    
+    public func bindUI() {
         let dataSource = RxTableViewSectionedReloadDataSource<QuizSectionModel>(configureCell: { (dataSource, tableView, indexPath, quiz) -> UITableViewCell in
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: publicQuizCell, for: indexPath) as? QuizDetailTableCell else { return UITableViewCell() }
@@ -115,12 +124,14 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
         viewModel.loadPageTrigger.onNext(())
     }
     
+    /// :nodoc:
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeObservers()
@@ -155,6 +166,7 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /// :nodoc:
     public func keyboardWillShow(notification: Notification) {
         guard let userInfo = notification.userInfo,
             var frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
@@ -173,6 +185,7 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         tableView.scrollIndicatorInsets = contentInset
     }
     
+    /// :nodoc:
     public func keyboardWillHide(notification: Notification) {
         var contentInset: UIEdgeInsets = self.tableView.contentInset
         contentInset.bottom = 50
@@ -180,6 +193,8 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         tableView.scrollIndicatorInsets = .zero
     }
 }
+
+/// :nodoc:
 extension PublicQuizListViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     public func updateSearchResults(for searchController: UISearchController) {

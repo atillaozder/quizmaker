@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class StudentViewController: UserViewController {
     
     let lectureQuizzesButton: UIButton = {

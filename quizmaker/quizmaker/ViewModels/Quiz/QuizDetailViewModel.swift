@@ -6,13 +6,22 @@ public class QuizDetailViewModel {
     
     var quiz: Quiz
     
+    /// :nodoc:
     let items: BehaviorRelay<[DetailSectionModel]>
+    
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
+    
+    /// :nodoc:
     let success: PublishSubject<Void>
     
+    /// :nodoc:
     let loadPageTrigger: PublishSubject<Void>
+    
+    /// :nodoc:
     let deleteTrigger: PublishSubject<Void>
     
     init(quiz: Quiz) {
@@ -60,6 +69,7 @@ public class QuizDetailViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     func updateQuiz(quiz: Quiz) {
         self.quiz = quiz
         var currentSections = items.value
@@ -68,6 +78,7 @@ public class QuizDetailViewModel {
         self.items.accept(currentSections)
     }
     
+    /// :nodoc:
     func updateQuiz(quiz: Quiz, questions: [Question]) {
         self.quiz = quiz
         var currentSections = items.value
@@ -78,7 +89,7 @@ public class QuizDetailViewModel {
         self.items.accept(currentSections)
     }
     
-    private func delete() {
+    public func delete() {
         let endpoint = QuizEndpoint.delete(quizID: quiz.id)
         NetworkManager.shared.requestJSON(endpoint, .apiMessage)
             .subscribe(onNext: { [weak self] (result) in

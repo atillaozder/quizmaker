@@ -6,6 +6,7 @@ public struct User: Codable {
     let username, email, firstName, lastName: String
     let studentID: String?
     
+    /// :nodoc:
     enum CodingKeys: String, CodingKey {
         case id, username, email
         case firstName = "first_name"

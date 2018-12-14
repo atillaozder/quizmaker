@@ -9,6 +9,9 @@ public enum QuestionEndpoint {
      - Parameters:
         - question: The question instance.
      
+     - Precondition:
+        - `question` must be non-nil
+     
      - SeeAlso:
         [Question](https://example.com)
      */
@@ -19,6 +22,9 @@ public enum QuestionEndpoint {
      - Parameters:
         - question: The question instance.
      
+     - Precondition:
+        - `question` must be non-nil
+     
      - SeeAlso:
         [Question](https://example.com)
      */
@@ -28,6 +34,9 @@ public enum QuestionEndpoint {
      
      - Parameters:
         - id: Identifier of the question.
+     
+     - Precondition:
+        - `id` must be greater than 0
      */
     case delete(id: Int)
     /**
@@ -37,6 +46,10 @@ public enum QuestionEndpoint {
         - id: Identifier of quiz.
         - finishedIn: The completion time in quiz '5 min'.
         - answers: Array of answer instance.
+     
+     - Precondition:
+        - `id` must be greater than 0
+        - `finishedIn` must be non-nil
      
      - SeeAlso:
         [Answer](https://example.com)
@@ -50,12 +63,17 @@ public enum QuestionEndpoint {
         - userID: Identifier of participant.
         - answers: Array of answer instance.
      
+     - Precondition:
+        - `quizID` must be greater than 0
+        - `userID` must be greater than 0
+     
      - SeeAlso:
         [Answer](https://example.com)
      */
     case validate(quizID: Int, userID: Int, answers: [Answer])
 }
 
+/// :nodoc:
 extension QuestionEndpoint: EndpointType {
     public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/question/") else {
@@ -97,23 +115,71 @@ extension QuestionEndpoint: EndpointType {
     public var task: HTTPTask {
         switch self {
         case .create(let question):
-            let parameters: [String: Any] = [
+            var parameters: [String: Any] = [
                 "question_type": question.questionType,
                 "question": question.question,
-                "answer": question.answer,
-                "quiz_id": question.quizId!,
-                "point": question.point!
+                "answer": question.answer
             ]
+            
+            if let qID = question.quizId {
+                parameters["quiz_id"] = qID
+            }
+            
+            if let point = question.point {
+                parameters["point"] = point
+            }
+            
+            if let type = QuestionType(rawValue: question.questionType), type == .multichoice {
+                if let a = question.A {
+                    parameters["A"] = a
+                }
+                
+                if let b = question.B {
+                    parameters["B"] = b
+                }
+                
+                if let c = question.C {
+                    parameters["C"] = c
+                }
+                
+                if let d = question.D {
+                    parameters["D"] = d
+                }
+            }
             
             return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
         case .update(let question):
-            let parameters: [String: Any] = [
+            var parameters: [String: Any] = [
                 "question_type": question.questionType,
                 "question": question.question,
-                "answer": question.answer,
-                "quiz_id": question.quizId!,
-                "point": question.point!
+                "answer": question.answer
             ]
+            
+            if let qID = question.quizId {
+                parameters["quiz_id"] = qID
+            }
+            
+            if let point = question.point {
+                parameters["point"] = point
+            }
+            
+            if let type = QuestionType(rawValue: question.questionType), type == .multichoice {
+                if let a = question.A {
+                    parameters["A"] = a
+                }
+                
+                if let b = question.B {
+                    parameters["B"] = b
+                }
+                
+                if let c = question.C {
+                    parameters["C"] = c
+                }
+                
+                if let d = question.D {
+                    parameters["D"] = d
+                }
+            }
             
             return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
         case .answer(let quizID, let finishedIn, let answers):

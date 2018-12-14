@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// :nodoc:
 extension DateFormatter {
     static let iso8601Full: DateFormatter = {
         let formatter = DateFormatter()

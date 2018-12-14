@@ -6,11 +6,20 @@ import RxCocoa
 public class QuizUpdateViewModel {
     
     var quiz: Quiz
+    
+    /// :nodoc:
     private let disposeBag = DisposeBag()
+    
+    /// :nodoc:
     let percentage: BehaviorRelay<Double>
     
-    let createTrigger: PublishSubject<Void>
+    /// :nodoc:
+    let updateTrigger: PublishSubject<Void>
+    
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
+    
+    /// :nodoc:
     let success: PublishSubject<Void>
     
     init(quiz: Quiz) {
@@ -19,17 +28,17 @@ public class QuizUpdateViewModel {
         
         failure = PublishSubject()
         success = PublishSubject()
-        createTrigger = PublishSubject()
+        updateTrigger = PublishSubject()
         
-        createTrigger.asObservable()
+        updateTrigger.asObservable()
             .subscribe(onNext: { [weak self] (_) in
                 self?.updateQuiz()
             }).disposed(by: disposeBag)
     }
     
-    private func updateQuiz() {
+    public func updateQuiz() {
         if percentage.value != -1 {
-            quiz.percentage = percentage.value.description
+            quiz.percentage = percentage.value
             let endpoint = QuizEndpoint.update(quiz: quiz)
             NetworkManager.shared.requestJSON(endpoint, .quizCreate)
                 .subscribe(onNext: { [weak self] (result) in

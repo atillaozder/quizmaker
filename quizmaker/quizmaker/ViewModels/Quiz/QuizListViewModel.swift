@@ -4,12 +4,21 @@ import RxCocoa
 
 public class QuizListViewModel {
     
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// :nodoc:
     var courseID: Int?
+    /// :nodoc:
     let items: BehaviorRelay<[QuizSectionModel]>
+    
+    /// :nodoc:
     let success: PublishSubject<Void>
+    
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
+    
+    /// :nodoc:
     let loadPageTrigger: PublishSubject<Void>
     
     init() {
@@ -31,12 +40,13 @@ public class QuizListViewModel {
             .disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     convenience init(courseID: Int) {
         self.init()
         self.courseID = courseID
     }
     
-    private func fetch(_ endpoint: QuizEndpoint) -> Observable<[QuizSectionModel]> {
+    public func fetch(_ endpoint: QuizEndpoint) -> Observable<[QuizSectionModel]> {
         return Observable.create({ [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }
             NetworkManager.shared.request(endpoint, [Quiz].self)
@@ -57,7 +67,7 @@ public class QuizListViewModel {
         })
     }
     
-    func delete(_ quiz: Quiz) {
+    public func delete(_ quiz: Quiz) {
         let endpoint = QuizEndpoint.delete(quizID: quiz.id)
         NetworkManager.shared.requestJSON(endpoint, .apiMessage)
             .subscribe(onNext: { [weak self] (result) in
@@ -70,8 +80,8 @@ public class QuizListViewModel {
             }).disposed(by: disposeBag)
     }
     
-    func append(_ quizId: Int) {
-        let endpoint = QuizEndpoint.append(quizID: quizId)
+    public func append(_ id: Int) {
+        let endpoint = QuizEndpoint.append(quizID: id)
         NetworkManager.shared.requestJSON(endpoint, .apiMessage)
             .subscribe(onNext: { [weak self] (result) in
                 switch result {

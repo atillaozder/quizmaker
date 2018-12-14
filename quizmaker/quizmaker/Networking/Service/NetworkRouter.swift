@@ -9,6 +9,7 @@ public protocol Router: class {
     func cancel()
 }
 
+/// :nodoc:
 public final class NetworkRouter {
     
     private var session: URLSession

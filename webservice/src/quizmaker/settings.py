@@ -150,6 +150,7 @@ STATICFILES_DIRS = [
 
 # Django Rest Framework Settings
 REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
     ),

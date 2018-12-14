@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class StudentTableCell: UITableViewCell {
     
     var selectedBefore = false {

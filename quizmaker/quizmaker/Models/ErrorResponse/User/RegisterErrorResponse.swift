@@ -2,6 +2,7 @@
 
 import Foundation
 
+/// :nodoc:
 public struct RegisterErrorResponse {
     let username: [String]?
     let password: [String]?
@@ -11,6 +12,7 @@ public struct RegisterErrorResponse {
     let email: [String]?
 }
 
+/// :nodoc:
 extension RegisterErrorResponse: Decodable {
     private enum CodingKeys: String, CodingKey {
         case username

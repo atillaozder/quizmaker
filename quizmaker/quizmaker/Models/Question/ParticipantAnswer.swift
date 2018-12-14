@@ -9,6 +9,7 @@ public struct ParticipantAnswer: Codable {
     let isCorrect: Bool?
     let point: Int?
     
+    /// :nodoc:
     enum CodingKeys: String, CodingKey {
         case id, question, answer
         case participantID = "participant_id"
@@ -16,6 +17,7 @@ public struct ParticipantAnswer: Codable {
         case point = "point"
     }
     
+    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)

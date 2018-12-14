@@ -35,14 +35,14 @@ class QuizEndListAPIView(ListAPIView):
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__lte=datetime.now()).order_by('end')
+        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__lte=timezone.now()).order_by('end')
 
 class QuizWaitingListAPIView(ListAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__gt=datetime.now()).order_by('end')
+        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__gt=timezone.now()).order_by('end')
 
 class QuizOwnerListAPIView(ListAPIView):
     queryset = Quiz.objects.all()
@@ -64,7 +64,7 @@ class QuizListAPIView(ListAPIView):
         if course_id:
             return Quiz.objects.filter(course_id=course_id).order_by('end')
         else:
-            return Quiz.objects.annotate(num_questions=Count('questions')).filter(num_questions__gt=0).filter(is_private=False).filter(end__gt=datetime.now()).order_by('end')
+            return Quiz.objects.annotate(num_questions=Count('questions')).filter(num_questions__gt=0).filter(is_private=False).filter(end__gt=timezone.now()).order_by('end')
 
 class QuizParticipantsListAPIView(ListAPIView):
     queryset = QuizParticipant.objects.none()
@@ -85,7 +85,7 @@ class QuizParticipantAnswerAPIView(APIView):
         quiz_id = request.GET.get("quiz_id")
         qs = Quiz.objects.all().filter(id=quiz_id)
         if qs.exists():
-            end_qs = qs.filter(end__lte=datetime.now())
+            end_qs = qs.filter(end__lte=timezone.now())
             if end_qs.exists():
                 quiz = end_qs.first()
                 is_participant = QuizParticipant.objects.filter(quiz=quiz).filter(participant=request.user)
@@ -128,7 +128,7 @@ class QuizOwnerGetAnswersAPIView(APIView):
         qs = Quiz.objects.all().filter(id=quiz_id)
 
         if qs.exists():
-            end_qs = qs.filter(end__lte=datetime.now())
+            end_qs = qs.filter(end__lte=timezone.now())
             if end_qs.exists():
                 quiz = end_qs.first()
                 is_participant = QuizParticipant.objects.filter(quiz=quiz).filter(participant__id=user_id)
@@ -256,7 +256,7 @@ class QuizDeleteAPIView(DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         qs = Quiz.objects.filter(pk=kwargs['pk'])
-        if qs.filter(start__lte=datetime.now()).filter(end__gte=datetime.now()).exists():
+        if qs.filter(start__lte=timezone.now()).filter(end__gte=timezone.now()).exists():
             return Response(
                 {'message': _('You cannot delete the selected quiz because it has already started. You have to wait until it ends.')},
                 status=status.HTTP_400_BAD_REQUEST
@@ -269,7 +269,7 @@ class QuizUpdateAPIView(UpdateAPIView):
 
     def put(self, request, *args, **kwargs):
         qs = Quiz.objects.filter(pk=kwargs['pk'])
-        if qs.filter(start__lte=datetime.now()).filter(end__gte=datetime.now()).exists():
+        if qs.filter(start__lte=timezone.now()).filter(end__gte=timezone.now()).exists():
             return Response(
                 {'message': _('You cannot update the selected quiz because it has already started. You have to wait until it ends.')},
                 status=status.HTTP_400_BAD_REQUEST

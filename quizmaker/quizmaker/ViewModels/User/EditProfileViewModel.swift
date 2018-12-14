@@ -4,6 +4,7 @@ import RxCocoa
 
 public class EditProfileViewModel {
     
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
     let firstname: BehaviorRelay<String>
@@ -11,9 +12,13 @@ public class EditProfileViewModel {
     let email: BehaviorRelay<String>
     let gender: BehaviorRelay<Gender>
     
+    /// :nodoc:
     let updateTrigger: PublishSubject<Void>
     
+    /// :nodoc:
     var success: ((EditProfile) -> Void)?
+    
+    /// :nodoc:
     var failure: ((NetworkError) -> Void)?
     
     var validEmail: Bool {
@@ -32,26 +37,28 @@ public class EditProfileViewModel {
         
         updateTrigger.asObservable()
             .subscribe(onNext: { [unowned self] (_) in
-                
-                let user = EditProfile(firstname: self.firstname.value,
-                                       lastname: self.lastname.value,
-                                       email: self.email.value,
-                                       gender: self.gender.value.rawValue)
-                
-                let endpoint = UserEndpoint.update(user: user)
-                
-                NetworkManager.shared.request(endpoint, EditProfile.self, .editProfile)
-                    .subscribe(onNext: { (result) in
-                        
-                        switch result {
-                        case .success(let user):
-                            self.success?(user)
-                        case .failure(let error):
-                            self.failure?(error)
-                        }
-                        
-                    }).disposed(by: self.disposeBag)
-                
+                self.update()
             }).disposed(by: disposeBag)
+    }
+    
+    public func update() {
+        let user = EditProfile(firstname: self.firstname.value,
+                               lastname: self.lastname.value,
+                               email: self.email.value,
+                               gender: self.gender.value.rawValue)
+        
+        let endpoint = UserEndpoint.update(user: user)
+        
+        NetworkManager.shared.request(endpoint, EditProfile.self, .editProfile)
+            .subscribe(onNext: { (result) in
+                
+                switch result {
+                case .success(let user):
+                    self.success?(user)
+                case .failure(let error):
+                    self.failure?(error)
+                }
+                
+            }).disposed(by: self.disposeBag)
     }
 }

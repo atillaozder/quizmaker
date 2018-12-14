@@ -18,6 +18,7 @@ public struct EditProfile {
 
 extension EditProfile: Decodable {
     
+    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case firstname = "first_name"
         case lastname = "last_name"

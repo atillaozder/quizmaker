@@ -9,16 +9,18 @@ public struct Quiz: Codable {
     let courseName: String?
     let start, end: Date
     let beGraded: Bool
-    var percentage: String
+    var percentage: Double
     let isPrivate: Bool
     let participants: [User]
     var questions: [Question]
     let courseID: Int?
     
+    /// :nodoc:
     var startStr: String {
         return convertDateString(date: start)
     }
     
+    /// :nodoc:
     var endStr: String {
         return convertDateString(date: end)
     }
@@ -37,7 +39,7 @@ public struct Quiz: Codable {
         self.beGraded = beGraded
         self.questions = questions
         self.courseID = courseID
-        self.percentage = "\(percentage ?? 0)"
+        self.percentage = percentage ?? 1
         self.description = description
         
         self.ownerID = -1
@@ -48,6 +50,7 @@ public struct Quiz: Codable {
         self.ownerName = ""
     }
     
+    /// :nodoc:
     enum CodingKeys: String, CodingKey {
         case ownerID = "owner_id"
         case id
@@ -70,7 +73,7 @@ public struct Quiz: Codable {
         name = try container.decode(String.self, forKey: .name)
         description = try container.decodeIfPresent(String.self, forKey: .description)
         beGraded = try container.decode(Bool.self, forKey: .beGraded)
-        percentage = try container.decode(String.self, forKey: .percentage)
+        percentage = try container.decode(Double.self, forKey: .percentage)
         isPrivate = try container.decode(Bool.self, forKey: .isPrivate)
         participants = try container.decode([User].self, forKey: .participants)
         questions = try container.decode([Question].self, forKey: .questions)

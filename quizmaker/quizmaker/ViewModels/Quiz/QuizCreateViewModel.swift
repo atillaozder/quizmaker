@@ -5,25 +5,45 @@ import RxCocoa
 
 public class QuizCreateViewModel {
     
+    /// :nodoc:
     private let disposeBag = DisposeBag()
+    /// :nodoc:
     var currentIndex = 10000
+    
+    /// :nodoc:
     var quiz: Quiz?
     
-    let percentage: BehaviorRelay<Double?>
-    let questions: BehaviorRelay<[Question]>
-    let questionsBefore: BehaviorRelay<[Question]>
+    /// :nodoc:
+    let group = DispatchGroup()
+    
     let name: BehaviorRelay<String>
     let desc: BehaviorRelay<String>
     let start: BehaviorRelay<Date?>
     let end: BehaviorRelay<Date?>
     let beGraded: BehaviorRelay<Bool>
     let course: BehaviorRelay<Int?>
+    let percentage: BehaviorRelay<Double?>
+    let questions: BehaviorRelay<[Question]>
     
+    /// :nodoc:
+    let questionsBefore: BehaviorRelay<[Question]>
+    
+    /// :nodoc:
     let loadPageTrigger: PublishSubject<Void>
+    
+    /// :nodoc:
     let createTrigger: PublishSubject<Void>
+    
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
+    
+    /// :nodoc:
     let success: PublishSubject<Void>
+    
+    /// :nodoc:
     let updated: PublishSubject<Quiz>
+    
+    /// :nodoc:
     let courses: PublishSubject<[Course]>
     
     init() {
@@ -58,6 +78,7 @@ public class QuizCreateViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     convenience init(quiz: Quiz) {
         self.init()
         self.quiz = quiz
@@ -76,7 +97,7 @@ public class QuizCreateViewModel {
         self.questionsBefore.accept(quiz.questions)
     }
     
-    private func fetch() -> Observable<[Course]> {
+    public func fetch() -> Observable<[Course]> {
         return Observable.create { [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }
             let endpoint = CourseEndpoint.owner
@@ -96,6 +117,7 @@ public class QuizCreateViewModel {
         }
     }
     
+    /// :nodoc:
     private func create() {
         guard let start = start.value else { return }
         guard let end = end.value else { return }
@@ -105,14 +127,14 @@ public class QuizCreateViewModel {
         
         if let q = self.quiz {
             model.id = q.id
-            updateQuiz(model)
+            update(model)
         } else {
             let endpoint = QuizEndpoint.create(quiz: model)
-            createQuiz(endpoint)
+            create(endpoint)
         }
     }
     
-    private func createQuiz(_ endpoint: QuizEndpoint) {
+    public func create(_ endpoint: QuizEndpoint) {
         NetworkManager.shared.requestJSON(endpoint, .quizCreate)
             .subscribe(onNext: { [weak self] (result) in
                 guard let strongSelf = self else { return }
@@ -132,9 +154,7 @@ public class QuizCreateViewModel {
             }).disposed(by: disposeBag)
     }
     
-    let group = DispatchGroup()
-    
-    private func updateQuiz(_ quiz: Quiz) {
+    public func update(_ quiz: Quiz) {
         var created: [Question] = []
         var updated: [Question] = []
         var deleted: [Question] = []
@@ -174,6 +194,7 @@ public class QuizCreateViewModel {
         }
     }
     
+    /// :nodoc:
     private func requestQuiz(_ q: Quiz) {
         let endpoint = QuizEndpoint.update(quiz: q)
         NetworkManager.shared.requestJSON(endpoint, .quizCreate)
@@ -191,6 +212,7 @@ public class QuizCreateViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     private func requestQuestion(_ qs: [Question], index: Int) {
         if index == qs.count {
             group.leave()
@@ -204,6 +226,7 @@ public class QuizCreateViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     private func requestUpdateQuestion(_ qs: [Question], index: Int) {
         if index == qs.count {
             group.leave()
@@ -217,6 +240,7 @@ public class QuizCreateViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     private func requestDeleteQuestion(_ qs: [Question], index: Int) {
         if index == qs.count {
             group.leave()
@@ -230,6 +254,7 @@ public class QuizCreateViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     private func requestQuestion(_ qs: [Question], index: Int, id: Int) {
         if index == qs.count {
             self.success.onNext(())

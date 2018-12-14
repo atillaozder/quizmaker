@@ -7,12 +7,14 @@ public protocol ErrorResponse {
     var errorCode: Int? { get }
 }
 
+/// :nodoc:
 public struct APIErrorResponse: ErrorResponse {
     public var error: String
     public var errorDesc: String
     public var errorCode: Int?
 }
 
+/// :nodoc:
 extension APIErrorResponse: Decodable {
     private enum CodingKeys: String, CodingKey {
         case error

@@ -7,6 +7,7 @@ public enum CourseEndpoint {
     case myLectures
 }
 
+/// :nodoc:
 extension CourseEndpoint: EndpointType {
     public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/course/") else {

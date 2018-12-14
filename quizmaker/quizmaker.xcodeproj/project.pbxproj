@@ -272,8 +272,8 @@
 		FB2C466A21A5A10400CF2F54 /* Encoding */ = {
 			isa = PBXGroup;
 			children = (
-				FB2C468621A5A1F600CF2F54 /* UrlParameterEncoder.swift */,
 				FB2C468821A5A20400CF2F54 /* ParameterEncoder.swift */,
+				FB2C468621A5A1F600CF2F54 /* UrlParameterEncoder.swift */,
 				FB2C468A21A5A21200CF2F54 /* BodyParameterEncoder.swift */,
 			);
 			path = Encoding;
@@ -518,8 +518,6 @@
 			isa = PBXGroup;
 			children = (
 				FB18D71621ADF8EE00B9BACB /* QuizDetailViewController.swift */,
-				FB18D71E21ADF9CD00B9BACB /* QuizCreateViewController.swift */,
-				FB65B1AD21C280200019DBD7 /* QuizUpdateViewController.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -652,6 +650,8 @@
 		FBBFD4A021A586AD007197D9 /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
+				FB18D71E21ADF9CD00B9BACB /* QuizCreateViewController.swift */,
+				FB65B1AD21C280200019DBD7 /* QuizUpdateViewController.swift */,
 				FB18D71821ADF91600B9BACB /* QuizParticipantsAnswerViewController.swift */,
 				FB65B1DC21C2ACF80019DBD7 /* Detail */,
 				FB65B1DB21C2ACEB0019DBD7 /* Public */,

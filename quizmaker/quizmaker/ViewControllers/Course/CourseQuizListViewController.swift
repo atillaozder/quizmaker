@@ -7,9 +7,12 @@ private let courseQuizCell = "courseQuizCell"
 
 public class CourseQuizListViewController: UIViewController {
     
-    private var viewModel: QuizListViewModel
+    var viewModel: QuizListViewModel
+    
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// :nodoc:
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.backgroundColor = .white
@@ -29,10 +32,12 @@ public class CourseQuizListViewController: UIViewController {
         self.navigationItem.title = "\(courseName)'s Quizzes"
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -48,6 +53,15 @@ public class CourseQuizListViewController: UIViewController {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
+    }
+    
+    /// :nodoc:
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadPageTrigger.onNext(())
+    }
+    
+    public func bindUI() {
         
         let dataSource = RxTableViewSectionedReloadDataSource<QuizSectionModel>.init(configureCell: { (dataSource, tableView, indexPath, quiz) -> UITableViewCell in
             
@@ -113,10 +127,5 @@ public class CourseQuizListViewController: UIViewController {
                     }
                 }
             }).disposed(by: disposeBag)
-    }
-    
-    override public func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.loadPageTrigger.onNext(())
     }
 }

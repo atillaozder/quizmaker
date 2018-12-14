@@ -4,12 +4,18 @@ import RxSwift
 
 public class LoginViewController: UIViewController, KeyboardHandler {
     
-    private let viewModel = LoginViewModel()
+    let viewModel = LoginViewModel()
+    
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// :nodoc:
     public let scrollView: UIScrollView = UIScrollView()
+    
+    /// :nodoc:
     public let contentView: UIView = UIView()
     
+    /// :nodoc:
     private let usernameOrEmailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Username or Email*"
@@ -29,6 +35,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Password*"
@@ -54,6 +61,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private let resetPasswordLabel: UILabel = {
         let label = UILabel()
         label.text = "Forgot Password?"
@@ -64,6 +72,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         return label
     }()
     
+    /// :nodoc:
     private let loginButton: IndicatorButton = {
         let button = IndicatorButton(type: .system)
         button.setTitle("Sign In", for: .normal)
@@ -71,6 +80,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
+    /// :nodoc:
     private let registerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
@@ -80,17 +90,20 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         setup()
         bindUI()
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
     }
     
+    /// :nodoc:
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         usernameOrEmailTextField.text = ""
@@ -98,6 +111,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         removeObservers()
     }
     
+    /// :nodoc:
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateContent()
@@ -107,7 +121,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         registerButton.roundCorners(.allCorners, radius: registerButton.frame.size.height / 2)
     }
     
-    private func setup() {
+    public func setup() {
         self.view.backgroundColor = UIColor(red: 59, green: 89, blue: 152)
         usernameOrEmailTextField.delegate = self
         passwordTextField.delegate = self
@@ -180,7 +194,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:))))
     }
     
-    private func bindUI() {
+    public func bindUI() {
         usernameOrEmailTextField.rx.text
             .orEmpty
             .bind(to: viewModel.username)
@@ -234,7 +248,10 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         
         viewModel.error = { [unowned self] (error) in
             print(error.localizedDescription)
-            self.loginButton.hideLoading()
+            if self.loginButton.isLoading {
+                self.loginButton.hideLoading()
+            }
+            
             switch error {
             case .auth(.login(let response)):
                 self.showErrorAlert(message: response.fieldError?.first)
@@ -244,6 +261,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /// :nodoc:
     private func getErrorLabel() -> UILabel {
         let label = UILabel()
         label.textColor = .red
@@ -253,12 +271,14 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         return label
     }
     
+    /// :nodoc:
     @objc
     private func showPasswordButtonTapped(_ sender: UIButton) {
         passwordTextField.isSecureTextEntry = !passwordTextField.isSecureTextEntry
         sender.tintColor = passwordTextField.isSecureTextEntry ? .lightGray : UIColor.AppColors.main.rawValue
     }
     
+    /// :nodoc:
     @objc
     private func resetPassword(_ sender: UITapGestureRecognizer) {
         let alertController = UIAlertController(title: nil, message: "Please enter your registered email address. We will send you an information mail.", preferredStyle: .alert)
@@ -283,6 +303,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    /// :nodoc:
     @objc
     private func registerTapped(_ sender: UIButton) {
         DispatchQueue.main.async {
@@ -294,12 +315,14 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         self.present(viewController, animated: true, completion: nil)
     }
     
+    /// :nodoc:
     @objc
     private func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
 }
 
+/// :nodoc:
 extension LoginViewController: UITextFieldDelegate {
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         updateContent()

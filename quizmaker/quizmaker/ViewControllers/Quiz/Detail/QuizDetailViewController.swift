@@ -11,7 +11,8 @@ private let quizParticipantCell = "quizParticipantCell"
 public class QuizDetailViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
-    private let viewModel: QuizDetailViewModel
+    
+    let viewModel: QuizDetailViewModel
     
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .grouped)
@@ -31,10 +32,12 @@ public class QuizDetailViewController: UIViewController {
         self.navigationItem.title = "\(quiz.name)"
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -62,7 +65,7 @@ public class QuizDetailViewController: UIViewController {
         bindUI()
     }
     
-    private func bindUI() {
+    public func bindUI() {
         viewModel.loadPageTrigger.onNext(())
         
         let dataSource = RxTableViewSectionedReloadDataSource<DetailSectionModel>.init(configureCell: { (dataSource, tableView, indexPath, section) -> UITableViewCell in
@@ -149,7 +152,7 @@ public class QuizDetailViewController: UIViewController {
         if quiz.start < now && quiz.end > now {
             self.showErrorAlert(message: "The quiz has already started and not finished yet. You have to wait until its finishes.")
         } else if quiz.start < now && quiz.end < now {
-            if UserDefaults.standard.getUserType() == "I" {
+            if UserDefaults.standard.getUserType() == "I" && quiz.beGraded {
                 let viewController = QuizUpdateViewController(quiz: quiz)
                 viewController.delegate = self
                 self.navigationController?.pushViewController(viewController, animated: true)
@@ -165,6 +168,7 @@ public class QuizDetailViewController: UIViewController {
     }
 }
 
+/// :nodoc:
 extension QuizDetailViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
@@ -202,6 +206,7 @@ extension QuizDetailViewController: UITableViewDelegate {
     }
 }
 
+/// :nodoc:
 extension QuizDetailViewController: QuizParticipantTableCellDelegate {
     func didTapParticipant(_ participant: QuizParticipant) {
         guard let user = participant.participant else { return }
@@ -219,6 +224,7 @@ extension QuizDetailViewController: PercentageUpdateDelegate {
     }
 }
 
+/// :nodoc:
 extension QuizDetailViewController: UpdateQuizDelegate {
     func updateQuiz(q: Quiz) {
         viewModel.updateQuiz(quiz: q, questions: q.questions)

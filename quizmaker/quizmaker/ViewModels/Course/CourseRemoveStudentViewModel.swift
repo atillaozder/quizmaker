@@ -5,13 +5,24 @@ import RxCocoa
 
 public class CourseRemoveStudentViewModel {
     
+    /// :nodoc:
     private let disposeBag = DisposeBag()
+    
     let students: BehaviorRelay<[User]>
+    
+    /// :nodoc:
     let filteredStudents: BehaviorRelay<[User]>
     
+    /// :nodoc:
     let success: PublishSubject<Void>
+    
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
+    
+    /// :nodoc:
     let loadPageTrigger: PublishSubject<Void>
+    
+    /// :nodoc:
     let removeStudentTrigger: PublishSubject<Int>
     
     init(course: Course) {
@@ -36,25 +47,24 @@ public class CourseRemoveStudentViewModel {
                 if index != -1 {
                     array.remove(at: index)
                     let endpoint = CourseEndpoint.appendStudent(courseID: course.id, students: array)
-                    
-                    NetworkManager.shared.requestJSON(endpoint)
-                        .subscribe(onNext: { (result) in
-                            switch result {
-                            case .success:
-                                strongSelf.students.accept(array)
-                                strongSelf.filteredStudents.accept(array)
-                                strongSelf.success.onNext(())
-                            case .failure(let error):
-                                strongSelf.failure.onNext(error)
-                            }
-                        }).disposed(by: strongSelf.disposeBag)
+                    strongSelf.removeStudent(endpoint, students: array)
                 } else {
                     strongSelf.failure.onNext(NetworkError.apiMessage(response: ErrorMessage(message: "Student could not found in the course")))
                 }
             }).disposed(by: disposeBag)
     }
     
-    func removeStudent(id: Int) {
-        self.removeStudentTrigger.onNext(id)
+    func removeStudent(_ endpoint: CourseEndpoint, students: [User]) {
+        NetworkManager.shared.requestJSON(endpoint)
+            .subscribe(onNext: { (result) in
+                switch result {
+                case .success:
+                    self.students.accept(students)
+                    self.filteredStudents.accept(students)
+                    self.success.onNext(())
+                case .failure(let error):
+                    self.failure.onNext(error)
+                }
+            }).disposed(by: disposeBag)
     }
 }

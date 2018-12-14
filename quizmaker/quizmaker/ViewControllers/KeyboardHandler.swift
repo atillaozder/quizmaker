@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public protocol KeyboardHandler {
     var scrollView: UIScrollView { get }
     var contentView: UIView { get }
@@ -15,6 +16,7 @@ public protocol KeyboardHandler {
     func updateContent()
 }
 
+/// :nodoc:
 extension KeyboardHandler where Self: UIViewController {
     
     public func setupViews() {

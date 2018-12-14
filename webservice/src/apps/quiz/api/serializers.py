@@ -36,6 +36,9 @@ class QuizSerializer(serializers.ModelSerializer):
             'participants',
             'questions',
         )
+        extra_kwargs = {
+            'percentage': {'max_digits': 100, 'decimal_places': 2}
+        }
 
     def get_owner_id(self, instance):
         return instance.owner.id

@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// :nodoc:
 extension NSMutableData {
     func appendString(_ string: String) {
         let data = string.data(using: .utf8, allowLossyConversion: false)
@@ -8,6 +9,7 @@ extension NSMutableData {
     }
 }
 
+/// :nodoc:
 public struct BodyParameterEncoder: ParameterEncoder {
     public func encode(urlRequest: inout URLRequest, with parameters: Parameters) throws {
         do {

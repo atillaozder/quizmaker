@@ -6,7 +6,9 @@ private let quizAnswerCell = "quizAnswerCell"
 
 public class QuizParticipantAnswersViewController: UIViewController {
     
-    let disposeBag = DisposeBag()
+    /// :nodoc:
+    private let disposeBag = DisposeBag()
+    
     let viewModel: ParticipantAnswerViewModel
     
     private let tableView: UITableView = {
@@ -28,10 +30,12 @@ public class QuizParticipantAnswersViewController: UIViewController {
         self.navigationItem.title = "\(name)'s Answers"
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -51,7 +55,10 @@ public class QuizParticipantAnswersViewController: UIViewController {
         var frame = CGRect.zero
         frame.size.height = .leastNormalMagnitude
         tableView.tableFooterView = UIView(frame: frame)
-        
+        bindUI()
+    }
+    
+    public func bindUI() {
         viewModel.failure
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] (error) in
@@ -72,11 +79,13 @@ public class QuizParticipantAnswersViewController: UIViewController {
             }.disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())
     }
     
+    /// :nodoc:
     func setTableHeaderView(participant: QuizParticipant) {
         let container = UIView(frame: .init(x: 0, y: 0, width: self.view.frame.height, height: 100))
         container.backgroundColor = UIColor.groupTableViewBackground

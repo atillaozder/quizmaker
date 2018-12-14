@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class InstructorViewController: HomeViewController {
     
     let myCoursesButton: UIButton = {

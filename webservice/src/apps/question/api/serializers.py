@@ -34,10 +34,11 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         quiz_id = validated_data["quiz_id"]
+        type = validated_data['question_type']
 
         question = Question(
             question=validated_data['question'],
-            question_type=validated_data['question_type'],
+            question_type=type,
             point=validated_data['point'],
             answer=validated_data['answer']
         )

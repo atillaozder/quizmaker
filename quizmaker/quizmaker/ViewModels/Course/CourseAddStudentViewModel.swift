@@ -5,13 +5,27 @@ import RxSwift
 
 public class CourseAddStudentViewModel {
     
+    /// :nodoc:
     private let disposeBag = DisposeBag()
+    
     let students: BehaviorRelay<[User]>
+    
+    /// :nodoc:
     let filteredStudents: BehaviorRelay<[User]>
+    
+    /// :nodoc:
     let selectedStudents: BehaviorRelay<[User]>
+    
+    /// :nodoc:
     let success: PublishSubject<Void>
+    
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
+    
+    /// :nodoc:
     let loadPageTrigger: PublishSubject<Void>
+    
+    /// :nodoc:
     let appendStudentsTrigger: PublishSubject<Void>
     
     init(courseID: Int) {
@@ -35,19 +49,11 @@ public class CourseAddStudentViewModel {
                 return self.selectedStudents.value.count > 0
             }.subscribe(onNext: { [unowned self] (_) in
                 let endpoint = CourseEndpoint.appendStudent(courseID: courseID, students: self.selectedStudents.value)
-                NetworkManager.shared.requestJSON(endpoint)
-                    .subscribe(onNext: { (result) in
-                        switch result {
-                        case .success:
-                            self.success.onNext(())
-                        case .failure(let error):
-                            self.failure.onNext(error)
-                        }
-                    }).disposed(by: self.disposeBag)
+                self.addStudents(endpoint)
             }).disposed(by: disposeBag)
     }
     
-    private func fetch(_ endpoint: UserEndpoint) -> Observable<[User]> {
+    public func fetch(_ endpoint: UserEndpoint) -> Observable<[User]> {
         return Observable.create({ [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }
             NetworkManager.shared.request(endpoint, [User].self)
@@ -63,6 +69,18 @@ public class CourseAddStudentViewModel {
                 }).disposed(by: strongSelf.disposeBag)
             return Disposables.create()
         })
+    }
+    
+    public func addStudents(_ endpoint: CourseEndpoint) {
+        NetworkManager.shared.requestJSON(endpoint)
+            .subscribe(onNext: { (result) in
+                switch result {
+                case .success:
+                    self.success.onNext(())
+                case .failure(let error):
+                    self.failure.onNext(error)
+                }
+            }).disposed(by: self.disposeBag)
     }
     
 }

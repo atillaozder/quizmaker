@@ -8,7 +8,8 @@ private let courseQuizCell = "courseQuizCell"
 
 public class MyQuizListViewController: UIViewController {
     
-    private var viewModel: QuizListViewModel
+    var viewModel: QuizListViewModel
+    
     private let disposeBag = DisposeBag()
     
     private let tableView: UITableView = {
@@ -24,6 +25,7 @@ public class MyQuizListViewController: UIViewController {
         return tv
     }()
     
+    /// :nodoc:
     init() {
         self.viewModel = QuizListViewModel()
         super.init(nibName: nil, bundle: nil)
@@ -35,16 +37,14 @@ public class MyQuizListViewController: UIViewController {
         self.viewModel = QuizListViewModel(courseID: courseID)
         
         self.navigationItem.title = "\(courseName)'s Quizzes"
-        //        let appendStudent = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(appendStudent(_:)))
-        //        let removeStudent = UIBarButtonItem(title: "Remove", style: .plain, target: self, action: #selector(removeStudent(_:)))
-        //
-        //        self.navigationItem.setRightBarButtonItems([appendStudent, removeStudent], animated: false)
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -60,6 +60,10 @@ public class MyQuizListViewController: UIViewController {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
+        bindUI()
+    }
+    
+    public func bindUI() {
         
         let dataSource = RxTableViewSectionedReloadDataSource<QuizSectionModel>.init(configureCell: { (dataSource, tableView, indexPath, quiz) -> UITableViewCell in
             
@@ -115,6 +119,7 @@ public class MyQuizListViewController: UIViewController {
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())
@@ -146,7 +151,7 @@ public class MyQuizListViewController: UIViewController {
         if quiz.start < now && quiz.end > now {
             self.showErrorAlert(message: "The quiz has already started and not finished yet. You have to wait until its finishes.")
         } else if quiz.start < now && quiz.end < now {
-            if UserDefaults.standard.getUserType() == "I" {
+            if UserDefaults.standard.getUserType() == "I" && quiz.beGraded {
                 let viewController = QuizUpdateViewController(quiz: quiz)
                 self.navigationController?.pushViewController(viewController, animated: true)
             } else {
@@ -159,6 +164,7 @@ public class MyQuizListViewController: UIViewController {
     }
 }
 
+/// :nodoc:
 extension MyQuizListViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {

@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// :nodoc:
 public struct GradeErrorResponse {
     var message: String
     var questionID: Int
@@ -8,6 +9,7 @@ public struct GradeErrorResponse {
     var point: Int
 }
 
+/// :nodoc:
 extension GradeErrorResponse: Decodable {
     private enum CodingKeys: String, CodingKey {
         case message

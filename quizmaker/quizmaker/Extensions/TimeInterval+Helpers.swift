@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// :nodoc:
 extension TimeInterval {
     private var minutes: Int {
         return (Int(self) / 60 ) % 60

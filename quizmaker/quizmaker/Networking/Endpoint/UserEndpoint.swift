@@ -7,6 +7,7 @@ public enum UserEndpoint {
     case students
 }
 
+/// :nodoc:
 extension UserEndpoint: EndpointType {
     public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/accounts/") else {

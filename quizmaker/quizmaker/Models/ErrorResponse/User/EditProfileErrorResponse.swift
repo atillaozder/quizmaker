@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// :nodoc:
 public struct EditProfileErrorResponse {
     let firstName: [String]?
     let lastName: [String]?
@@ -8,6 +9,7 @@ public struct EditProfileErrorResponse {
     let gender: [String]?
 }
 
+/// :nodoc:
 extension EditProfileErrorResponse: Decodable {
     private enum CodingKeys: String, CodingKey {
         case email

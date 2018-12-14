@@ -9,6 +9,11 @@ public enum AuthenticationEndpoint {
      - Parameters:
         - username: The users username.
         - password: The users password.
+     
+     - Precondition:
+        - `username` must be non-nil
+        - `password` must be non-nil
+     
      */
     case login(username: String, password: String)
     
@@ -17,6 +22,12 @@ public enum AuthenticationEndpoint {
      
      - Parameters:
         - user: The user instance.
+     
+     - Precondition:
+        - `user` must be non-nil
+     
+     - SeeAlso:
+        [SignUp](https://example.com)
      */
     case register(user: SignUp)
     
@@ -25,10 +36,14 @@ public enum AuthenticationEndpoint {
      
      - Parameters:
         - email: The users email.
+     
+     - Precondition:
+        - `email` must be non-nil
      */
     case forgotPassword(email: String)
 }
 
+/// :nodoc:
 extension AuthenticationEndpoint: EndpointType {
     public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/accounts/") else {

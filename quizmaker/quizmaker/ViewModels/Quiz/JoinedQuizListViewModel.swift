@@ -3,14 +3,23 @@ import RxSwift
 import RxCocoa
 
 public class JoinedQuizListViewModel {
+    
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// :nodoc:
     let items: BehaviorRelay<[QuizSectionModel]>
+    
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
+    
+    /// :nodoc:
     let loadPageTrigger: PublishSubject<Void>
     
+    /// :nodoc:
     var waiting: Bool = false
     
+    /// :nodoc:
     init(waiting: Bool) {
         self.waiting = waiting
         items = BehaviorRelay(value: [])
@@ -25,7 +34,7 @@ public class JoinedQuizListViewModel {
             .disposed(by: disposeBag)
     }
     
-    private func fetch(_ endpoint: QuizEndpoint) -> Observable<[QuizSectionModel]> {
+    public func fetch(_ endpoint: QuizEndpoint) -> Observable<[QuizSectionModel]> {
         return Observable.create({ [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }
             NetworkManager.shared.request(endpoint, [Quiz].self)

@@ -29,10 +29,12 @@ public class MyAnswersViewController: UIViewController {
         self.navigationItem.title = "Your Answers"
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -48,7 +50,16 @@ public class MyAnswersViewController: UIViewController {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
-        
+        bindUI()
+    }
+    
+    /// :nodoc:
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadPageTrigger.onNext(())
+    }
+    
+    public func bindUI() {
         viewModel.failure
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] (error) in
@@ -67,10 +78,5 @@ public class MyAnswersViewController: UIViewController {
             .drive(tableView.rx.items(cellIdentifier: quizAnswerCell, cellType: QuizParticipantAnswerTableCell.self)) { (row, element, cell) in
                 cell.configure(element)
             }.disposed(by: disposeBag)
-    }
-    
-    override public func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.loadPageTrigger.onNext(())
     }
 }

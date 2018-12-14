@@ -35,6 +35,7 @@ public struct SignUp {
 }
 
 extension SignUp: Decodable {
+    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case id
         case username

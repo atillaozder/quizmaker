@@ -3,6 +3,7 @@ import UIKit
 
 private let quizQuestionDetailCell = "quizQuestionDetailCell"
 
+/// :nodoc:
 public class QuizQuestionTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
     
     var heightConstraint: NSLayoutConstraint?

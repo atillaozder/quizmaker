@@ -6,9 +6,12 @@ private let studentTableCell = "studentTableCell"
 
 public class CourseRemoveStudentViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    /// :nodoc:
     private let disposeBag = DisposeBag()
+    
     let viewModel: CourseRemoveStudentViewModel
     
+    /// :nodoc:
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.backgroundColor = .white
@@ -27,10 +30,12 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         super.init(nibName: nil, bundle: nil)
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
     lazy var searchController: UISearchController = {
         let sv = UISearchController(searchResultsController: nil)
         sv.dimsBackgroundDuringPresentation = false
@@ -43,6 +48,7 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         return sv
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "Remove Students"
@@ -67,6 +73,10 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
         
+        bindUI()
+    }
+    
+    public func bindUI() {
         viewModel.loadPageTrigger.onNext(())
         
         viewModel.success.asObservable()
@@ -94,6 +104,7 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     private func removeTapped(_ indexPath: IndexPath) {
         var student = viewModel.students.value[indexPath.row]
         if isFiltering() {
@@ -104,7 +115,7 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let ok = UIAlertAction(title: "Remove", style: .default) { (_) in
-            self.viewModel.removeStudent(id: student.id)
+            self.viewModel.removeStudentTrigger.onNext(student.id)
         }
         
         alertController.addAction(cancel)
@@ -131,10 +142,12 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         tableView.reloadData()
     }
     
+    /// :nodoc:
     public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    /// :nodoc:
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering() {
             return viewModel.filteredStudents.value.count
@@ -143,6 +156,7 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         return viewModel.students.value.count
     }
     
+    /// :nodoc:
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: studentTableCell, for: indexPath) as? StudentTableCell else { return UITableViewCell() }
         
@@ -159,6 +173,7 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         return cell
     }
     
+    /// :nodoc:
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let removeStudent = UITableViewRowAction(style: .normal, title: "Remove") { (action, indexPath) in
@@ -170,6 +185,7 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         return [removeStudent]
     }
     
+    /// :nodoc:
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let removeStudent = UIContextualAction(style: .normal, title: "Remove") { (_, _, _) in
             self.removeTapped(indexPath)
@@ -182,11 +198,13 @@ public class CourseRemoveStudentViewController: UIViewController, UITableViewDat
         return configuration
     }
     
+    /// :nodoc:
     public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         return nil
     }
 }
 
+/// :nodoc:
 extension CourseRemoveStudentViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     public func updateSearchResults(for searchController: UISearchController) {

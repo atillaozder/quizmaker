@@ -15,6 +15,7 @@ public final class NetworkManager {
     
     private init() { }
     
+    /// :nodoc:
     deinit {
         router.invalidateSession()
     }
@@ -132,7 +133,7 @@ public final class NetworkManager {
             }
         }
     }
-    
+
     private func handleError(_ response: HTTPURLResponse,
                              _ data: Data,
                              _ type: ErrorType,

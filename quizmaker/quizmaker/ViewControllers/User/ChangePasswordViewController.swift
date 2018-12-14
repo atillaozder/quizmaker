@@ -4,12 +4,18 @@ import RxSwift
 
 public class ChangePasswordViewController: UIViewController, KeyboardHandler {
     
-    private let viewModel = ChangePasswordViewModel()
+    let viewModel = ChangePasswordViewModel()
+    
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// :nodoc:
     public let scrollView: UIScrollView = UIScrollView()
+    
+    /// :nodoc:
     public let contentView: UIView = UIView()
     
+    /// :nodoc:
     private let oldPasswordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Old Password*"
@@ -37,14 +43,17 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private lazy var oldPasswordErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: oldPasswordErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var oldPasswordErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let newPasswordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "New Password*"
@@ -72,14 +81,17 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private lazy var newPasswordErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: newPasswordErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var newPasswordErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let confirmPasswordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Confirm Password*"
@@ -107,14 +119,17 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private lazy var confirmPasswordErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: confirmPasswordErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var confirmPasswordErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let changePasswordButton: IndicatorButton = {
         let button = IndicatorButton(title: "Change Password")
         button.titleLabel?.font = .boldSystemFont(ofSize: 15)
@@ -123,22 +138,26 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
         self.bindUI()
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
     }
     
+    /// :nodoc:
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeObservers()
     }
     
+    /// :nodoc:
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateContent()
@@ -146,7 +165,7 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         changePasswordButton.roundCorners(.allCorners, radius: changePasswordButton.frame.size.height / 2)
     }
     
-    private func setup() {
+    public func setup() {
         self.view.backgroundColor = .white
         oldPasswordTextField.delegate = self
         newPasswordTextField.delegate = self
@@ -205,7 +224,7 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:))))
     }
     
-    private func bindUI() {
+    public func bindUI() {
         oldPasswordTextField.rx.text
             .orEmpty
             .bind(to: viewModel.oldPassword)
@@ -255,29 +274,34 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /// :nodoc:
     @objc
     private func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
+    /// :nodoc:
     @objc
     private func oldPasswordShowPassword(_ sender: UIButton) {
         oldPasswordTextField.isSecureTextEntry = !oldPasswordTextField.isSecureTextEntry
         sender.tintColor = oldPasswordTextField.isSecureTextEntry ? .lightGray : UIColor.AppColors.main.rawValue
     }
     
+    /// :nodoc:
     @objc
     private func newPasswordShowPassword(_ sender: UIButton) {
         newPasswordTextField.isSecureTextEntry = !newPasswordTextField.isSecureTextEntry
         sender.tintColor = newPasswordTextField.isSecureTextEntry ? .lightGray : UIColor.AppColors.main.rawValue
     }
     
+    /// :nodoc:
     @objc
     private func confirmPasswordShowPassword(_ sender: UIButton) {
         confirmPasswordTextField.isSecureTextEntry = !confirmPasswordTextField.isSecureTextEntry
         sender.tintColor = confirmPasswordTextField.isSecureTextEntry ? .lightGray : UIColor.AppColors.main.rawValue
     }
     
+    /// :nodoc:
     private func handleError(_ response: ChangePasswordErrorResponse) {
         if let old = response.oldPassword?.first {
             oldPasswordErrorLabel.text = old
@@ -290,6 +314,7 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /// :nodoc:
     private func clearFields() {
         oldPasswordErrorLabel.text = ""
         oldPasswordErrorWrapper.isHidden = true
@@ -298,6 +323,7 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
     }
 }
 
+/// :nodoc:
 extension ChangePasswordViewController: UITextFieldDelegate {
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if string == " " { return false }

@@ -5,9 +5,15 @@ import RxCocoa
 
 public class ParticipantAnswerViewModel {
     
+    /// :nodoc:
     let disposeBag = DisposeBag()
+    
     let answers: BehaviorRelay<[ParticipantAnswer]>
+    
+    /// :nodoc:
     let loadPageTrigger: PublishSubject<Void>
+    
+    /// :nodoc:
     let failure: PublishSubject<NetworkError>
     
     init(quizID: Int, userID: Int) {
@@ -25,7 +31,7 @@ public class ParticipantAnswerViewModel {
             .disposed(by: disposeBag)
     }
     
-    private func fetch(_ endpoint: QuizEndpoint) -> Observable<[ParticipantAnswer]> {
+    public func fetch(_ endpoint: QuizEndpoint) -> Observable<[ParticipantAnswer]> {
         return Observable.create({ [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }
             NetworkManager.shared.request(endpoint, [ParticipantAnswer].self, .apiMessage)

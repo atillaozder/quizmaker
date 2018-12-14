@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class AdminViewController: HomeViewController {
     
     override public func viewDidLoad() {

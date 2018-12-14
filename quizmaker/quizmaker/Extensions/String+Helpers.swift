@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// :nodoc:
 extension String {
     var isNumeric: Bool {
         guard self.count > 0 else { return false }

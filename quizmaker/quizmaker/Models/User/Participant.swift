@@ -9,6 +9,7 @@ public struct Participant: Codable {
     let userType, gender: String
     let studentID: String?
     
+    /// :nodoc:
     enum CodingKeys: String, CodingKey {
         case id, username
         case firstName = "first_name"

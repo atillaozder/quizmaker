@@ -11,7 +11,7 @@ public struct Question: Codable {
     var C: String?
     var D: String?
     
-    init() {
+    public init() {
         id = 0
         question = ""
         questionType = ""
@@ -24,6 +24,7 @@ public struct Question: Codable {
         D = nil
     }
     
+    /// :nodoc:
     enum CodingKeys: String, CodingKey {
         case id, question
         case questionType = "question_type"

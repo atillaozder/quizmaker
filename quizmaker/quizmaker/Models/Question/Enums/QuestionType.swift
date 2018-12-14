@@ -6,6 +6,7 @@ public enum QuestionType: String {
     case truefalse = "truefalse"
     case text = "text"
     
+    /// :nodoc:
     var description: String {
         switch self {
         case .multichoice:

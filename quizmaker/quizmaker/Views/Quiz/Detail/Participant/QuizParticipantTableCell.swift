@@ -1,12 +1,14 @@
 
 import UIKit
 
+/// :nodoc:
 protocol QuizParticipantTableCellDelegate: class {
     func didTapParticipant(_ participant: QuizParticipant)
 }
 
 private let quizParticipantDetailCell = "quizParticipantDetailCell"
 
+/// :nodoc:
 public class QuizParticipantTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
     
     var heightConstraint: NSLayoutConstraint?

@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 extension UIButton {
     convenience init(image: String) {
         self.init(type: .system)
@@ -11,6 +12,7 @@ extension UIButton {
     }
 }
 
+/// :nodoc:
 extension UIView {
     
     func fillSafeArea(spacing: UIEdgeInsets = .zero, size: CGSize = .zero) {

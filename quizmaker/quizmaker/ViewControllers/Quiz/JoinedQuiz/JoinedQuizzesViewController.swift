@@ -8,7 +8,9 @@ private let joinedQuizCell = "joinedQuizCell"
 
 public class JoinedQuizzesViewController: UIViewController {
     
+    /// :nodoc:
     let disposeBag = DisposeBag()
+    
     let viewModel: JoinedQuizListViewModel
     
     private let tableView: UITableView = {
@@ -29,10 +31,12 @@ public class JoinedQuizzesViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("Fatal Error")
     }
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -49,7 +53,10 @@ public class JoinedQuizzesViewController: UIViewController {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
-        
+        bindUI()
+    }
+    
+    public func bindUI() {
         let dataSource = RxTableViewSectionedReloadDataSource<QuizSectionModel>.init(configureCell: { [weak self] (dataSource, tableView, indexPath, quiz) -> UITableViewCell in
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: joinedQuizCell, for: indexPath) as? QuizDetailTableCell else { return UITableViewCell() }
@@ -98,6 +105,7 @@ public class JoinedQuizzesViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())

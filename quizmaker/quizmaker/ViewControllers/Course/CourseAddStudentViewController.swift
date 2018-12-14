@@ -7,12 +7,18 @@ private let studentTableCell = "studentTableCell"
 
 public class CourseAddStudentViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, KeyboardHandler {
     
+    /// :nodoc:
     public var scrollView: UIScrollView = UIScrollView()
+    
+    /// :nodoc:
     public var contentView: UIView = UIView()
     
+    /// :nodoc:
     private let disposeBag = DisposeBag()
+    
     let viewModel: CourseAddStudentViewModel
     
+    /// :nodoc:
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.backgroundColor = .white
@@ -31,14 +37,17 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         super.init(nibName: nil, bundle: nil)
     }
     
+    /// :nodoc:
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
     lazy var selectedCount: UIBarButtonItem = {
         return UIBarButtonItem(title: "", style: .done, target: self, action: #selector(appendTapped))
     }()
     
+    /// :nodoc:
     lazy var searchController: UISearchController = {
         let sv = UISearchController(searchResultsController: nil)
         sv.dimsBackgroundDuringPresentation = false
@@ -51,6 +60,7 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         return sv
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "Add Students"
@@ -76,6 +86,10 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
         
+        bindUI()
+    }
+    
+    public func bindUI() {
         viewModel.loadPageTrigger.onNext(())
         
         viewModel.success.asObservable()
@@ -96,16 +110,19 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
     }
     
+    /// :nodoc:
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeObservers()
     }
     
+    /// :nodoc:
     @objc
     private func appendTapped(_ sender: UIBarButtonItem) {
         if viewModel.selectedStudents.value.count > 0 {
@@ -141,10 +158,12 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         tableView.reloadData()
     }
     
+    /// :nodoc:
     public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    /// :nodoc:
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering() {
             return viewModel.filteredStudents.value.count
@@ -153,6 +172,7 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         return 0
     }
     
+    /// :nodoc:
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: studentTableCell, for: indexPath) as? StudentTableCell else { return UITableViewCell() }
         
@@ -166,6 +186,7 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         return cell
     }
     
+    /// :nodoc:
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? StudentTableCell {
             if !cell.selectedBefore {
@@ -195,6 +216,7 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         }
     }
     
+    /// :nodoc:
     public func keyboardWillShow(notification: Notification) {
         guard let userInfo = notification.userInfo,
             var frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
@@ -213,6 +235,7 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         tableView.scrollIndicatorInsets = contentInset
     }
     
+    /// :nodoc:
     public func keyboardWillHide(notification: Notification) {
         var contentInset: UIEdgeInsets = self.tableView.contentInset
         contentInset.bottom = 50
@@ -221,6 +244,7 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
     }
 }
 
+/// :nodoc:
 extension CourseAddStudentViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     public func updateSearchResults(for searchController: UISearchController) {

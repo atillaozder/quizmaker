@@ -17,6 +17,7 @@ public enum QuizEndpoint {
     case append(quizID: Int)
 }
 
+/// :nodoc:
 extension QuizEndpoint: EndpointType {
     public var baseURL: URL {
         guard let url = URL(string: "http://127.0.0.1:8000/api/quiz/") else {
@@ -116,8 +117,8 @@ extension QuizEndpoint: EndpointType {
                 parameters["description"] = desc
             }
             
-            if quiz.beGraded, let perc = Double(quiz.percentage) {
-                parameters["percentage"] = perc
+            if quiz.beGraded {
+                parameters["percentage"] = quiz.percentage
             }
             
             if let course = quiz.courseID {
@@ -146,8 +147,8 @@ extension QuizEndpoint: EndpointType {
                 parameters["description"] = desc
             }
             
-            if quiz.beGraded, let perc = Double(quiz.percentage) {
-                parameters["percentage"] = perc
+            if quiz.beGraded {
+                parameters["percentage"] = quiz.percentage
             }
             
             if let course = quiz.courseID {

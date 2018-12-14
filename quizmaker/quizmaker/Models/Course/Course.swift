@@ -7,6 +7,7 @@ public struct Course: Codable {
     let students: [User]
     let quizzes: [Quiz]
     
+    /// :nodoc:
     enum CodingKeys: String, CodingKey {
         case id, owner
         case instructorName = "instructor_name"

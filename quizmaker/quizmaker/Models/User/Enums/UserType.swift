@@ -7,6 +7,7 @@ public enum UserType: String {
     case student = "S"
     case admin = "A"
     
+    /// :nodoc:
     var description: String {
         switch self {
         case .normal:

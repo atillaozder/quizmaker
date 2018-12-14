@@ -19,7 +19,9 @@ public class RegisterViewModel {
         return predicate.evaluate(with: email.value)
     }
     
+    /// :nodoc:
     var registerSuccess: ((SignUp) -> Void)?
+    /// :nodoc:
     var error: ((NetworkError) -> Void)?
     
     let registerTrigger: PublishSubject<Void>
@@ -35,10 +37,10 @@ public class RegisterViewModel {
         userType = BehaviorRelay(value: .normal)
         
         registerTrigger = PublishSubject()
-        subscribeRegister()
+        register()
     }
     
-    private func subscribeRegister() {
+    public func register() {
         registerTrigger.asObservable()
             .subscribe(onNext: { [unowned self] () in
                 let signUp = SignUp(username: self.username.value, firstName: self.firstName.value, lastName: self.lastName.value, email: self.email.value, password: self.password.value, userType: self.userType.value, studentId: self.studentId.value)

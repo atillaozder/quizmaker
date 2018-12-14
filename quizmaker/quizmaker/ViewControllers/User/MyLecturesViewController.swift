@@ -23,6 +23,7 @@ public class MyLecturesViewController: UIViewController {
         return tv
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,7 +43,10 @@ public class MyLecturesViewController: UIViewController {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
-        
+        bindUI()
+    }
+    
+    public func bindUI() {
         viewModel.items
             .asDriver()
             .drive(tableView.rx.items(cellIdentifier: courseCell, cellType: CourseTableCell.self)) { (_, element, cell) in
@@ -74,6 +78,7 @@ public class MyLecturesViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())

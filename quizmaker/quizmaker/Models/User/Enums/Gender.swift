@@ -6,6 +6,7 @@ public enum Gender: String {
     case male = "male"
     case female = "female"
     
+    /// :nodoc:
     var description: String {
         switch self {
         case .unspecified:

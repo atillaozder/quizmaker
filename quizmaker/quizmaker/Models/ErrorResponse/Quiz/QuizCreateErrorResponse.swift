@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// :nodoc:
 public struct QuizCreateErrorResponse: Codable {
     let start: [String]?
     let end: [String]?

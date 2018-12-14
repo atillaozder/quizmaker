@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class IndicatorButton: UIButton {
     
     var isLoading: Bool = false

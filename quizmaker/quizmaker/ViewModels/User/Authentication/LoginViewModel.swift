@@ -8,13 +8,22 @@ public class LoginViewModel {
     let username: BehaviorRelay<String>
     let password: BehaviorRelay<String>
     
+    /// :nodoc:
     var forgotPassword: ((String) -> Void)?
+    
+    /// :nodoc:
     var loginSuccess: ((SignUp) -> Void)?
+    
+    /// :nodoc:
     var error: ((NetworkError) -> Void)?
     
+    /// :nodoc:
     let forgotPasswordTrigger: PublishSubject<String>
+    
+    /// :nodoc:
     let loginTrigger: PublishSubject<Void>
     
+    /// :nodoc:
     let disposeBag = DisposeBag()
     
     init() {
@@ -24,11 +33,11 @@ public class LoginViewModel {
         forgotPasswordTrigger = PublishSubject()
         loginTrigger = PublishSubject()
         
-        subscribeForgotPassword()
-        subscribeLogin()
+        forgetPassword()
+        login()
     }
     
-    private func subscribeLogin() {
+    public func login() {
         loginTrigger.asObservable()
             .subscribe(onNext: { [unowned self] () in
                 let endpoint = AuthenticationEndpoint.login(username: self.username.value, password: self.password.value)
@@ -45,7 +54,7 @@ public class LoginViewModel {
             }).disposed(by: disposeBag)
     }
     
-    private func subscribeForgotPassword() {
+    public func forgetPassword() {
         forgotPasswordTrigger.asObservable()
             .subscribe(onNext: { [unowned self] (email) in
                 let endpoint = AuthenticationEndpoint.forgotPassword(email: email)

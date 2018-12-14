@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 extension UIColor {
     
     convenience init(red: Int, green: Int, blue: Int) {

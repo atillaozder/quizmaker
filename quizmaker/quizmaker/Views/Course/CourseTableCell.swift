@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// :nodoc:
 public class CourseTableCell: UITableViewCell {
     
     let nameLabel: UILabel = {

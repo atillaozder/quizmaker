@@ -4,14 +4,21 @@ import RxSwift
 
 public class RegisterViewController: UIViewController, KeyboardHandler {
     
-    private let viewModel = RegisterViewModel()
+    let viewModel = RegisterViewModel()
+    
+    /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// :nodoc:
     private let userTypes: [UserType] = [.normal, .instructor, .student]
     
+    /// :nodoc:
     public let scrollView: UIScrollView = UIScrollView()
+    
+    /// :nodoc:
     public let contentView: UIView = UIView()
     
+    /// :nodoc:
     private let usernameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Username*"
@@ -31,14 +38,17 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private lazy var usernameErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: usernameErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var usernameErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email*"
@@ -58,14 +68,17 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private lazy var emailErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: emailErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var emailErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let firstNameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "First Name*"
@@ -85,14 +98,17 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private lazy var firstNameErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: firstNameErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var firstNameErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let lastNameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Last Name*"
@@ -112,14 +128,17 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private lazy var lastNameErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: lastNameErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var lastNameErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Password*"
@@ -145,14 +164,17 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private lazy var passwordErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: passwordErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var passwordErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let studentIdTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Student ID*"
@@ -167,6 +189,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         return tf
     }()
     
+    /// :nodoc:
     private var selectedRow: Int = 0 {
         willSet {
             if userTypes[newValue] == .student {
@@ -179,12 +202,14 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /// :nodoc:
     private var textField: UITextField = {
         let tf = UITextField()
         tf.tag = 6
         return tf
     }()
     
+    /// :nodoc:
     private lazy var pickerView: UIPickerView = {
         let pv = UIPickerView()
         pv.dataSource = self
@@ -194,6 +219,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         return pv
     }()
     
+    /// :nodoc:
     private lazy var pickerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("User Type: Normal", for: .normal)
@@ -205,36 +231,43 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         return button
     }()
     
+    /// :nodoc:
     private lazy var studentIdErrorWrapper: UIView = {
         return UIView.errorWrapperView(forLabel: studentIdErrorLabel)
     }()
     
+    /// :nodoc:
     private lazy var studentIdErrorLabel: UILabel = {
         return UILabel.uiErrorLabel()
     }()
     
+    /// :nodoc:
     private let registerButton: IndicatorButton = {
         let button = IndicatorButton(title: "Sign Up")
         button.titleLabel?.font = .boldSystemFont(ofSize: 15)
         return button
     }()
     
+    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.setup()
         self.bindUI()
     }
     
+    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addObservers()
     }
     
+    /// :nodoc:
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeObservers()
     }
     
+    /// :nodoc:
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateContent()
@@ -242,7 +275,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         registerButton.roundCorners(.allCorners, radius: registerButton.frame.size.height / 2)
     }
     
-    private func setup() {
+    public func setup() {
         self.view.backgroundColor = UIColor(red: 59, green: 89, blue: 152)
         setupPickerView()
         usernameTextField.delegate = self
@@ -342,6 +375,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:))))
     }
     
+    /// :nodoc:
     private func setupPickerView() {
         textField.isHidden = true
         view.addSubview(textField)
@@ -363,7 +397,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         textField.inputAccessoryView?.backgroundColor = .white
     }
     
-    private func bindUI() {
+    public func bindUI() {
         usernameTextField.rx.text
             .orEmpty
             .bind(to: viewModel.username)
@@ -450,18 +484,21 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /// :nodoc:
     @objc
     private func showPasswordButtonTapped(_ sender: UIButton) {
         passwordTextField.isSecureTextEntry = !passwordTextField.isSecureTextEntry
         sender.tintColor = passwordTextField.isSecureTextEntry ? .lightGray : UIColor.AppColors.main.rawValue
     }
     
+    /// :nodoc:
     @objc
     private func openPickerView() {
         textField.becomeFirstResponder()
         pickerView.selectRow(selectedRow, inComponent: 0, animated: false)
     }
     
+    /// :nodoc:
     @objc
     private func closePickerView() {
         selectedRow = self.pickerView.selectedRow(inComponent: 0)
@@ -469,12 +506,14 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         textField.resignFirstResponder()
     }
     
+    /// :nodoc:
     @objc
     private func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         viewModel.userType.accept(userTypes[selectedRow])
         self.view.endEditing(true)
     }
     
+    /// :nodoc:
     @objc
     private func loginRedirect(_ sender: UITapGestureRecognizer) {
         DispatchQueue.main.async {
@@ -484,6 +523,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         self.dismiss(animated: true, completion: nil)
     }
     
+    /// :nodoc:
     private func handleError(_ response: RegisterErrorResponse) {
         
         if let username = response.username?.first {
@@ -517,6 +557,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /// :nodoc:
     private func clearFields() {
         selectedRow = 0
         studentIdTextField.isHidden = true
@@ -543,6 +584,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
     }
 }
 
+/// :nodoc:
 extension RegisterViewController: UITextFieldDelegate {
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == firstNameTextField || textField == lastNameTextField {
@@ -569,7 +611,7 @@ extension RegisterViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: Picker View Data Source
+/// :nodoc:
 extension RegisterViewController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -580,7 +622,7 @@ extension RegisterViewController: UIPickerViewDataSource {
     }
 }
 
-// MARK: Picker View Delegate
+/// :nodoc:
 extension RegisterViewController: UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRow = row

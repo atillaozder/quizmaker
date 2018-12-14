@@ -1,10 +1,12 @@
 
 import RxDataSources
 
+/// :nodoc:
 public enum QuizSectionModel {
     case quiz(item: Quiz)
 }
 
+/// :nodoc:
 extension QuizSectionModel: SectionModelType {
     public typealias Item = Quiz
     

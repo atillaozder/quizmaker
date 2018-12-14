@@ -1,12 +1,14 @@
 
 import Foundation
 
+/// :nodoc:
 public class SessionDelegate: NSObject {
     override init() {
         super.init()
     }
 }
 
+/// :nodoc:
 extension SessionDelegate: URLSessionDelegate {
     public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         print("Did receive challenge \(challenge.protectionSpace.authenticationMethod)")
@@ -17,6 +19,7 @@ extension SessionDelegate: URLSessionDelegate {
     }
 }
 
+/// :nodoc:
 extension SessionDelegate: URLSessionTaskDelegate {
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
