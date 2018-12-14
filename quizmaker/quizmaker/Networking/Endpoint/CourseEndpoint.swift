@@ -1,9 +1,42 @@
 
 import Foundation
 
+/// An endpoint provider to communicate with the API for performing course tasks such as retrieve, create, update or delete.
 public enum CourseEndpoint {
+    /**
+     Requests for retrieving courses which is owned by logged instructor.
+     
+     - Precondition: Must be called by instructor.
+     
+     - Postcondition:
+     API returns an array that contains courses of the logged instructor.
+     */
     case owner
+    
+    /**
+     Requests for retrieving courses which is owned by logged instructor.
+     
+     - Parameters:
+        - courseID: The identifier of the course instance.
+        - students: An user array who represents that students who will be added to the course.
+     
+     - Precondition: Must be called by instructor.
+     - Precondition: `students` must be non-nil and the size must be greater than 0.
+     - Precondition: `courseID` must be non-nil and greater than 0.
+     
+     - Postcondition:
+     Given students will be added to the course if they are valid.
+     */
     case appendStudent(courseID: Int, students: [User])
+    
+    /**
+     Requests for retrieving all courses which contains logged student.
+     
+     - Precondition: Must be called by student.
+     
+     - Postcondition:
+     API returns either an empty array or an array that contains courses.
+     */
     case myLectures
 }
 

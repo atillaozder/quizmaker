@@ -14,6 +14,8 @@ public enum AuthenticationEndpoint {
         - `username` must be non-nil
         - `password` must be non-nil
      
+     - Postcondition:
+     User will logs into the system.
      */
     case login(username: String, password: String)
     
@@ -26,8 +28,11 @@ public enum AuthenticationEndpoint {
      - Precondition:
         - `user` must be non-nil
      
+     - Postcondition:
+     If request is successfull, user registers to the system.
+     
      - SeeAlso:
-        [SignUp](https://example.com)
+     `SignUp`
      */
     case register(user: SignUp)
     
@@ -39,6 +44,9 @@ public enum AuthenticationEndpoint {
      
      - Precondition:
         - `email` must be non-nil
+     
+     - Postcondition:
+     If the given email will be found in the system, an email that holds a link that redirects user to reset his password. Otherwise, API will return HTTP400 Bad Request.
      */
     case forgotPassword(email: String)
 }

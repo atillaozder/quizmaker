@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// :nodoc:
 public protocol ErrorResponse {
     var error: String { get }
     var errorDesc: String { get }

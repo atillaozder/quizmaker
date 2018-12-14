@@ -1,18 +1,49 @@
 
 import Foundation
 
+/// A struct that holds quiz informations.
 public struct Quiz: Codable {
+    
+    /// Holds the identifier of the quiz owner.
     let ownerID: Int
+    
+    /// Holds the identifier of the quiz.
     var id: Int
-    var name, ownerName: String
+    
+    /// Holds the name of the quiz.
+    var name: String
+    
+    /// Holds the owner name of the quiz.
+    var ownerName: String
+    
+    /// Holds the descriptions of the quiz if any.
     let description: String?
+    
+    /// Holds the course name of the quiz if any.
     let courseName: String?
-    let start, end: Date
+    
+    /// Holds the start date of the quiz.
+    let start: Date
+    
+    /// Holds the end date of the quiz.
+    let end: Date
+    
+    /// Holds the information about quiz will be graded or not.
     let beGraded: Bool
+    
+    /// Holds the percentage of the quiz.
     var percentage: Double
+    
+    /// Holds the information about quiz is private or not.
     let isPrivate: Bool
+    
+    /// Holds the participants of the quiz.
     let participants: [User]
+    
+    /// Holds the questions of the quiz.
     var questions: [Question]
+    
+    /// Holds the course id of the quiz if any.
     let courseID: Int?
     
     /// :nodoc:
@@ -25,13 +56,46 @@ public struct Quiz: Codable {
         return convertDateString(date: end)
     }
     
-    private func convertDateString(date: Date) -> String {
+    /**
+    Converts given date to string.
+     
+     - Parameters:
+        - date: Date that need to be converted.
+     
+     - Precondition: `date` must be non-nil.
+     - Postcondition: Date will be converted to string.
+     - Returns:
+        String representation of the date.
+     */
+    func convertDateString(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         return dateFormatter.string(from: date)
     }
     
+    /**
+     Constructor of the class
+     
+     - Parameters:
+        - name: Name of the quiz.
+        - start: Start date of the quiz.
+        - end: End date of the quiz.
+        - beGraded: Specify whether quiz will be graded or not.
+        - questions: An array of questions.
+        - courseID: Course identifier.
+        - percentage: Percentage of the quiz.
+        - description: Description of the quiz.
+     
+     - Precondition: `beGraded` must be non-nil.
+     - Precondition: `end` must be non-nil.
+     - Precondition: `start` must be non-nil.
+     - Precondition: `name` must be non-nil.
+     - Precondition: `questions` must be non-nil.
+     - Precondition: `questions` size must be greater than 0.
+     
+     - Postcondition: An object will be created.
+     */
     init(name: String, start: Date, end: Date, beGraded: Bool, questions: [Question], courseID: Int?, percentage: Double?, description: String?) {
         self.name = name
         self.start = start
@@ -64,6 +128,7 @@ public struct Quiz: Codable {
         case courseID = "course"
     }
     
+    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)

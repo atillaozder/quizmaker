@@ -3,11 +3,15 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+/**
+ The CourseRemoveStudentViewModel is a canonical representation of the CourseRemoveStudentView. That is, the CourseRemoveStudentViewModel provides a set of interfaces, each of which represents a UI component in the CourseRemoveStudentView.
+ */
 public class CourseRemoveStudentViewModel {
     
     /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// Represents array of students that changes over time.
     let students: BehaviorRelay<[User]>
     
     /// :nodoc:
@@ -25,6 +29,17 @@ public class CourseRemoveStudentViewModel {
     /// :nodoc:
     let removeStudentTrigger: PublishSubject<Int>
     
+    /**
+     Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
+     
+     - Parameters:
+        - course: Instance of course helps to request to API when we remove students from it.
+     
+     - Precondition: `course` must be non-nil.
+     
+     - Postcondition:
+     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     */
     init(course: Course) {
         self.students = BehaviorRelay(value: course.students)
         success = PublishSubject()
@@ -54,6 +69,21 @@ public class CourseRemoveStudentViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /**
+     Removes the given students from the course.
+     
+     - Parameters:
+        - endpoint: CourseEndpoint instance.
+        - students: An array of students.
+     
+     - Precondition: `students` must be non-nil.
+     - Precondition: `endpoint` must be non-nil.
+     - Precondition: `students` size must be greater than 0.
+     - Precondition: `students` must be in the list of course students.
+
+     - Postcondition:
+     If the request will be successfully done, given students will be removed from the course.
+     */
     func removeStudent(_ endpoint: CourseEndpoint, students: [User]) {
         NetworkManager.shared.requestJSON(endpoint)
             .subscribe(onNext: { (result) in

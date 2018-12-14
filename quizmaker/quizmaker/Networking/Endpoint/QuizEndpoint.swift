@@ -1,19 +1,169 @@
 
 import Foundation
 
+/// An endpoint provider to communicate with the API for performing quiz tasks such as retrieve, create, update or delete.
 public enum QuizEndpoint {
+    /**
+     Requests for retrieving public quizzes.
+     
+     - Postcondition:
+     API returns an array that contains public quizzes.
+     */
     case all
+    
+    /**
+     Requests for retrieving quizzes for specific course.
+     
+     - Parameters:
+        - id: The identifier of the course.
+     
+     - Precondition: Must be called by either instructor or student.
+     - Precondition: `id` must be non-nil and greater than 0.
+     
+     - Postcondition:
+     API returns an array that contains quizzes.
+     */
     case course(id: Int)
+    
+    /**
+     Requests for retrieving specific quiz.
+     
+     - Parameters:
+        - quizID: The identifier of the quiz.
+     
+     - Precondition: `quizID` must be non-nil and greater than 0.
+     
+     - Postcondition:
+     API returns the quiz detail.
+     */
     case detail(quizID: Int)
+    
+    /**
+     Requests for deleting specific quiz.
+     
+     - Parameters:
+        - quizID: The identifier of the quiz.
+     
+     - Precondition: Must be called by only the user who owns that quiz.
+     - Precondition: `id` must be non-nil and greater than 0.
+     
+     - Postcondition:
+     API will delete the quiz if it is not started or finished. Otherwise, API returns HTTP400 Bad Request.
+     */
     case delete(quizID: Int)
+    
+    /**
+     Requests for retrieving participants of the specified quiz.
+     
+     - Parameters:
+        - quizID: The identifier of the quiz.
+     
+     - Precondition: Must be called by only the user who owns that quiz.
+     - Precondition: `id` must be non-nil and greater than 0.
+     
+     - Postcondition:
+     API will returns an array of participants.
+     */
     case participants(quizID: Int)
+    
+    /**
+     Performs creation of given quiz instance.
+     
+     - Parameters:
+        - quiz: The quiz instance.
+     
+     - Precondition: `quiz` must be non-nil
+     
+     - Postcondition:
+     Given quiz will be created and saved if it is valid. Otherwise, API will return HTTP400 Bad Request.
+     
+     - SeeAlso:
+     `Quiz`
+     */
     case create(quiz: Quiz)
+    
+    /**
+     Updates the given quiz.
+     
+     - Parameters:
+        - quiz: The quiz instance.
+     
+     - Precondition: `quiz` must be non-nil
+     
+     - Postcondition:
+     Given quiz will be updated and saved if it is valid. Otherwise, API will return HTTP400 Bad Request.
+     
+     - SeeAlso:
+     `Quiz`
+     */
     case update(quiz: Quiz)
+    
+    /**
+     Requests for retrieving quizzes that was created by logged user.
+     
+     - Postcondition:
+     API returns an array of quizzes if user has any. Otherwise, an empty array will be returned.
+     */
     case owner
+    
+    /**
+     Requests for retrieving quizzes that was appended earlier and finished.
+     
+     - Postcondition:
+     API returns an array of quizzes.
+     */
     case participantEnd
+    
+    /**
+     Requests for retrieving quizzes that was appended earlier and still waiting to be finished.
+     
+     - Postcondition:
+     API returns an array of quizzes.
+     */
     case participantWaiting
+    
+    /**
+     Requests for retrieving answers of logged user for specified quiz.
+     
+     - Parameters:
+        - quizID: The identifier of the quiz.
+     
+     - Precondition: `quizID` must be non-nil and greater than 0.
+     - Precondition: `quiz` must be finished.
+     
+     - Postcondition:
+     API returns an array of answers.
+     */
     case participantAnswer(quizID: Int)
+    
+    /**
+     Requests for retrieving answers of the specified user for specified quiz.
+     
+     - Parameters:
+        - quizID: The identifier of the quiz.
+        - userID: The identifier of the user.
+     
+     - Precondition: `quizID` must be non-nil and greater than 0.
+     - Precondition: `userID` must be non-nil and greater than 0.
+     - Precondition: `quiz` must be finished.
+     
+     - Postcondition:
+     API returns an array of answers.
+     */
     case ownerParticipantAnswer(quizID: Int, userID: Int)
+    
+    /**
+     Requests for appending a quiz if it is not private and not finished yet.
+     
+     - Parameters:
+        - quizID: The identifier of the quiz.
+     
+     - Precondition: `quizID` must be non-nil and greater than 0.
+     - Precondition: `quiz` must not be finished.
+     
+     - Postcondition:
+     Logged user will append the quiz if it is valid. Otherwise an error will be returned.
+     */
     case append(quizID: Int)
 }
 

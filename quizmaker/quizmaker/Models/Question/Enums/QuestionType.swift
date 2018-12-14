@@ -1,9 +1,16 @@
 
 import Foundation
 
+/// An enumeration designated to specify question type.
 public enum QuestionType: String {
+    
+    /// question is multichoice.
     case multichoice = "multichoice"
+    
+    /// question is truefalse.
     case truefalse = "truefalse"
+    
+    /// question is text.
     case text = "text"
     
     /// :nodoc:

@@ -167,6 +167,7 @@ extension UIView {
     }
 }
 
+/// :nodoc:
 extension UILabel {
     
     static func uiLabel(_ numberOfLines: Int = 0,

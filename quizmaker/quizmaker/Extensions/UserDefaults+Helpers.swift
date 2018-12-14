@@ -29,6 +29,12 @@ extension UserDefaults {
         return self.string(forKey: "type")
     }
     
+     /**
+     Controls if the user is logged into the system by checking defaults.
+     
+     - Returns: true or false
+    
+     */
     func isLogged() -> Bool {
         return self.bool(forKey: "isLogged")
     }
@@ -98,6 +104,9 @@ extension UserDefaults {
         self.set(gender, forKey: "gender")
     }
     
+    /**
+     When the user logs out, it finds all attributes that was saved to defaults and removes each of them. Also, sets isLogged boolean value to false.
+     */
     func logout() {
         self.set(false, forKey: "isLogged")
         self.removeObject(forKey: "id")

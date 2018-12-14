@@ -1,12 +1,37 @@
 
 import Foundation
 
+/// A struct that holds quiz participant informations.
 public struct Participant: Codable {
+    
+    /// Holds the participant id.
     let id: Int
-    let username, firstName, lastName, email: String
+    
+    /// Holds the participant username.
+    let username: String
+    
+    /// Holds the participant first name.
+    let firstName: String
+    
+    /// Holds the participant last name.
+    let lastName: String
+    
+    /// Holds the participant email.
+    let email: String
+    
+    /// Holds the participant is active status whether it is deleted or not.
     let isActive: Bool
+    
+    /// Holds the participant register date.
     let dateJoined: String
-    let userType, gender: String
+    
+    /// Holds the participant type (student, or user).
+    let userType: String
+    
+    /// Holds the participant gender.
+    let gender: String
+    
+    /// Holds the participant student id.
     let studentID: String?
     
     /// :nodoc:

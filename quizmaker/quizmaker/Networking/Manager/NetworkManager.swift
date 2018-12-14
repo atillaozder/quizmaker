@@ -2,15 +2,24 @@
 import Foundation
 import RxSwift
 
+/// Custom JSON typealias. Basically it is a dictionary keys are String and values could be Any
+/// - Precondition: Keys must be String.
 public typealias JSON = [String: Any]
+
+/// Custom JSONResponse typealias. A result object T that is the parameter of success will be JSON and U where U: Error will be NetworkError.
+/// - SeeAlso:
+/// `Result`
 public typealias JSONResponse = Result<JSON, NetworkError>
 
+/// API request singleton manager class.
 public final class NetworkManager {
     
     private typealias RequestCompletion = (_ data: Data?, _ error: NetworkError?) -> Void
     private typealias NetworkErrorCompletionBlock = (NetworkError) -> Void
     
     private let router = NetworkRouter()
+    
+    /// Singleton shared object.
     static let shared = NetworkManager()
     
     private init() { }
@@ -20,13 +29,31 @@ public final class NetworkManager {
         router.invalidateSession()
     }
     
+    /**
+     Cancels the current router request.
+     
+     - Postcondition: Routing request will be cancelled.
+    */
     public func cancel() {
         router.cancel()
     }
     
-    public func request<T: Decodable>(_ endpoint: EndpointType,
-                               _ success: T.Type,
-                               _ type: ErrorType = .api) -> Observable<Result<T, NetworkError>> {
+    /**
+     Request was fired through router.
+     
+     - Parameters:
+        - endpoint: Specify the shape of the url request. For instance, where will be the destination.
+        - success: When the request is successfull and response is retrieved, it will be mapped to success object type.
+        - type: Specify if an error occupied which type should need to be controlled.
+     
+     - Precondition: `endpoint` must be non-nil.
+     - Precondition: `success` must conforms decodable protocol.
+     
+     - Postcondition: An URLSession request will be fired and mapped object will be returned.
+     
+     - Returns: An observable of result object.
+     */
+    public func request<T: Decodable>(_ endpoint: EndpointType, _ success: T.Type, _ type: ErrorType = .api) -> Observable<Result<T, NetworkError>> {
         
         return Observable<Result<T, NetworkError>>.create({ [weak self] observer in
             guard let strongSelf = self else { return Disposables.create() }
@@ -57,6 +84,19 @@ public final class NetworkManager {
         })
     }
     
+    /**
+     Request was fired through router.
+     
+     - Parameters:
+        - endpoint: Specify the shape of the url request. For instance, where will be the destination.
+        - type: Specify if an error occupied which type should need to be controlled.
+     
+     - Precondition: `endpoint` must be non-nil.
+     
+     - Postcondition: An URLSession request will be fired and JSON response will be returned.
+     
+     - Returns: An observable of JSONResponse.
+     */
     public func requestJSON(_ endpoint: EndpointType,
                      _ type: ErrorType = .api) -> Observable<JSONResponse> {
         

@@ -3,10 +3,14 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+/**
+ The QuizCreateViewModel is a canonical representation of the QuizCreateView. That is, the QuizCreateViewModel provides a set of interfaces, each of which represents a UI component in the QuizCreateView.
+ */
 public class QuizCreateViewModel {
     
     /// :nodoc:
     private let disposeBag = DisposeBag()
+    
     /// :nodoc:
     var currentIndex = 10000
     
@@ -16,13 +20,28 @@ public class QuizCreateViewModel {
     /// :nodoc:
     let group = DispatchGroup()
     
+    /// Represents a quiz name that changes over time.
     let name: BehaviorRelay<String>
+    
+    /// Represents a description that changes over time.
     let desc: BehaviorRelay<String>
+    
+    /// Represents a start date that changes over time.
     let start: BehaviorRelay<Date?>
+    
+    /// Represents an end date that changes over time.
     let end: BehaviorRelay<Date?>
+    
+    /// Represents is graded or not that changes over time.
     let beGraded: BehaviorRelay<Bool>
+    
+    /// Represents a course identifier that changes over time.
     let course: BehaviorRelay<Int?>
+    
+    /// Represents a percentage that changes over time.
     let percentage: BehaviorRelay<Double?>
+    
+    /// Represents array of questions that changes over time.
     let questions: BehaviorRelay<[Question]>
     
     /// :nodoc:
@@ -46,6 +65,12 @@ public class QuizCreateViewModel {
     /// :nodoc:
     let courses: PublishSubject<[Course]>
     
+    /**
+     Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
+     
+     - Postcondition:
+     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     */
     init() {
         percentage = BehaviorRelay(value: nil)
         updated = PublishSubject()
@@ -97,6 +122,14 @@ public class QuizCreateViewModel {
         self.questionsBefore.accept(quiz.questions)
     }
     
+    /**
+     Fires an HTTP GET API request to the given endpoint. Response will be converted to observable of needed object.
+     
+     - Postcondition:
+     API request will be send and after getting response, it will be returned. If an error occupied, error event will be fired.
+     
+     - Returns: Observable<[Course]>
+     */
     public func fetch() -> Observable<[Course]> {
         return Observable.create { [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }
@@ -134,6 +167,22 @@ public class QuizCreateViewModel {
         }
     }
     
+    /**
+     Performs creation of the quiz if validations are ok.
+     
+     - Parameters:
+        - endpoint: QuizEndpoint instance.
+     
+     - Precondition: `quiz` must be non-nil.
+     - Precondition: `quiz` name must not contains special characters.
+     - Precondition: `quiz` start date must be smaller than end date.
+     - Precondition: `quiz` start date must be bigger than today's date.
+     - Precondition: If logged user is instructor `quiz` course must be non-nil.
+     - Precondition: `quiz` percentage must be greater than or equal to 0.
+     
+     - Postcondition:
+     Quiz will be created if the request will be successfull.
+     */
     public func create(_ endpoint: QuizEndpoint) {
         NetworkManager.shared.requestJSON(endpoint, .quizCreate)
             .subscribe(onNext: { [weak self] (result) in
@@ -154,6 +203,23 @@ public class QuizCreateViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /**
+     Updates the given quiz if validations are ok.
+     
+     - Parameters:
+        - quiz: Quiz instance that will be updated.
+     
+     - Precondition: `quiz` must be non-nil.
+     - Precondition: `quiz` name must not contains special characters.
+     - Precondition: `quiz` must not be started.
+     - Precondition: `quiz` start date must be smaller than end date.
+     - Precondition: `quiz` start date must be bigger than today's date.
+     - Precondition: If logged user is instructor `quiz` course must be non-nil.
+     - Precondition: `quiz` percentage must be greater than or equal to 0.
+
+     - Postcondition:
+     Quiz will be updated if the request will be successfull.
+     */
     public func update(_ quiz: Quiz) {
         var created: [Question] = []
         var updated: [Question] = []

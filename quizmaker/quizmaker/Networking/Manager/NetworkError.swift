@@ -12,41 +12,119 @@ public enum ErrorType {
     case quizCreate
 }
 
+/**
+ Result of the API Request. If response status code is in between 199 and 300 success case will be used otherwise failure case will be used.
+ */
 public enum Result<T, U> where U: Error {
+    /**
+     Represents request was successfull.
+     
+     - Parameters: `T` a generic response. Could be JSON or any object.
+     */
     case success(T)
+    
+    /**
+     Represents request was fail.
+     
+     - Parameters: `U` a generic response where must be an instance of Error class.
+     */
     case failure(U)
 }
 
+/**
+ Custom error enumeration used in API calls inherits from Swift.Error class.
+ */
 public enum NetworkError: Error {
+    
+    /// Request was failed.
     case requestFailed
+    
+    /// Data from API was invalid.
     case invalidData
+    
+    /// Response was unsuccessfull.
     case responseUnsuccessfull
+    
+    /// Logged user should logs out immediately.
     case shouldLogout
+    
+    /// An error occupied request should retry.
     case shouldRetry
+    
+    /// :nodoc:
     case client(ClientError)
+    
+    /// :nodoc:
     case api(response: APIErrorResponse)
+    
+    /// :nodoc:
     case apiMessage(response: ErrorMessage)
+    
+    /// :nodoc:
     case auth(AuthAPIError)
+    
+    /// :nodoc:
     case update(UpdateAPIError)
+    
+    /// :nodoc:
     case quiz(QuizAPIError)
     
+    /// Indicates an error occupied from the client side.
     public enum ClientError: Error {
+        
+        /// Data could not be decoded into the Codable object.
         case jsonDecodingFailure
+        
+        /// Response did not serialize into JSON.
         case jsonSerializationFailure
+        
+        /// Casting from JSON object was fail.
         case jsonCastingFailure
     }
     
+    /// Custom authentication error response.
     public enum AuthAPIError: Error {
+        
+        /**
+         Login request was fail.
+         - Parameters:
+            - response: login error response.
+         */
         case login(response: FieldErrorResponse)
+        
+        /**
+         Register request was fail.
+         - Parameters:
+            - response: register error response.
+         */
         case register(response: RegisterErrorResponse)
     }
     
+    /// Custom quiz error response
     public enum QuizAPIError: Error {
+        /**
+         Create quiz request was fail.
+         - Parameters:
+            - response: create quiz error response.
+         */
         case create(response: QuizCreateErrorResponse)
     }
     
+    /// Custom update user error response.
     public enum UpdateAPIError: Error {
+        
+        /**
+         Change password request was fail.
+         - Parameters:
+            - response: change password error response.
+         */
         case changePassword(response: ChangePasswordErrorResponse)
+        
+        /**
+         Edit profile request was fail.
+         - Parameters:
+            - response: edit profile error response.
+         */
         case editProfile(response: EditProfileErrorResponse)
     }
     

@@ -3,9 +3,15 @@ import Foundation
 import RxCocoa
 import RxSwift
 
+/**
+ The LoginViewModel is a canonical representation of the LoginView. That is, the LoginViewModel provides a set of interfaces, each of which represents a UI component in the LoginView.
+ */
 public class LoginViewModel {
     
+    /// Represents a username that changes over time.
     let username: BehaviorRelay<String>
+    
+    /// Represents a password that changes over time.
     let password: BehaviorRelay<String>
     
     /// :nodoc:
@@ -26,6 +32,12 @@ public class LoginViewModel {
     /// :nodoc:
     let disposeBag = DisposeBag()
     
+    /**
+     Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
+     
+     - Postcondition:
+     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     */
     init() {
         username = BehaviorRelay(value: "")
         password = BehaviorRelay(value: "")
@@ -37,6 +49,15 @@ public class LoginViewModel {
         login()
     }
     
+    /**
+     Fires a login request to the API.
+     
+     - Precondition: `username` must be non-nil.
+     - Precondition: `password` must be non-nil.
+
+     - Postcondition:
+     API request will be send and after getting response, it will be returned to the controller. If an error occupied, error event will be fired. User will log into the system.
+     */
     public func login() {
         loginTrigger.asObservable()
             .subscribe(onNext: { [unowned self] () in
@@ -54,6 +75,16 @@ public class LoginViewModel {
             }).disposed(by: disposeBag)
     }
     
+    /**
+     Fires a forget password request to the API.
+     
+     - Precondition: email must be defined by user.
+     - Precondition: email must be valid.
+     - Precondition: email must be non-nil.
+
+     - Postcondition:
+     API request will be send and after getting response, it will be returned to the controller. If an error occupied, error event will be fired. User gets an email that contains a link to reset password.
+     */
     public func forgetPassword() {
         forgotPasswordTrigger.asObservable()
             .subscribe(onNext: { [unowned self] (email) in

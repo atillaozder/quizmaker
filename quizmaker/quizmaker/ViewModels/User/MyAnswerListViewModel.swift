@@ -3,6 +3,9 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+/**
+ The MyAnswerListViewModel is a canonical representation of the MyAnswerListView. That is, the MyAnswerListViewModel provides a set of interfaces, each of which represents a UI component in the MyAnswerListView.
+ */
 public class MyAnswerListViewModel {
     
     /// :nodoc:
@@ -17,8 +20,18 @@ public class MyAnswerListViewModel {
     /// :nodoc:
     let failure: PublishSubject<NetworkError>
     
+    /**
+     Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
+     
+     - Parameters:
+        - quizID: The identifier of quiz that helps fetching the objects.
+     
+     - Precondition: `quizID` must be non-nil.
+     
+     - Postcondition:
+     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     */
     init(quizID: Int) {
-        
         answers = BehaviorRelay(value: [])
         loadPageTrigger = PublishSubject()
         failure = PublishSubject()
@@ -32,6 +45,18 @@ public class MyAnswerListViewModel {
             .disposed(by: disposeBag)
     }
     
+    /**
+     Fires an HTTP GET API request to the given endpoint. Response will be converted to observable of needed object.
+     
+     - Parameters:
+        - endpoint: An `EndpointType` instance.
+     
+     - Precondition: `endpoint` must be non-nil.
+     - Postcondition:
+     API request will be send and after getting response, it will be returned. If an error occupied, error event will be fired.
+     
+     - Returns: Observable<[ParticipantAnswer]>
+     */
     public func fetch(_ endpoint: QuizEndpoint) -> Observable<[ParticipantAnswer]> {
         return Observable.create({ [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }

@@ -1,11 +1,44 @@
 
 import Foundation
 
+/**
+ A completion block that will be used after request.
+ 
+ - Parameters:
+    - data: data contains bytes that was returned from API.
+    - response: URLResponse contains body, statusCode etc.
+    - error: error that API returns.
+ */
 public typealias RouterCompletion = (_ data: Data?, _ response: URLResponse?, _ error: Error?) -> ()
 
+
+/**
+ An interface that helps to create network layer between API and client.
+ */
 public protocol Router: class {
+    /**
+     URLRequest was set according to endpoint and request will send through URLSession to API. After that completion block will be called to specify that response was received.
+     
+     - Parameters:
+        - endpoint: Endpoint contains all information about sending request.
+        - completion: A RouterCompletion callback.
+     
+     - Postcondition: A request will be send to API.
+     */
     func request(_ endpoint: EndpointType, completion: @escaping RouterCompletion)
+    
+    /**
+     Invalidates and cancels the current URLSession and remove from memory.
+     
+     - Postcondition: Current URLSession will be cancelled and invalidated.
+     */
     func invalidateSession()
+    
+    /**
+     Cancels the current request.
+     
+     - Postcondition: Current API request will be cancelled.
+     */
     func cancel()
 }
 
@@ -66,6 +99,7 @@ public final class NetworkRouter {
     }
 }
 
+/// :nodoc:
 extension NetworkRouter: Router {
     
     public func request(_ endpoint: EndpointType, completion: @escaping RouterCompletion) {

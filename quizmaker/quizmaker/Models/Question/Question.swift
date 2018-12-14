@@ -1,16 +1,40 @@
 
 import Foundation
 
+/// A struct that holds question informations.
 public struct Question: Codable {
+    
+    /// Holds the identifier of the question.
     var id: Int
-    var question, questionType, answer: String
+    
+    /// Holds the question text.
+    var question: String
+    
+    /// Holds the question type.
+    let questionType: String
+    
+    /// Holds the correct answer.
+    let answer: String
+    
+    /// Holds the how many point that question has.
     var point: Int?
+    
+    /// Holds the quiz identifier.
     var quizId: Int?
+    
+    /// For multichoice question type holds the A.
     var A: String?
+    
+    /// For multichoice question type holds the B.
     var B: String?
+    
+    /// For multichoice question type holds the C.
     var C: String?
+    
+    /// For multichoice question type holds the D.
     var D: String?
     
+    /// :nodoc:
     public init() {
         id = 0
         question = ""

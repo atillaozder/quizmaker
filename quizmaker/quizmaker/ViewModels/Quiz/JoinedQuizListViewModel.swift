@@ -2,12 +2,15 @@
 import RxSwift
 import RxCocoa
 
+/**
+ The JoinedQuizListViewModel is a canonical representation of the JoinedQuizListView. That is, the JoinedQuizListViewModel provides a set of interfaces, each of which represents a UI component in the JoinedQuizListView.
+ */
 public class JoinedQuizListViewModel {
     
     /// :nodoc:
     private let disposeBag = DisposeBag()
     
-    /// :nodoc:
+    /// Represents a value that changes over time.
     let items: BehaviorRelay<[QuizSectionModel]>
     
     /// :nodoc:
@@ -19,7 +22,17 @@ public class JoinedQuizListViewModel {
     /// :nodoc:
     var waiting: Bool = false
     
-    /// :nodoc:
+    /**
+     Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
+     
+     - Parameters:
+        - waiting: If true fetch request will be send waiting quizzes otherwise end quizzes will be fetched.
+     
+     - Precondition: `waiting` must be non-nil.
+     
+     - Postcondition:
+     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     */
     init(waiting: Bool) {
         self.waiting = waiting
         items = BehaviorRelay(value: [])
@@ -34,6 +47,18 @@ public class JoinedQuizListViewModel {
             .disposed(by: disposeBag)
     }
     
+    /**
+     Fires an HTTP GET API request to the given endpoint. Response will be converted to observable of needed object.
+     
+     - Parameters:
+        - endpoint: An `EndpointType` instance.
+     
+     - Precondition: `endpoint` must be non-nil.
+     - Postcondition:
+     API request will be send and after getting response, it will be returned. If an error occupied, error event will be fired.
+     
+     - Returns: Observable<[QuizSectionModel]>
+     */
     public func fetch(_ endpoint: QuizEndpoint) -> Observable<[QuizSectionModel]> {
         return Observable.create({ [weak self] (observer) -> Disposable in
             guard let strongSelf = self else { return Disposables.create() }

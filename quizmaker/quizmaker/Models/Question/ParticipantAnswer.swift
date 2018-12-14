@@ -1,12 +1,25 @@
 
 import Foundation
 
+/// A struct that holds answer informations of participant specific question.
 public struct ParticipantAnswer: Codable {
+    
+    /// Holds the identifier of participant answer.
     let id: Int
+    
+    /// Holds the specific question.
     let question: Question
+    
+    /// Holds the answer.
     let answer: String
+    
+    /// Holds the participant identifier.
     let participantID: Int
+    
+    /// Holds the answer is correct or not.
     let isCorrect: Bool?
+    
+    /// Holds the point of answer.
     let point: Int?
     
     /// :nodoc:

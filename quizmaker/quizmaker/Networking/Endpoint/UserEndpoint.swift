@@ -1,9 +1,49 @@
 
 import Foundation
 
+/// An endpoint provider to communicate with the API for performing user tasks such as retrieve, create, update or delete.
 public enum UserEndpoint {
+    
+    /**
+     Updates the given user.
+     
+     - Parameters:
+        - user: The user instance.
+     
+     - Precondition: `user` must be non-nil
+     
+     - Postcondition:
+     Given user will be updated and saved if it is valid. Otherwise, API will return HTTP400 Bad Request.
+     
+     - SeeAlso:
+     `EditProfile`
+     */
     case update(user: EditProfile)
+    
+    /**
+     Changes the password of logged user.
+     
+     - Parameters:
+        - model: The change password instance that holds old and new password.
+     
+     - Precondition: `model` must be non-nil
+     
+     - Postcondition:
+     Logged user's password will be changed and saved if it is valid. Otherwise, API will return HTTP400 Bad Request.
+     
+     - SeeAlso:
+     `ChangePassword`
+     */
     case changePassword(model: ChangePassword)
+    
+    /**
+     Request for retrieving students who registered into the system.
+     
+     - Precondition: Must be called by only the instructors.
+     
+     - Postcondition:
+     API returns an array of students if any otherwise, an empty error will return.
+     */
     case students
 }
 

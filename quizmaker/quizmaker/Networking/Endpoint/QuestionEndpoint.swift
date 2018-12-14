@@ -12,8 +12,11 @@ public enum QuestionEndpoint {
      - Precondition:
         - `question` must be non-nil
      
+     - Postcondition:
+     Given question will be created and saved if it is valid. Otherwise, API will return HTTP400 Bad Request.
+     
      - SeeAlso:
-        [Question](https://example.com)
+     `Question`
      */
     case create(question: Question)
     /**
@@ -25,8 +28,11 @@ public enum QuestionEndpoint {
      - Precondition:
         - `question` must be non-nil
      
+     - Postcondition:
+     Given question will be updated and saved if it is valid. Otherwise, API will return HTTP400 Bad Request.
+     
      - SeeAlso:
-        [Question](https://example.com)
+     `Question`
      */
     case update(question: Question)
     /**
@@ -37,6 +43,9 @@ public enum QuestionEndpoint {
      
      - Precondition:
         - `id` must be greater than 0
+     
+     - Postcondition:
+     Corresponding question will be deleted if it is found. Otherwise, API will return HTTP400 Bad Request.
      */
     case delete(id: Int)
     /**
@@ -51,8 +60,11 @@ public enum QuestionEndpoint {
         - `id` must be greater than 0
         - `finishedIn` must be non-nil
      
+     - Postcondition:
+     Answers for given quiz will be saved and could be monitoring by owner of the quiz or owner of the quiz paper.
+     
      - SeeAlso:
-        [Answer](https://example.com)
+     `Answer`
      */
     case answer(id: Int, finishedIn: String, answers: [Answer])
     /**
@@ -67,8 +79,11 @@ public enum QuestionEndpoint {
         - `quizID` must be greater than 0
         - `userID` must be greater than 0
      
+     - Postcondition:
+     A grade will be set for corresponding user and quiz will be updated.
+     
      - SeeAlso:
-        [Answer](https://example.com)
+     `Answer`
      */
     case validate(quizID: Int, userID: Int, answers: [Answer])
 }

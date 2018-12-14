@@ -1,8 +1,19 @@
 
 import Foundation
 
+/**
+ A helper class to debug and trace the API Request.
+ */
 public final class NetworkLogger {
     
+    /**
+     A helper static method to debug and trace the API Request.
+     
+     - Parameters:
+        - request: URLRequest instance contains information about request.
+     
+     - Postcondition: All request information will be printed in console.
+     */
     static func log(request: URLRequest) {
         let urlString = request.url?.absoluteString ?? ""
         let urlComponents = URLComponents(string: urlString)

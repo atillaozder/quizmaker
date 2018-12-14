@@ -1,9 +1,25 @@
 
 import Foundation
 
+/// A struct that holds user informations.
 public struct User: Codable {
+    
+    /// Holds the user id.
     let id: Int
-    let username, email, firstName, lastName: String
+    
+    /// Holds the user username.
+    let username: String
+    
+    /// Holds the user email.
+    let email: String
+    
+    /// Holds the user first name.
+    let firstName: String
+    
+    /// Holds the user last name.
+    let lastName: String
+    
+    /// Holds the user student id.
     let studentID: String?
     
     /// :nodoc:
