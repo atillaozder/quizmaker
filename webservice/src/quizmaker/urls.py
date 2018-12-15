@@ -18,8 +18,10 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
+    path('docs/', include_docs_urls(title='Quiz Maker')),
     path('admin/', admin.site.urls),
     path('reset/<uidb64>/<token>/',
         auth_views.PasswordResetConfirmView.as_view(

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'question.apps.QuestionConfig',
     'quiz.apps.QuizConfig',
     'rest_framework',
+    'coreapi',
 ]
 
 MIDDLEWARE = [

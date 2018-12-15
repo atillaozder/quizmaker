@@ -31,6 +31,9 @@ from quiz.api.serializers import (
 User = get_user_model()
 
 class QuizEndListAPIView(ListAPIView):
+    """
+    Return a list of ended quizzes.
+    """
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
@@ -38,6 +41,9 @@ class QuizEndListAPIView(ListAPIView):
         return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__lte=timezone.now()).order_by('end')
 
 class QuizWaitingListAPIView(ListAPIView):
+    """
+    Return a list of waiting quizzes.
+    """
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
@@ -45,6 +51,9 @@ class QuizWaitingListAPIView(ListAPIView):
         return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__gt=timezone.now()).order_by('end')
 
 class QuizOwnerListAPIView(ListAPIView):
+    """
+    Return a list of quizzes that was created by request user.
+    """
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
@@ -52,10 +61,16 @@ class QuizOwnerListAPIView(ListAPIView):
         return Quiz.objects.filter(owner=self.request.user).order_by('-end').all()
 
 class QuizRetrieveAPIView(RetrieveAPIView):
+    """
+    Return a quiz with given id.
+    """
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
 class QuizListAPIView(ListAPIView):
+    """
+    Return a list of quizzes either belongs a course or are public.
+    """
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
@@ -67,6 +82,9 @@ class QuizListAPIView(ListAPIView):
             return Quiz.objects.annotate(num_questions=Count('questions')).filter(num_questions__gt=0).filter(is_private=False).filter(end__gt=timezone.now()).order_by('end')
 
 class QuizParticipantsListAPIView(ListAPIView):
+    """
+    Return a list of user who participate in specified quiz.
+    """
     queryset = QuizParticipant.objects.none()
     serializer_class = QuizParticipantSerializer
 
@@ -80,7 +98,9 @@ class QuizParticipantsListAPIView(ListAPIView):
         return super(QuizParticipantsListAPIView, self).get_queryset()
 
 class QuizParticipantAnswerAPIView(APIView):
-
+    """
+    Return a list of answers which belong to the request user for specified quiz
+    """
     def get(self, request, format='json', *args, **kwargs):
         quiz_id = request.GET.get("quiz_id")
         qs = Quiz.objects.all().filter(id=quiz_id)
@@ -121,7 +141,9 @@ class QuizParticipantAnswerAPIView(APIView):
             )
 
 class QuizOwnerGetAnswersAPIView(APIView):
-
+    """
+    Return a list of answers for specified quiz and user.
+    """
     def get(self, request, format='json', *args, **kwargs):
         quiz_id = request.GET.get("quiz_id")
         user_id = request.GET.get("user_id")
