@@ -6,8 +6,10 @@ import RxDataSources
 
 private let courseQuizCell = "courseQuizCell"
 
+/// Provider to list created quizzes.
 public class MyQuizListViewController: UIViewController {
     
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     var viewModel: QuizListViewModel
     
     private let disposeBag = DisposeBag()
@@ -32,10 +34,23 @@ public class MyQuizListViewController: UIViewController {
         self.navigationItem.title = "My Quizzes"
     }
     
+    /**
+     Convenience Constructor of the class.
+     
+     - Parameters:
+        - courseID: the course identifier.
+        - courseName: the course name.
+     
+     - Precondition: `courseID` must be non-nil.
+     - Precondition: `courseID` must be greater than 0.
+     - Precondition: `courseName` must be non-nil.
+     
+     - Postcondition:
+     Controller will be initialized.
+     */
     convenience init(courseID: Int, courseName: String) {
         self.init()
         self.viewModel = QuizListViewModel(courseID: courseID)
-        
         self.navigationItem.title = "\(courseName)'s Quizzes"
     }
     
@@ -63,6 +78,12 @@ public class MyQuizListViewController: UIViewController {
         bindUI()
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         
         let dataSource = RxTableViewSectionedReloadDataSource<QuizSectionModel>.init(configureCell: { (dataSource, tableView, indexPath, quiz) -> UITableViewCell in

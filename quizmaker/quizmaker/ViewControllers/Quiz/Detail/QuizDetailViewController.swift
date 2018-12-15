@@ -8,10 +8,12 @@ private let quizDetailCell = "quizDetailCell"
 private let quizQuestionCell = "quizQuestionCell"
 private let quizParticipantCell = "quizParticipantCell"
 
+/// Provider to retrieve and monitor details of a quiz.
 public class QuizDetailViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     let viewModel: QuizDetailViewModel
     
     private let tableView: UITableView = {
@@ -26,6 +28,17 @@ public class QuizDetailViewController: UIViewController {
         return tv
     }()
     
+    /**
+     Constructor of the class.
+     
+     - Parameters:
+        - quiz: the quiz instance.
+     
+     - Precondition: `quiz` must be non-nil.
+     
+     - Postcondition:
+     Controller will be initialized.
+     */
     init(quiz: Quiz) {
         viewModel = QuizDetailViewModel(quiz: quiz)
         super.init(nibName: nil, bundle: nil)
@@ -65,6 +78,12 @@ public class QuizDetailViewController: UIViewController {
         bindUI()
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         viewModel.loadPageTrigger.onNext(())
         
@@ -218,6 +237,7 @@ extension QuizDetailViewController: QuizParticipantTableCellDelegate {
     }
 }
 
+/// :nodoc:
 extension QuizDetailViewController: PercentageUpdateDelegate {
     func updateQuiz(quiz: Quiz) {
         viewModel.updateQuiz(quiz: quiz)

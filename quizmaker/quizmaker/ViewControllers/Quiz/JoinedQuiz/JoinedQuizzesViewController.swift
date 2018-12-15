@@ -6,11 +6,13 @@ import RxDataSources
 
 private let joinedQuizCell = "joinedQuizCell"
 
+/// Provider to list joined quizzes.
 public class JoinedQuizzesViewController: UIViewController {
     
     /// :nodoc:
     let disposeBag = DisposeBag()
     
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     let viewModel: JoinedQuizListViewModel
     
     private let tableView: UITableView = {
@@ -26,6 +28,7 @@ public class JoinedQuizzesViewController: UIViewController {
         return tv
     }()
     
+    /// :nodoc:
     init(waiting: Bool) {
         viewModel = JoinedQuizListViewModel(waiting: waiting)
         super.init(nibName: nil, bundle: nil)
@@ -56,6 +59,12 @@ public class JoinedQuizzesViewController: UIViewController {
         bindUI()
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         let dataSource = RxTableViewSectionedReloadDataSource<QuizSectionModel>.init(configureCell: { [weak self] (dataSource, tableView, indexPath, quiz) -> UITableViewCell in
             

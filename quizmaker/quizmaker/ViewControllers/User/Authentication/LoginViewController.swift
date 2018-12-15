@@ -2,8 +2,10 @@
 import UIKit
 import RxSwift
 
+/// Provider to login to the system.
 public class LoginViewController: UIViewController, KeyboardHandler {
     
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     let viewModel = LoginViewModel()
     
     /// :nodoc:
@@ -121,6 +123,12 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         registerButton.roundCorners(.allCorners, radius: registerButton.frame.size.height / 2)
     }
     
+    /**
+     Helps to initializes the UI with components. Adds them to the view as child and sets their position.
+     
+     - Postcondition:
+     User Interface will be set and ready to use.
+     */
     public func setup() {
         self.view.backgroundColor = UIColor(red: 59, green: 89, blue: 152)
         usernameOrEmailTextField.delegate = self
@@ -194,6 +202,12 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:))))
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         usernameOrEmailTextField.rx.text
             .orEmpty

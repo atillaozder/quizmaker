@@ -6,6 +6,7 @@ import RxDataSources
 
 private let publicQuizCell = "publicQuizCell"
 
+/// Provider to monitor list of public quizzes.
 public class PublicQuizListViewController: UIViewController, KeyboardHandler {
     
     /// :nodoc:
@@ -16,6 +17,8 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
     
     /// :nodoc:
     let disposeBag = DisposeBag()
+    
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     let viewModel = PublicQuizListViewModel()
     
     private let tableView: UITableView = {
@@ -70,6 +73,12 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         bindUI()
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         let dataSource = RxTableViewSectionedReloadDataSource<QuizSectionModel>(configureCell: { (dataSource, tableView, indexPath, quiz) -> UITableViewCell in
             
@@ -137,14 +146,38 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         removeObservers()
     }
     
+    /**
+     Controls if search bar is empty or not.
+     
+     - Returns:
+     true or false.
+     */
     func searchBarIsEmpty() -> Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
+    /**
+     Controls if search bar is filtering right now. To return true search controller must be active and search bar must not be empty.
+     
+     - Returns:
+     true or false.
+     */
     func isFiltering() -> Bool {
         return searchController.isActive && !searchBarIsEmpty()
     }
     
+    /**
+     It controls the given text to the specified attributes of quiz. If text found in any quiz name for example, the quiz will append in filtered content and monitored in screen. It is a kind of search function.
+     
+     - Parameters:
+        - searchText: Query that is entered by logged user.
+     
+     - Precondition: searchText must be non-nil.
+     - Precondition: searchText must be contains at least one character, number etc. not whitespaces.
+     
+     - Postcondition:
+     If query will found in name, or ownername the quiz will append in filtered content and the user interface refreshed to display filtered content.
+     */
     func filterContentForSearchText(_ searchText: String) {
         let currentContent = viewModel.items.value
         if isFiltering() {

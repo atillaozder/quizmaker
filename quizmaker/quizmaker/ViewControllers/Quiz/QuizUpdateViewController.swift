@@ -8,10 +8,12 @@ protocol PercentageUpdateDelegate: class {
     func updateQuiz(quiz: Quiz)
 }
 
+/// Provider to update a quiz.
 public class QuizUpdateViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     let viewModel: QuizUpdateViewModel
     
     private let percentageTextField: UITextField = {
@@ -24,6 +26,12 @@ public class QuizUpdateViewController: UIViewController {
         tf.keyboardType = .decimalPad
         tf.returnKeyType = .next
         tf.tag = 0
+        let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        icon.image = UIImage(imageLiteralResourceName: "percentage").withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .lightGray
+        icon.contentMode = .right
+        tf.leftViewMode = .always
+        tf.leftView = icon
         return tf
     }()
     
@@ -34,6 +42,18 @@ public class QuizUpdateViewController: UIViewController {
     /// :nodoc:
     weak var delegate: PercentageUpdateDelegate?
     
+    
+    /**
+     Constructor of the class.
+     
+     - Parameters:
+        - quiz: the quiz instance.
+     
+     - Precondition: `quiz` must be non-nil.
+     
+     - Postcondition:
+     Controller will be initialized.
+     */
     init(quiz: Quiz) {
         viewModel = QuizUpdateViewModel(quiz: quiz)
         self.percentageTextField.text = "\(quiz.percentage)"
@@ -61,6 +81,12 @@ public class QuizUpdateViewController: UIViewController {
         bindUI()
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         percentageTextField.rx.text
             .orEmpty

@@ -5,6 +5,7 @@ import RxCocoa
 
 private let studentTableCell = "studentTableCell"
 
+/// Provider to add students to the specific course.
 public class CourseAddStudentViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, KeyboardHandler {
     
     /// :nodoc:
@@ -16,6 +17,7 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
     /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     let viewModel: CourseAddStudentViewModel
     
     /// :nodoc:
@@ -32,6 +34,18 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         return tv
     }()
     
+    /**
+     Constructor of the class.
+     
+     - Parameters:
+        - courseID: the course identifier.
+     
+     - Precondition: `id` must be non-nil.
+     - Precondition: `id` must be greater than 0.
+     
+     - Postcondition:
+     Controller will be initialized.
+     */
     init(courseID: Int) {
         viewModel = CourseAddStudentViewModel(courseID: courseID)
         super.init(nibName: nil, bundle: nil)
@@ -89,6 +103,12 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         bindUI()
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         viewModel.loadPageTrigger.onNext(())
         
@@ -139,14 +159,38 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
         }
     }
     
+    /**
+     Controls if search bar is empty or not.
+     
+     - Returns:
+     true or false.
+     */
     func searchBarIsEmpty() -> Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
+    /**
+     Controls if search bar is filtering right now. To return true search controller must be active and search bar must not be empty.
+     
+     - Returns:
+     true or false.
+     */
     func isFiltering() -> Bool {
         return searchController.isActive && !searchBarIsEmpty()
     }
     
+    /**
+     It controls the given text to the specified attributes of students. If text found in username for example, the user will append in filtered content and monitored in screen. It is a kind of search function.
+     
+     - Parameters:
+        - searchText: Query that is entered by logged user.
+     
+     - Precondition: searchText must be non-nil.
+     - Precondition: searchText must be contains at least one character, number etc. not whitespaces.
+     
+     - Postcondition:
+     If query will found in username, firstname, lastname, email or student id, the user will append in filtered content and the user interface refreshed to display filtered content.
+     */
     func filterContentForSearchText(_ searchText: String) {
         let filteredStudents = viewModel.students.value.filter { (user) -> Bool in
             let query = searchText.lowercased()

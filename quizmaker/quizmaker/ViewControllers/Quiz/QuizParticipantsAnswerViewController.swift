@@ -4,11 +4,13 @@ import RxSwift
 
 private let quizAnswerCell = "quizAnswerCell"
 
+/// Provider to get specific participant answers in a specific quiz.
 public class QuizParticipantAnswersViewController: UIViewController {
     
     /// :nodoc:
     private let disposeBag = DisposeBag()
     
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     let viewModel: ParticipantAnswerViewModel
     
     private let tableView: UITableView = {
@@ -24,6 +26,23 @@ public class QuizParticipantAnswersViewController: UIViewController {
         return tv
     }()
     
+    /**
+     Constructor of the class.
+     
+     - Parameters:
+        - quizID: the quiz identifier.
+        - userID: the user identifier.
+        - name: the user's name.
+     
+     - Precondition: `quizID` must be non-nil.
+     - Precondition: `userID` must be non-nil.
+     - Precondition: `name` must be non-nil.
+     - Precondition: `quizID` must be greater than 0.
+     - Precondition: `userID` must be greater than 0.
+
+     - Postcondition:
+     Controller will be initialized.
+     */
     init(quizID: Int, userID: Int, name: String) {
         viewModel = ParticipantAnswerViewModel(quizID: quizID, userID: userID)
         super.init(nibName: nil, bundle: nil)
@@ -58,6 +77,12 @@ public class QuizParticipantAnswersViewController: UIViewController {
         bindUI()
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         viewModel.failure
             .observeOn(MainScheduler.instance)

@@ -7,6 +7,7 @@ protocol QuestionDelegate: class {
     func getQuestion(question: Question)
 }
 
+/// Provider to create or update questions and add them to the specific quiz.
 public class QuestionCreateViewController: UIViewController, KeyboardHandler {
     
     /// :nodoc:
@@ -263,6 +264,18 @@ public class QuestionCreateViewController: UIViewController, KeyboardHandler {
         return UIView.errorWrapperView(forLabel: pointErrorLabel)
     }()
     
+    /**
+     Constructor of the class.
+     
+     - Parameters:
+        - id: the question identifier.
+     
+     - Precondition: `id` must be non-nil.
+     - Precondition: `id` must be greater than 0.
+     
+     - Postcondition:
+     Controller will be initialized.
+     */
     init(id: Int) {
         super.init(nibName: nil, bundle: nil)
         self.questionID = id
@@ -303,6 +316,12 @@ public class QuestionCreateViewController: UIViewController, KeyboardHandler {
         removeObservers()
     }
     
+    /**
+     Helps to initializes the UI with components. Adds them to the view as child and sets their position.
+     
+     - Postcondition:
+     User Interface will be set and ready to use.
+     */
     public func setup() {
         // setupViews()
         view.addSubview(scrollView)
@@ -386,6 +405,12 @@ public class QuestionCreateViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         let point = pointTextField.rx.text.orEmpty
         let question = questionTextView.rx.text.orEmpty

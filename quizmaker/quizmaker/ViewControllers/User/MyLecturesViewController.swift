@@ -5,9 +5,12 @@ import RxCocoa
 
 private let courseCell = "courseCell"
 
+/// Provider to list own courses.
 public class MyLecturesViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
+    
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     let viewModel = MyLecturesViewModel()
     
     private let tableView: UITableView = {
@@ -46,6 +49,12 @@ public class MyLecturesViewController: UIViewController {
         bindUI()
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         viewModel.items
             .asDriver()

@@ -10,9 +10,12 @@ protocol UpdateQuizDelegate: class {
 
 private let quizCreateQuestionCellId = "quizCreateQuestionCellId"
 
+/// Provider to create a quiz.
 public class QuizCreateViewController: UIViewController, KeyboardHandler {
     
     private let disposeBag = DisposeBag()
+    
+    /// View model that binding occurs when setup done. Provides a set of interfaces for the controller and view.
     var viewModel = QuizCreateViewModel()
     
     /// :nodoc:
@@ -33,7 +36,6 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
     
     /// :nodoc:
     public let contentView = UIView()
-    
     
     private let quizNameTextField: UITextField = {
         let tf = UITextField()
@@ -164,6 +166,12 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         tf.keyboardType = .decimalPad
         tf.returnKeyType = .next
         tf.tag = 0
+//        let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+//        icon.image = UIImage(imageLiteralResourceName: "percentage").withRenderingMode(.alwaysTemplate)
+//        icon.tintColor = .lightGray
+//        icon.contentMode = .right
+//        tf.leftViewMode = .always
+//        tf.leftView = icon
         return tf
     }()
     
@@ -202,6 +210,17 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         self.navigationItem.title = "Create Quiz"
     }
     
+    /**
+     Constructor of the class.
+     
+     - Parameters:
+        - quiz: the quiz instance.
+     
+     - Precondition: `quiz` must be non-nil.
+     
+     - Postcondition:
+     Controller will be initialized.
+     */
     convenience init(quiz: Quiz) {
         self.init()
         viewModel = QuizCreateViewModel(quiz: quiz)
@@ -241,6 +260,12 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         removeObservers()
     }
     
+    /**
+     Helps to initializes the UI with components. Adds them to the view as child and sets their position.
+     
+     - Postcondition:
+     User Interface will be set and ready to use.
+     */
     public func setup() {
         self.view.backgroundColor = .white
         self.navigationItem.setRightBarButton(createButton, animated: true)
@@ -306,6 +331,8 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         
         endDateButton.addTarget(self, action: #selector(openEndDatePicker), for: .touchUpInside)
         
+        let aStackView = UIView.uiStackView(arrangedSubviews: [beGradedButton, percentageTextField], .fillEqually, .fill, .horizontal, 0)
+        
         percentageTextField.isHidden = true
         if UserDefaults.standard.getUserType() == UserType.instructor.rawValue {
             coursePickerView.isHidden = false
@@ -348,8 +375,9 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
          startErrorWrapper,
          endDateButton,
          endErrorWrapper,
-         beGradedButton,
-         percentageTextField,
+         aStackView,
+//         beGradedButton,
+//         percentageTextField,
          percentageErrorWrapper,
          addQuestionButton,
          tableView].forEach { (subview) in
@@ -407,6 +435,12 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         }
     }
     
+    /**
+     Initializes the binding between controller and `viewModel`. After this method runs, UIComponents will bind to the some `viewModel` attributes and likewise `viewModel` attributes bind to some UIComponents. It is also called as two way binding
+     
+     - Postcondition:
+     UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
+     */
     public func bindUI() {
         viewModel.loadPageTrigger.onNext(())
         
@@ -527,10 +561,18 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
                     self.endErrorWrapper.isHidden = true
                 }
                 
-                if beGraded, percentage == nil {
-                    self.percentageErrorLabel.text = "Percentage cannot be empty."
-                    self.percentageErrorWrapper.isHidden = false
-                    return false
+                if beGraded {
+                    if let p = percentage {
+                        if p <= 0 {
+                            self.percentageErrorLabel.text = "Percentage cannot be empty."
+                            self.percentageErrorWrapper.isHidden = false
+                            return false
+                        }
+                    } else {
+                        self.percentageErrorLabel.text = "Percentage cannot be empty."
+                        self.percentageErrorWrapper.isHidden = false
+                        return false
+                    }
                 } else {
                     self.percentageErrorLabel.text = ""
                     self.percentageErrorWrapper.isHidden = true
@@ -827,6 +869,20 @@ extension QuizCreateViewController: UITableViewDelegate {
 }
 
 extension QuizCreateViewController: QuestionDelegate {
+    
+    /**
+     Finds the question in the list of quiz questions and update it.
+     
+     - Parameters:
+        - question: The searched question instance in the list of questions.
+     
+     - Complexity: O(n), where n is the length of the sequence.
+     
+     - Precondition: `question` must be non-nil.
+     
+     - Postcondition:
+     If question will found in the array, it will be updated. Otherwise nothing happens.
+     */
     func getQuestion(question: Question) {
         var value = viewModel.questions.value
         if value.contains(where: { $0.id == question.id }) {

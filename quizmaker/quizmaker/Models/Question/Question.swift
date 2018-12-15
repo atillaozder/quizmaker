@@ -11,10 +11,10 @@ public struct Question: Codable {
     var question: String
     
     /// Holds the question type.
-    let questionType: String
+    var questionType: String
     
     /// Holds the correct answer.
-    let answer: String
+    var answer: String
     
     /// Holds the how many point that question has.
     var point: Int?
