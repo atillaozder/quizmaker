@@ -31,7 +31,7 @@ public class JoinedQuizListViewModel {
      - Precondition: `waiting` must be non-nil.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init(waiting: Bool) {
         self.waiting = waiting

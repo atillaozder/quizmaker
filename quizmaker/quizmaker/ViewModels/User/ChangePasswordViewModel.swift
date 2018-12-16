@@ -33,7 +33,7 @@ public class ChangePasswordViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init() {
         oldPassword = BehaviorRelay(value: "")
@@ -56,6 +56,10 @@ public class ChangePasswordViewModel {
      - Precondition: `confirmPassword` must be non-nil.
      - Precondition: `confirmPassword`must equal to `newPassword`.
      
+     - Invariant: `oldPassword` reference will not change during the execution of this method.
+     - Invariant: `newPassword` reference will not change during the execution of this method.
+     - Invariant: `confirmPassword` reference will not change during the execution of this method.
+
      - Postcondition:
      API request will be send and after getting response, it will be returned to the controller. If an error occupied, error event will be fired. User will change his password.
      */

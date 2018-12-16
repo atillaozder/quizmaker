@@ -54,7 +54,7 @@ public class RegisterViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init() {
         username = BehaviorRelay(value: "")
@@ -83,6 +83,13 @@ public class RegisterViewModel {
      - Precondition: `password` must be non-nil.
      - Precondition: `userType` must be non-nil.
      
+     - Invariant: `username` reference will not change during the execution of this method.
+     - Invariant: `email` reference will not change during the execution of this method.
+     - Invariant: `lastName` reference will not change during the execution of this method.
+     - Invariant: `firstName` reference will not change during the execution of this method.
+     - Invariant: `password` reference will not change during the execution of this method.
+     - Invariant: `userType` reference will not change during the execution of this method.
+
      - Postcondition:
      API request will be send and after getting response, it will be returned to the controller. If an error occupied, error event will be fired. User will register to the system.
      */

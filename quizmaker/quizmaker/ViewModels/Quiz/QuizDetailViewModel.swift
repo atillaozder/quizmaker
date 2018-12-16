@@ -37,7 +37,7 @@ public class QuizDetailViewModel {
      - Precondition: `quiz` must be non-nil.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init(quiz: Quiz) {
         self.quiz = quiz
@@ -125,6 +125,9 @@ public class QuizDetailViewModel {
      - Precondition: `quiz` must not be started or must be finished.
      - Precondition: `quiz` must be created by logged user.
      
+     - Invariant: `quiz` reference will not change during the execution of this method.
+     - Invariant: `questions` reference will not change during the execution of this method.
+
      - Postcondition:
      Quiz will be updated if given quiz is valid. Otherwise update will not done.
      */
@@ -144,6 +147,8 @@ public class QuizDetailViewModel {
      - Precondition: `quiz` must be non-nil.
      - Precondition: `quiz` must not be started or must be finished.
      - Precondition: `quiz` must be created by logged user.
+     
+     - Invariant: `quiz` reference will not change during the execution of this method.
      
      - Postcondition:
      If the `quiz` will found in the system it will be validated. If validation is ok then logged user will append to the quiz and feedback event will be fired. Otherwise, error event will fired.

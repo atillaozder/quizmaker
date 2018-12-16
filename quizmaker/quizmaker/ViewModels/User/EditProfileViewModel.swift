@@ -44,7 +44,7 @@ public class EditProfileViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init() {
         firstname = BehaviorRelay(value: "")
@@ -71,6 +71,11 @@ public class EditProfileViewModel {
      - Precondition: `lastname` must be non-nil.
      - Precondition: `gender` must be non-nil.
      
+     - Invariant: `email` reference will not change during the execution of this method.
+     - Invariant: `firstname` reference will not change during the execution of this method.
+     - Invariant: `lastname` reference will not change during the execution of this method.
+     - Invariant: `gender` reference will not change during the execution of this method.
+
      - Postcondition:
      API request will be send and after getting response, it will be returned to the controller. If an error occupied, error event will be fired. User will update his profile.
      */

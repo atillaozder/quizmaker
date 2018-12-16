@@ -36,7 +36,7 @@ public class LoginViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init() {
         username = BehaviorRelay(value: "")
@@ -54,6 +54,9 @@ public class LoginViewModel {
      
      - Precondition: `username` must be non-nil.
      - Precondition: `password` must be non-nil.
+
+     - Invariant: `username` reference will not change during the execution of this method.
+     - Invariant: `password` reference will not change during the execution of this method.
 
      - Postcondition:
      API request will be send and after getting response, it will be returned to the controller. If an error occupied, error event will be fired. User will log into the system.
@@ -81,6 +84,8 @@ public class LoginViewModel {
      - Precondition: email must be defined by user.
      - Precondition: email must be valid.
      - Precondition: email must be non-nil.
+     
+     - Invariant: `email` reference will not change during the execution of this method.
 
      - Postcondition:
      API request will be send and after getting response, it will be returned to the controller. If an error occupied, error event will be fired. User gets an email that contains a link to reset password.

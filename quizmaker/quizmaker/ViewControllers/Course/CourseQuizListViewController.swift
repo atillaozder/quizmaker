@@ -15,6 +15,9 @@ public class CourseQuizListViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     /// :nodoc:
+    private var lastSelectedQuiz: Quiz?
+    
+    /// :nodoc:
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.backgroundColor = .white
@@ -115,6 +118,7 @@ public class CourseQuizListViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.failure
+            .asObservable()
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] (error) in
                 switch error {
@@ -127,27 +131,31 @@ public class CourseQuizListViewController: UIViewController {
                 }
             }).disposed(by: disposeBag)
         
+        viewModel.success
+            .asObservable()
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] (_) in
+                guard let lastQuiz = self.lastSelectedQuiz else { return }
+                let viewController = AnswerQuestionsViewController(quiz: lastQuiz)
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }).disposed(by: disposeBag)
+        
         Observable.zip(tableView.rx.itemSelected, tableView.rx.modelSelected(Quiz.self))
             .subscribe(onNext: { [weak self] (indexPath, quiz) in
                 guard let strongSelf = self else { return }
                 strongSelf.tableView.deselectRow(at: indexPath, animated: true)
+                strongSelf.lastSelectedQuiz = quiz
                 
-                var notParticipateYet = true
-                quiz.participants.forEach({ (user) in
-                    if user.id == UserDefaults.standard.getUserIdentifier() {
-                        notParticipateYet = false
-                    }
+                let alertController = UIAlertController(title: "Confirm", message: "Are you sure you want to append \(quiz.name), this operation cannot be undone.", preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+                let appendAction = UIAlertAction(title: "Append", style: .default, handler: { (_) in
+                    strongSelf.viewModel.append(quiz.id)
                 })
                 
-                if !notParticipateYet {
-                    if quiz.end > Date() && quiz.ownerID != UserDefaults.standard.getUserIdentifier() {
-                        
-                        // Go to quiz Questions Page
-                        
-                    } else {
-                        strongSelf.showErrorAlert(message: "Quiz Has Ended.")
-                    }
-                }
+                alertController.addAction(cancelAction)
+                alertController.addAction(appendAction)
+                strongSelf.present(alertController, animated: true, completion: nil)
             }).disposed(by: disposeBag)
     }
 }

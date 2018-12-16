@@ -29,7 +29,7 @@ public class QuizListViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init() {
         items = BehaviorRelay(value: [])
@@ -99,6 +99,8 @@ public class QuizListViewModel {
      - Precondition: `quiz` must not be started or must be finished.
      - Precondition: `quiz` must be created by logged user.
      
+     - Invariant: `quiz` reference will not change during the execution of this method.
+
      - Postcondition:
      If the given quiz will found in the system it will be validated. If validation is ok then logged user will append to the quiz and feedback event will be fired. Otherwise, error event will fired.
      */
@@ -129,6 +131,8 @@ public class QuizListViewModel {
      - Precondition: logged user must not be instructor.
      - Precondition: logged user must not be in the list of participants of `quiz`.
      
+     - Invariant: `quiz` reference will change during the execution of this method.
+
      - Postcondition:
      If the given quiz id will found in the system it will be validated. If validation is ok then logged user will append to the quiz and feedback event will be fired. Otherwise, error event will fired.
      */

@@ -24,7 +24,7 @@ public class MyLecturesViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
           
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init() {
         items = BehaviorRelay(value: [])

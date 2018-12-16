@@ -29,7 +29,7 @@ public class MyAnswerListViewModel {
      - Precondition: `quizID` must be non-nil.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init(quizID: Int) {
         answers = BehaviorRelay(value: [])

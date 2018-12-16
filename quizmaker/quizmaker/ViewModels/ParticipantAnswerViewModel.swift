@@ -33,7 +33,7 @@ public class ParticipantAnswerViewModel {
      - Precondition: `userID` must be greater than 0.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init(quizID: Int, userID: Int) {
         

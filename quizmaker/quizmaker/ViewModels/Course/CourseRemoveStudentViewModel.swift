@@ -38,7 +38,7 @@ public class CourseRemoveStudentViewModel {
      - Precondition: `course` must be non-nil.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init(course: Course) {
         self.students = BehaviorRelay(value: course.students)
@@ -80,6 +80,8 @@ public class CourseRemoveStudentViewModel {
      - Precondition: `endpoint` must be non-nil.
      - Precondition: `students` size must be greater than 0.
      - Precondition: `students` must be in the list of course students.
+
+     - Invariant: `students` reference will not change during the execution of this method.
 
      - Postcondition:
      If the request will be successfully done, given students will be removed from the course.

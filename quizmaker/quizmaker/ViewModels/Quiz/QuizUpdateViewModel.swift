@@ -35,7 +35,7 @@ public class QuizUpdateViewModel {
      - Precondition: `quiz` must be non-nil.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init(quiz: Quiz) {
         self.quiz = quiz
@@ -60,6 +60,8 @@ public class QuizUpdateViewModel {
      - Precondition:  Logged user must be instructor.
      - Precondition: `percentage` must be a positive number.
      
+     - Invariant: `percentage` reference will not change during the execution of this method.
+
      - Postcondition:
      Quiz percentage will be updated.
      */

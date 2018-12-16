@@ -69,7 +69,7 @@ public class QuizCreateViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init() {
         percentage = BehaviorRelay(value: nil)
@@ -180,6 +180,15 @@ public class QuizCreateViewModel {
      - Precondition: If logged user is instructor `quiz` course must be non-nil.
      - Precondition: `quiz` percentage must be greater than or equal to 0.
      
+     - Invariant: `name` reference will not change during the execution of this method.
+     - Invariant: `desc` reference will not change during the execution of this method.
+     - Invariant: `start` reference will not change during the execution of this method.
+     - Invariant: `end` reference will not change during the execution of this method.
+     - Invariant: `beGraded` reference will not change during the execution of this method.
+     - Invariant: `percentage` reference will not change during the execution of this method.
+     - Invariant: `questions` reference will not change during the execution of this method.
+     - Invariant: `courseID` reference will not change during the execution of this method.
+
      - Postcondition:
      Quiz will be created if the request will be successfull.
      */
@@ -216,6 +225,8 @@ public class QuizCreateViewModel {
      - Precondition: `quiz` start date must be bigger than today's date.
      - Precondition: If logged user is instructor `quiz` course must be non-nil.
      - Precondition: `quiz` percentage must be greater than or equal to 0.
+
+     - Invariant: 'quiz' reference will change during the execution of this method.
 
      - Postcondition:
      Quiz will be updated if the request will be successfull.

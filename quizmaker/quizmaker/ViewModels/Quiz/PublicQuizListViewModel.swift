@@ -17,7 +17,7 @@ public class PublicQuizListViewModel {
     let filtered: BehaviorRelay<[QuizSectionModel]>
     
     /// :nodoc:
-    let success: PublishSubject<Void>
+    let success: PublishSubject<Quiz>
     
     /// :nodoc:
     let failure: PublishSubject<NetworkError>
@@ -29,7 +29,7 @@ public class PublicQuizListViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init() {
         items = BehaviorRelay(value: [])
@@ -84,7 +84,7 @@ public class PublicQuizListViewModel {
      Fires a API request. If the given quiz id will found in the system it will be validated. If validation is ok then logged user will append to the quiz.
      
      - Parameters:
-        - id: Identifier of the quiz.
+        - quiz: The quiz instance.
      
      - Precondition: `id` must be non-nil.
      - Precondition: `id` must be greater than 0.
@@ -94,16 +94,18 @@ public class PublicQuizListViewModel {
      - Precondition: logged user must not be instructor.
      - Precondition: logged user must not be in the list of participants of `quiz`.
      
+     - Invariant: `quiz` reference will change during the execution of this method.
+     
      - Postcondition:
      If the given quiz id will found in the system it will be validated. If validation is ok then logged user will append to the quiz and feedback event will be fired. Otherwise, error event will fired.
      */
-    public func append(_ id: Int) {
-        let endpoint = QuizEndpoint.append(quizID: id)
+    public func append(_ quiz: Quiz) {
+        let endpoint = QuizEndpoint.append(quizID: quiz.id)
         NetworkManager.shared.requestJSON(endpoint, .apiMessage)
             .subscribe(onNext: { [weak self] (result) in
                 switch result {
                 case .success:
-                    self?.success.onNext(())
+                    self?.success.onNext(quiz)
                 case .failure(let error):
                     self?.failure.onNext(error)
                 }

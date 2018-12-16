@@ -24,7 +24,7 @@ def answer_post_save_receiver(sender, instance, created, *args, **kwargs):
     #
     # if overall_grade > 100:
     #     overall_grade = 100
-    
-    p, created = QuizParticipant.objects.get_or_create(quiz=instance.quiz, participant=instance.participant)
-    p.grade = p.grade + instance.grade
+
+    p, created = QuizParticipant.objects.get_or_create(quiz_id=instance.quiz.id, participant_id=instance.participant.id)
+    p.grade = p.grade + instance.point
     p.save()

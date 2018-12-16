@@ -97,12 +97,29 @@ class ParticipantAnswerQuestionsAPIView(APIView):
         answers_arr = []
 
         for answer in answers:
+            q_id = answer.get("question_id")
+            user_answer = answer.get("answer")
+
+            instance = Question.objects.filter(id=q_id).first()
+            point = 0
+            is_correct = None
+
+            if instance.question_type != "text":
+                if user_answer.lower() == instance.answer.lower():
+                    is_correct = True
+                    point = instance.point
+                else:
+                    is_correct = False
+                    point = 0
+
             answers_arr.append(
                 ParticipantAnswer(
                     participant_id=request.user.id,
                     quiz_id=quiz_id,
-                    question_id=answer.get("question_id"),
-                    answer=answer.get("answer")
+                    question_id=q_id,
+                    answer=user_answer,
+                    point=point,
+                    is_correct=is_correct
                 )
             )
 
@@ -112,6 +129,9 @@ class ParticipantAnswerQuestionsAPIView(APIView):
             quiz_id=quiz_id,
         )
         obj.finished_in = finished_in
+        for a in answers_arr:
+            obj.grade = obj.grade + a.point
+
         obj.save()
 
         return Response()

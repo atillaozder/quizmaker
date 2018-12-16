@@ -97,8 +97,9 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
         
         viewModel.success
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] () in
-                // Go to Question Page
+            .subscribe(onNext: { [unowned self] (quiz) in
+                let viewController = AnswerQuestionsViewController(quiz: quiz)
+                self.navigationController?.pushViewController(viewController, animated: true)
             }).disposed(by: disposeBag)
         
         viewModel.failure
@@ -118,18 +119,17 @@ public class PublicQuizListViewController: UIViewController, KeyboardHandler {
             .subscribe(onNext: { [weak self] (indexPath, quiz) in
                 guard let strongSelf = self else { return }
                 strongSelf.tableView.deselectRow(at: indexPath, animated: true)
-                
+
                 let alertController = UIAlertController(title: "Confirm", message: "Are you sure you want to append \(quiz.name), this operation cannot be undone.", preferredStyle: .alert)
-                
+
                 let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
                 let appendAction = UIAlertAction(title: "Append", style: .default, handler: { (_) in
-                    strongSelf.viewModel.append(quiz.id)
+                    strongSelf.viewModel.append(quiz)
                 })
-                
+
                 alertController.addAction(cancelAction)
                 alertController.addAction(appendAction)
                 strongSelf.present(alertController, animated: true, completion: nil)
-                
             }).disposed(by: disposeBag)
     }
     

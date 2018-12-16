@@ -41,7 +41,7 @@ public class CourseAddStudentViewModel {
      - Precondition: `courseID` must be non-nil and greater than 0.
      
      - Postcondition:
-     ViewModel object will be initialized. Subscribtions, triggers and subjects will be created.
+     ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
     init(courseID: Int) {
         success = PublishSubject()
@@ -109,6 +109,8 @@ public class CourseAddStudentViewModel {
      - Precondition: `students` size must be greater than 0.
      - Precondition: `students` must not be in the list of course students.
      
+     - Invariant: `students` reference will not change during the execution of this method.
+
      - Postcondition:
      If the request will be successfully done, `students` will be added to the course.
      */

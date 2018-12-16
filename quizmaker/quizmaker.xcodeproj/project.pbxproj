@@ -32,6 +32,12 @@
 		FB18D72121ADF9E700B9BACB /* QuizCreateQuestionTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D72021ADF9E700B9BACB /* QuizCreateQuestionTableCell.swift */; };
 		FB18D72321ADF9F700B9BACB /* QuizCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D72221ADF9F700B9BACB /* QuizCreateViewModel.swift */; };
 		FB18D72521ADFA0200B9BACB /* QuestionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB18D72421ADFA0200B9BACB /* QuestionType.swift */; };
+		FB24D95521C68DF3004E2E59 /* AnswerQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24D95421C68DF3004E2E59 /* AnswerQuestionsViewController.swift */; };
+		FB24D95721C6FD93004E2E59 /* QuestionDetailSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24D95621C6FD93004E2E59 /* QuestionDetailSectionModel.swift */; };
+		FB24D95A21C6FDC5004E2E59 /* AnswerQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24D95921C6FDC5004E2E59 /* AnswerQuestionViewModel.swift */; };
+		FB24D95D21C6FDF8004E2E59 /* TruefalseTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24D95C21C6FDF8004E2E59 /* TruefalseTableCell.swift */; };
+		FB24D95F21C6FDFF004E2E59 /* MultichoiceTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24D95E21C6FDFF004E2E59 /* MultichoiceTableCell.swift */; };
+		FB24D96121C6FE0A004E2E59 /* TextTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24D96021C6FE0A004E2E59 /* TextTableCell.swift */; };
 		FB2C465521A5A05E00CF2F54 /* UserDefaults+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2C465421A5A05E00CF2F54 /* UserDefaults+Helpers.swift */; };
 		FB2C465721A5A07200CF2F54 /* UIViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2C465621A5A07200CF2F54 /* UIViewController+Helpers.swift */; };
 		FB2C465921A5A08300CF2F54 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2C465821A5A08300CF2F54 /* UIView+Helpers.swift */; };
@@ -145,6 +151,12 @@
 		FB18D72021ADF9E700B9BACB /* QuizCreateQuestionTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCreateQuestionTableCell.swift; sourceTree = "<group>"; };
 		FB18D72221ADF9F700B9BACB /* QuizCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCreateViewModel.swift; sourceTree = "<group>"; };
 		FB18D72421ADFA0200B9BACB /* QuestionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionType.swift; sourceTree = "<group>"; };
+		FB24D95421C68DF3004E2E59 /* AnswerQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerQuestionsViewController.swift; sourceTree = "<group>"; };
+		FB24D95621C6FD93004E2E59 /* QuestionDetailSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionDetailSectionModel.swift; sourceTree = "<group>"; };
+		FB24D95921C6FDC5004E2E59 /* AnswerQuestionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerQuestionViewModel.swift; sourceTree = "<group>"; };
+		FB24D95C21C6FDF8004E2E59 /* TruefalseTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TruefalseTableCell.swift; sourceTree = "<group>"; };
+		FB24D95E21C6FDFF004E2E59 /* MultichoiceTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultichoiceTableCell.swift; sourceTree = "<group>"; };
+		FB24D96021C6FE0A004E2E59 /* TextTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTableCell.swift; sourceTree = "<group>"; };
 		FB2C465421A5A05E00CF2F54 /* UserDefaults+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Helpers.swift"; sourceTree = "<group>"; };
 		FB2C465621A5A07200CF2F54 /* UIViewController+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helpers.swift"; sourceTree = "<group>"; };
 		FB2C465821A5A08300CF2F54 /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
@@ -267,6 +279,24 @@
 				E8337EC4E8A770496B3BCE26 /* Pods_quizmaker.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FB24D95821C6FDB1004E2E59 /* Question */ = {
+			isa = PBXGroup;
+			children = (
+				FB24D95921C6FDC5004E2E59 /* AnswerQuestionViewModel.swift */,
+			);
+			path = Question;
+			sourceTree = "<group>";
+		};
+		FB24D95B21C6FDEC004E2E59 /* Question */ = {
+			isa = PBXGroup;
+			children = (
+				FB24D95C21C6FDF8004E2E59 /* TruefalseTableCell.swift */,
+				FB24D95E21C6FDFF004E2E59 /* MultichoiceTableCell.swift */,
+				FB24D96021C6FE0A004E2E59 /* TextTableCell.swift */,
+			);
+			path = Question;
 			sourceTree = "<group>";
 		};
 		FB2C466A21A5A10400CF2F54 /* Encoding */ = {
@@ -395,6 +425,7 @@
 			children = (
 				FBBFD4D721A58ED7007197D9 /* QuizSectionModel.swift */,
 				FBBFD4D321A58EBA007197D9 /* QuizDetailSectionModel.swift */,
+				FB24D95621C6FD93004E2E59 /* QuestionDetailSectionModel.swift */,
 			);
 			path = Section;
 			sourceTree = "<group>";
@@ -492,6 +523,7 @@
 		FB65B1D921C2ACCC0019DBD7 /* Question */ = {
 			isa = PBXGroup;
 			children = (
+				FB24D95421C68DF3004E2E59 /* AnswerQuestionsViewController.swift */,
 				FB18D71C21ADF9BE00B9BACB /* QuestionCreateViewController.swift */,
 			);
 			path = Question;
@@ -585,6 +617,7 @@
 				FB65B1CF21C2A5080019DBD7 /* Course */,
 				FB65B1CE21C2A4980019DBD7 /* Quiz */,
 				FB65B1CB21C2A4490019DBD7 /* User */,
+				FB24D95821C6FDB1004E2E59 /* Question */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -592,6 +625,7 @@
 		FBBFD49B21A5867A007197D9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FB24D95B21C6FDEC004E2E59 /* Question */,
 				FB65B1D321C2A72B0019DBD7 /* Quiz */,
 				FB65B1D221C2A7160019DBD7 /* Student */,
 				FB65B1D121C2A7070019DBD7 /* Course */,
@@ -856,6 +890,7 @@
 				FB18D6FD21ADF75200B9BACB /* Checkbox.swift in Sources */,
 				FB2C467321A5A16200CF2F54 /* NetworkLogger.swift in Sources */,
 				FBBFD4CE21A58E95007197D9 /* Participant.swift in Sources */,
+				FB24D95F21C6FDFF004E2E59 /* MultichoiceTableCell.swift in Sources */,
 				FB2C467721A5A18500CF2F54 /* HTTPMethod.swift in Sources */,
 				FB18D70D21ADF85B00B9BACB /* CourseAddStudentViewModel.swift in Sources */,
 				FBD9846221C2FC4300D2D480 /* Answer.swift in Sources */,
@@ -869,6 +904,7 @@
 				FBBFD4D821A58ED7007197D9 /* QuizSectionModel.swift in Sources */,
 				FB18D70721ADF79700B9BACB /* QuizParticipantTableCell.swift in Sources */,
 				FBEE563321B7EAA4002BBE22 /* MyLecturesViewController.swift in Sources */,
+				FB24D95721C6FD93004E2E59 /* QuestionDetailSectionModel.swift in Sources */,
 				FB66482821C0605E00EBEF7E /* PublicQuizListViewController.swift in Sources */,
 				FB2C468B21A5A21200CF2F54 /* BodyParameterEncoder.swift in Sources */,
 				FBBFD4BC21A5897A007197D9 /* UserViewController.swift in Sources */,
@@ -885,9 +921,11 @@
 				FB2C465B21A5A09100CF2F54 /* UIColor+Custom.swift in Sources */,
 				FB2C466121A5A0C100CF2F54 /* FieldErrorResponse.swift in Sources */,
 				FB65B1BC21C280F00019DBD7 /* QuizParticipantAnswerTableCell.swift in Sources */,
+				FB24D95D21C6FDF8004E2E59 /* TruefalseTableCell.swift in Sources */,
 				FBEE563521B7EAB4002BBE22 /* CourseQuizListViewController.swift in Sources */,
 				FBBFD4CC21A58E8E007197D9 /* EditProfile.swift in Sources */,
 				FB2C465921A5A08300CF2F54 /* UIView+Helpers.swift in Sources */,
+				FB24D96121C6FE0A004E2E59 /* TextTableCell.swift in Sources */,
 				FB2C467521A5A17600CF2F54 /* HTTPTask.swift in Sources */,
 				FB2C468321A5A1D500CF2F54 /* CourseEndpoint.swift in Sources */,
 				FBBFD4D621A58EC9007197D9 /* QuizParticipant.swift in Sources */,
@@ -915,6 +953,7 @@
 				FB2C465F21A5A0B300CF2F54 /* RegisterErrorResponse.swift in Sources */,
 				FBBFD4AE21A58928007197D9 /* LoginViewController.swift in Sources */,
 				FB18D6F721ADF72400B9BACB /* CourseListViewModel.swift in Sources */,
+				FB24D95521C68DF3004E2E59 /* AnswerQuestionsViewController.swift in Sources */,
 				FB65B1B821C280CE0019DBD7 /* MyAnswerListViewModel.swift in Sources */,
 				FB2C467D21A5A1AF00CF2F54 /* UserEndpoint.swift in Sources */,
 				FB65B1C021C2811E0019DBD7 /* MyAnswersViewController.swift in Sources */,
@@ -933,6 +972,7 @@
 				FB2C466521A5A0DC00CF2F54 /* EditProfileErrorResponse.swift in Sources */,
 				FBBFD4BA21A58971007197D9 /* StudentViewController.swift in Sources */,
 				FB18D70121ADF76500B9BACB /* QuizDetailTableCell.swift in Sources */,
+				FB24D95A21C6FDC5004E2E59 /* AnswerQuestionViewModel.swift in Sources */,
 				FBBFD4D221A58EA8007197D9 /* Quiz.swift in Sources */,
 				FB18D71721ADF8EE00B9BACB /* QuizDetailViewController.swift in Sources */,
 				FB2C468121A5A1C800CF2F54 /* EndpointType.swift in Sources */,
