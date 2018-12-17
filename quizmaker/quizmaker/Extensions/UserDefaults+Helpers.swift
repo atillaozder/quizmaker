@@ -12,6 +12,7 @@ extension UserDefaults {
         self.setEmail(email: user.email)
         self.setFirstname(name: user.firstName)
         self.setLastname(name: user.lastName)
+        self.setGender(gender: user.gender)
         self.synchronize()
     }
     

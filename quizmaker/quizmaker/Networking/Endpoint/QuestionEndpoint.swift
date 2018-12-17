@@ -55,10 +55,13 @@ public enum QuestionEndpoint {
         - id: Identifier of quiz.
         - finishedIn: The completion time in quiz '5 min'.
         - answers: Array of answer instance.
+        - completion: How many questions did participant answer.
      
      - Precondition:
         - `id` must be greater than 0
         - `finishedIn` must be non-nil
+        - `completion` must be non-nil
+        - `completion` must be greater than 0
      
      - Postcondition:
      Answers for given quiz will be saved and could be monitoring by owner of the quiz or owner of the quiz paper.
@@ -66,7 +69,7 @@ public enum QuestionEndpoint {
      - SeeAlso:
      `Answer`
      */
-    case answer(id: Int, finishedIn: String, answers: [Answer])
+    case answer(id: Int, finishedIn: String, completion: Double, answers: [Answer])
     /**
      Performs validation of quiz questions for participant. It can be only done by instructor who owns the quiz instance.
      
@@ -197,7 +200,7 @@ extension QuestionEndpoint: EndpointType {
             }
             
             return .requestParameters(encoding: .bodyEncoding, bodyParameters: parameters, urlParameters: nil)
-        case .answer(let quizID, let finishedIn, let answers):
+        case .answer(let quizID, let finishedIn, let completion, let answers):
             var dict: [String: Any] = [:]
             var array: [[String: Any]] = []
             
@@ -210,6 +213,7 @@ extension QuestionEndpoint: EndpointType {
             let parameters: [String: Any] = [
                 "quiz_id": quizID,
                 "finished_in": finishedIn,
+                "completion": completion,
                 "answers": array
             ]
             

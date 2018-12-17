@@ -121,6 +121,7 @@
 		FBEE563D21B7EB0A002BBE22 /* PublicQuizListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563C21B7EB0A002BBE22 /* PublicQuizListViewModel.swift */; };
 		FBEE563F21B7EB2D002BBE22 /* JoinedQuizListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE563E21B7EB2D002BBE22 /* JoinedQuizListViewModel.swift */; };
 		FBEE564121B7EB3A002BBE22 /* MyLecturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE564021B7EB3A002BBE22 /* MyLecturesViewModel.swift */; };
+		FBF726EB21C83647003DAA94 /* MyAnswersTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF726EA21C83647003DAA94 /* MyAnswersTableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -242,6 +243,7 @@
 		FBEE563C21B7EB0A002BBE22 /* PublicQuizListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicQuizListViewModel.swift; sourceTree = "<group>"; };
 		FBEE563E21B7EB2D002BBE22 /* JoinedQuizListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedQuizListViewModel.swift; sourceTree = "<group>"; };
 		FBEE564021B7EB3A002BBE22 /* MyLecturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLecturesViewModel.swift; sourceTree = "<group>"; };
+		FBF726EA21C83647003DAA94 /* MyAnswersTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnswersTableCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -505,6 +507,7 @@
 				FB65B1D421C2A7670019DBD7 /* Detail */,
 				FB18D70221ADF76D00B9BACB /* QuizListTableCell.swift */,
 				FB18D72021ADF9E700B9BACB /* QuizCreateQuestionTableCell.swift */,
+				FBF726EA21C83647003DAA94 /* MyAnswersTableCell.swift */,
 				FB65B1BB21C280F00019DBD7 /* QuizParticipantAnswerTableCell.swift */,
 			);
 			path = Quiz;
@@ -532,8 +535,8 @@
 		FB65B1DA21C2ACDF0019DBD7 /* JoinedQuiz */ = {
 			isa = PBXGroup;
 			children = (
-				FBEE563821B7EAD9002BBE22 /* JoinedQuizzesViewController.swift */,
 				FBEE563621B7EACB002BBE22 /* JoinedQuizzesChoiceViewController.swift */,
+				FBEE563821B7EAD9002BBE22 /* JoinedQuizzesViewController.swift */,
 			);
 			path = JoinedQuiz;
 			sourceTree = "<group>";
@@ -897,6 +900,7 @@
 				FB2C468921A5A20400CF2F54 /* ParameterEncoder.swift in Sources */,
 				FB18D70921ADF7A900B9BACB /* QuizQuestionDetailTableCell.swift in Sources */,
 				FB18D72521ADFA0200B9BACB /* QuestionType.swift in Sources */,
+				FBF726EB21C83647003DAA94 /* MyAnswersTableCell.swift in Sources */,
 				FB18D71321ADF8A600B9BACB /* CourseAddStudentViewController.swift in Sources */,
 				FBBFD4B621A58962007197D9 /* HomeViewController.swift in Sources */,
 				FBBFD4C221A589F1007197D9 /* IndicatorButton.swift in Sources */,

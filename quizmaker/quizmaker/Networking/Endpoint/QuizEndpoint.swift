@@ -224,7 +224,7 @@ extension QuizEndpoint: EndpointType {
         case .owner:
             return .get
         case .delete:
-            return .delete
+            return .post
         case .update:
             return .put
         case .participants:

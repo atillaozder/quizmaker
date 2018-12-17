@@ -59,8 +59,7 @@ public class MyLecturesViewController: UIViewController {
         viewModel.items
             .asDriver()
             .drive(tableView.rx.items(cellIdentifier: courseCell, cellType: CourseTableCell.self)) { (_, element, cell) in
-                cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.text = element.name
+                cell.configure(element)
             }.disposed(by: disposeBag)
         
         viewModel.failure

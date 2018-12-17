@@ -35,18 +35,17 @@ class Question(models.Model):
         return self.question
 
 class ParticipantAnswer(models.Model):
-    participant = models.ForeignKey(User,
+    participant     = models.ForeignKey(User,
                                     on_delete=models.SET_NULL,
                                     null=True,
                                     blank=True)
 
-    quiz        = models.ForeignKey('quiz.Quiz', on_delete=models.CASCADE)
-    question    = models.ForeignKey(Question, on_delete=models.CASCADE)
-    is_correct  = models.BooleanField(_('Correct or not'), null=True, blank=True)
-    point       = models.PositiveIntegerField(null=True, blank=True)
-    answer      = models.TextField(_('Participant Answer'),
-                                   null=True,
-                                   blank=True)
+    quiz            = models.ForeignKey('quiz.Quiz', on_delete=models.CASCADE)
+    question        = models.ForeignKey(Question, on_delete=models.CASCADE)
+    is_correct      = models.BooleanField(_('Correct or not'), null=True, blank=True)
+    is_validated    = models.BooleanField(_('Validated or not'), default=False)
+    point           = models.PositiveIntegerField(null=True, blank=True)
+    answer          = models.TextField(_('Participant Answer'), null=True, blank=True)
 
 
     class Meta:

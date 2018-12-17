@@ -231,9 +231,16 @@ extension QuizDetailViewController: QuizParticipantTableCellDelegate {
         guard let user = participant.participant else { return }
         let viewController = QuizParticipantAnswersViewController(quizID: participant.quiz, userID: user.id, name: user.username)
         
+        viewController.delegate = self
         viewController.setTableHeaderView(participant: participant)
-        
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
+/// :nodoc:
+extension QuizDetailViewController: UpdateQuizFromParticipant {
+    func updateParticipant() {
+        viewModel.updateParticipant()
     }
 }
 

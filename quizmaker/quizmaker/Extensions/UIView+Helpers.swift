@@ -137,7 +137,7 @@ extension UIView {
         border.path = maskPath.cgPath
         border.fillColor = UIColor.clear.cgColor
         border.strokeColor = borderColor.cgColor
-        border.lineWidth = 1.0
+        border.lineWidth = 3.0
         border.frame = bounds
         layer.addSublayer(border)
     }

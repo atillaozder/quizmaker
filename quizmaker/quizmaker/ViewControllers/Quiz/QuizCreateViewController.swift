@@ -489,7 +489,7 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
         Observable.combineLatest(viewModel.name.asObservable(), viewModel.course.asObservable(), viewModel.start.asObservable(), viewModel.end.asObservable(), viewModel.beGraded.asObservable(), viewModel.percentage.asObservable())
             .map { [unowned self] (name, courseID, startDate, endDate, beGraded, percentage) -> Bool in
                 
-                if name.isEmpty {
+                if name.isEmpty || name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     self.nameErrorLabel.text = "Quiz name cannot be empty"
                     self.nameErrorWrapper.isHidden = false
                     return false
@@ -567,6 +567,9 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
                             self.percentageErrorLabel.text = "Percentage cannot be empty."
                             self.percentageErrorWrapper.isHidden = false
                             return false
+                        } else {
+                            self.percentageErrorLabel.text = ""
+                            self.percentageErrorWrapper.isHidden = true
                         }
                     } else {
                         self.percentageErrorLabel.text = "Percentage cannot be empty."

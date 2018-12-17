@@ -113,6 +113,12 @@ public class QuizDetailViewModel {
         self.items.accept(currentSections)
     }
     
+    /// :nodoc:
+    func updateParticipant() {
+        let endpoint = QuizEndpoint.participants(quizID: quiz.id)
+        fetch(endpoint).bind(to: items).disposed(by: disposeBag)
+    }
+    
     /**
      Quiz object in this class will be updated if given quiz is valid. Otherwise update will not done. The goal of this method if the quiz object was updated outside of the controller the detail should have current value.
      

@@ -8,7 +8,9 @@ User = get_user_model()
 # Create your models here.
 class Quiz(models.Model):
     owner           = models.ForeignKey(User,
-                                        on_delete=models.CASCADE,
+                                        on_delete=models.SET_NULL,
+                                        null=True,
+                                        blank=True,
                                         related_name='owner')
 
     course          = models.ForeignKey('course.Course',
@@ -28,6 +30,7 @@ class Quiz(models.Model):
     be_graded       = models.BooleanField(default=True)
     percentage      = models.DecimalField(_('Percentage'), default=0.0, max_digits=100, decimal_places=2)
     is_private      = models.BooleanField(_('Private Quiz'), default=False)
+    is_deleted      = models.BooleanField(_('Quiz Deleted'), default=False)
 
     class Meta:
         verbose_name = _('Quiz')
@@ -48,8 +51,8 @@ class Quiz(models.Model):
             quiz.save()
 
 class QuizParticipant(models.Model):
-    quiz        = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    participant = models.ForeignKey(User, on_delete=models.CASCADE)
+    quiz        = models.ForeignKey(Quiz, on_delete=models.SET_NULL, null=True, blank=True)
+    participant = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     grade       = models.DecimalField(_('Quiz Grade'),
                                       default=0.0,

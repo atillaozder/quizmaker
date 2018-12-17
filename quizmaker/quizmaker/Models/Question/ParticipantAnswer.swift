@@ -19,6 +19,9 @@ public struct ParticipantAnswer: Codable {
     /// Holds the answer is correct or not.
     let isCorrect: Bool?
     
+    /// Holds the answer is validated or not.
+    let isValidated: Bool?
+    
     /// Holds the point of answer.
     let point: Int?
     
@@ -27,6 +30,7 @@ public struct ParticipantAnswer: Codable {
         case id, question, answer
         case participantID = "participant_id"
         case isCorrect = "is_correct"
+        case isValidated = "is_validated"
         case point = "point"
     }
     
@@ -38,6 +42,7 @@ public struct ParticipantAnswer: Codable {
         answer = try container.decode(String.self, forKey: .answer)
         participantID = try container.decode(Int.self, forKey: .participantID)
         isCorrect = try container.decodeIfPresent(Bool.self, forKey: .isCorrect)
+        isValidated = try container.decodeIfPresent(Bool.self, forKey: .isValidated)
         point = try container.decodeIfPresent(Int.self, forKey: .point)
     }
 }

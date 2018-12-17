@@ -14,6 +14,7 @@ public class AdminViewController: HomeViewController {
         self.navigationItem.setRightBarButton(logoutBarButton, animated: false)
         
         let label = UILabel()
+        
         let username = UserDefaults.standard.getUsername()
         label.numberOfLines = 5
         label.lineBreakMode = .byWordWrapping

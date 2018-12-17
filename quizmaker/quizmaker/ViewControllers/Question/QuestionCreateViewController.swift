@@ -422,6 +422,7 @@ public class QuestionCreateViewController: UIViewController, KeyboardHandler {
         
         Observable.combineLatest(question.asObservable(), answer.asObservable(), point.asObservable(), a.asObservable(), b.asObservable(), c.asObservable(), d.asObservable())
             .map { [unowned self] (question, answer, pointStr, a, b, c, d) -> Bool in
+                
                 var point = pointStr
                 if let p = Int(pointStr) {
                     if p == 0 {
@@ -473,7 +474,10 @@ public class QuestionCreateViewController: UIViewController, KeyboardHandler {
                     break
                 }
                 
-                return !question.isEmpty && !answer.isEmpty && !point.isEmpty
+                let q = !question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                let a = !answer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                
+                return !question.isEmpty && !answer.isEmpty && !point.isEmpty && a && q
             }.do(onNext: { [unowned self] (enabled) in
                 self.createQuestionButton.alpha = enabled ? 1.0 : 0.5
             }).bind(to: createQuestionButton.rx.isEnabled)

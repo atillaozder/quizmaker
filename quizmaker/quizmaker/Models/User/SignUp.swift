@@ -32,6 +32,9 @@ public struct SignUp {
     /// Designated to understand if specified user is admin.
     var isStaff: Bool
     
+    /// Holds gender of the user.
+    var gender: String
+    
     /**
      Constructor of the class
      
@@ -71,6 +74,7 @@ public struct SignUp {
         
         self.isStaff = false
         self.id = 0
+        self.gender = ""
     }
 }
 
@@ -85,6 +89,7 @@ extension SignUp: Decodable {
         case studentId = "student_id"
         case email
         case isStaff = "is_staff"
+        case gender
     }
     
     public init(from decoder: Decoder) throws {
@@ -96,6 +101,7 @@ extension SignUp: Decodable {
         email = try container.decode(String.self, forKey: .email)
         studentId = try container.decodeIfPresent(String.self, forKey: .studentId)
         isStaff = try container.decode(Bool.self, forKey: .isStaff)
+        gender = try container.decode(String.self, forKey: .gender)
         password = ""
         
         if isStaff {

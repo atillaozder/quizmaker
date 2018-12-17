@@ -442,6 +442,9 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
             .bind(to: viewModel.studentId)
             .disposed(by: disposeBag)
         
+        
+        let set = CharacterSet(charactersIn: "abcçdefgğhıijklmnoöpqrsştuüvwxyzABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZ")
+        
         Observable.combineLatest(viewModel.username.asObservable(), viewModel.password.asObservable(), viewModel.firstName.asObservable(), viewModel.lastName.asObservable(), viewModel.email.asObservable(), viewModel.studentId.asObservable())
             .map { (username, password, firstname, lastname, email, studentId) -> Bool in
                 
@@ -453,6 +456,24 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
                     } else {
                         return false
                     }
+                }
+                
+                if firstname.rangeOfCharacter(from: set.inverted) != nil {
+                    self.firstNameErrorLabel.text = "First name can contains only letters"
+                    self.firstNameErrorWrapper.isHidden = false
+                    return false
+                } else {
+                    self.firstNameErrorLabel.text = ""
+                    self.firstNameErrorWrapper.isHidden = true
+                }
+                
+                if lastname.rangeOfCharacter(from: set.inverted) != nil {
+                    self.lastNameErrorLabel.text = "Last name can contains only letters"
+                    self.lastNameErrorWrapper.isHidden = false
+                    return false
+                } else {
+                    self.lastNameErrorLabel.text = ""
+                    self.lastNameErrorWrapper.isHidden = true
                 }
                 
                 return !username.isEmpty && !password.isEmpty && !email.isEmpty && !firstname.isEmpty && !lastname.isEmpty

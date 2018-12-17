@@ -60,7 +60,7 @@ class CourseStudentOwnListAPIView(ListAPIView):
 
     def get_queryset(self):
         if self.request.user.is_student:
-            return Course.objects.filter(students__user=self.request.user).all()
+            return Course.objects.filter(students__user_id=self.request.user.id).all()
 
 class CourseListAPIView(ListAPIView):
     queryset = Course.objects.all()

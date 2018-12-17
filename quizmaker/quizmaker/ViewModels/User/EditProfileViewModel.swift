@@ -93,6 +93,7 @@ public class EditProfileViewModel {
                 switch result {
                 case .success(let user):
                     self.success?(user)
+                    UserDefaults.standard.setGender(gender: user.gender)
                 case .failure(let error):
                     self.failure?(error)
                 }

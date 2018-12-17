@@ -213,6 +213,7 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
         lastNameTextField.text = UserDefaults.standard.getLastname()
         
         if let gender = UserDefaults.standard.getGender(), let genderType = Gender(rawValue: gender) {
+            viewModel.gender.accept(genderType)
             switch genderType {
             case .unspecified:
                 selectedRow = 0
@@ -314,8 +315,35 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
             .bind(to: viewModel.email)
             .disposed(by: disposeBag)
         
+        let set = CharacterSet(charactersIn: "abcçdefgğhıijklmnoöpqrsştuüvwxyzABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZ")
+        
         Observable.combineLatest(viewModel.email.asObservable(), viewModel.gender.asObservable(), viewModel.firstname.asObservable(), viewModel.lastname.asObservable())
-            .map { (email, _, fname, lname) -> Bool in
+            .map { (email, gender, fname, lname) -> Bool in
+                
+                
+                if fname.rangeOfCharacter(from: set.inverted) != nil {
+                    self.firstNameErrorLabel.text = "First name can contains only letters"
+                    self.firstNameErrorWrapper.isHidden = false
+                    return false
+                } else {
+                    self.firstNameErrorLabel.text = ""
+                    self.firstNameErrorWrapper.isHidden = true
+                }
+                
+                if lname.rangeOfCharacter(from: set.inverted) != nil {
+                    self.lastNameErrorLabel.text = "Last name can contains only letters"
+                    self.lastNameErrorWrapper.isHidden = false
+                    return false
+                } else {
+                    self.lastNameErrorLabel.text = ""
+                    self.lastNameErrorWrapper.isHidden = true
+                }
+                
+                
+                if email == UserDefaults.standard.getEmail() && fname == UserDefaults.standard.getFirstname() && lname == UserDefaults.standard.getLastname() && gender.rawValue == UserDefaults.standard.getGender() {
+                    return false
+                }
+                
                 return !email.isEmpty && !fname.isEmpty && !lname.isEmpty
             }.do(onNext: { [unowned self] (enabled) in
                 self.updateButton.alpha = enabled ? 1.0 : 0.5
@@ -408,7 +436,6 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
     }
     
     private func clearFields() {
-        selectedRow = 0
         emailErrorLabel.text = ""
         firstNameErrorLabel.text = ""
         lastNameErrorLabel.text = ""

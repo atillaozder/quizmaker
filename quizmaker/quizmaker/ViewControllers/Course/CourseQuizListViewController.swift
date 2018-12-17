@@ -72,6 +72,8 @@ public class CourseQuizListViewController: UIViewController {
         frame.size.height = .leastNormalMagnitude
         tableView.tableHeaderView = UIView(frame: frame)
         tableView.tableFooterView = UIView(frame: frame)
+        
+        bindUI()
     }
     
     /// :nodoc:
@@ -93,21 +95,8 @@ public class CourseQuizListViewController: UIViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: courseQuizCell, for: indexPath) as? QuizDetailTableCell else { return UITableViewCell() }
             
             cell.configure(quiz)
-            
-            var notParticipateYet = true
-            quiz.participants.forEach({ (user) in
-                if user.id == UserDefaults.standard.getUserIdentifier() {
-                    notParticipateYet = false
-                }
-            })
-            
-            if notParticipateYet {
-                cell.accessoryType = .none
-                cell.selectionStyle = .none
-            } else {
-                cell.accessoryType = .disclosureIndicator
-                cell.selectionStyle = .gray
-            }
+            cell.accessoryType = .disclosureIndicator
+            cell.selectionStyle = .gray
             
             return cell
         })

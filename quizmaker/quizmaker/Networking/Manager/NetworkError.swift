@@ -10,6 +10,7 @@ public enum ErrorType {
     case changePassword
     case editProfile
     case quizCreate
+    case answerValidate
 }
 
 /**
@@ -108,6 +109,13 @@ public enum NetworkError: Error {
             - response: create quiz error response.
          */
         case create(response: QuizCreateErrorResponse)
+        
+        /**
+         Validate quiz answers request was fail.
+         - Parameters:
+            - response: validate quiz error response.
+         */
+        case validate(response: GradeErrorResponse)
     }
     
     /// Custom update user error response.
@@ -139,6 +147,7 @@ public enum NetworkError: Error {
         case .api(let response): return response.errorDesc
         case .apiMessage(let response): return response.message
         case .quiz(.create): return "Quiz Create Error"
+        case .quiz(.validate): return "Quiz Validate Error"
         case .auth(.register): return "Register Request Failed"
         case .auth(.login): return "Login Request Failed"
         case .update(.changePassword): return "Update Password Request Failure"

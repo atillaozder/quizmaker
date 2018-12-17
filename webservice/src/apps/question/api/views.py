@@ -22,6 +22,7 @@ from question.api.serializers import (
 )
 from quiz.models import QuizParticipant
 from question.models import ParticipantAnswer, Question
+from account.models import User
 
 class QuestionCreateAPIView(CreateAPIView):
     serializer_class = QuestionSerializer
@@ -92,6 +93,7 @@ class ParticipantAnswerQuestionsAPIView(APIView):
             )
         quiz_id = request.data.get("quiz_id")
         finished_in = request.data.get("finished_in")
+        completion = request.data.get("completion")
         answers = request.data.get("answers")
 
         answers_arr = []
@@ -129,6 +131,8 @@ class ParticipantAnswerQuestionsAPIView(APIView):
             quiz_id=quiz_id,
         )
         obj.finished_in = finished_in
+        obj.completion = completion
+
         for a in answers_arr:
             obj.grade = obj.grade + a.point
 
@@ -155,6 +159,7 @@ class GradeParticipantPaperAPIView(APIView):
         answers = request.data.get("answers")
 
         errors = []
+
         with transaction.atomic():
             for answer in answers:
                 obj = None
@@ -170,15 +175,8 @@ class GradeParticipantPaperAPIView(APIView):
                 if obj:
                     if obj.question.point >= a_point:
                         obj.point = a_point
+                        obj.is_validated = True
                         obj.save()
-                        user = User.objects.filter(id=participant_id)
-                        send_mail(
-                		    "A QUIZ HAS BEEN GRADED",
-                		    "Hello from QuizMaker. The quiz you have added was graded.",
-                		    'se301quizmaker@gmail.com',
-                		    [user.email],
-                		    fail_silently=False,
-                		)
                     else:
                         errors.append(
                             {
@@ -188,6 +186,27 @@ class GradeParticipantPaperAPIView(APIView):
                                 'point': a_point,
                             }
                         )
+
         if len(errors) == 0:
+            user_qs = User.objects.filter(id=participant_id)
+            if user_qs.exists():
+                user = user_qs.first()
+                send_mail(
+        		    "A QUIZ HAS BEEN GRADED",
+        		    "Hello from QuizMaker. The quiz you have added was graded.",
+        		    'se301quizmaker@gmail.com',
+        		    [user.email],
+        		    fail_silently=False,
+        		)
+
+            overall_grade = 0
+            answer_qs = ParticipantAnswer.objects.filter(quiz_id=quiz_id, participant_id=participant_id)
+            if answer_qs.exists():
+                for a in answer_qs:
+                    overall_grade = overall_grade + a.point
+
+            p, created = QuizParticipant.objects.get_or_create(quiz_id=quiz_id, participant_id=participant_id)
+            p.grade = overall_grade
+            p.save()
             return Response()
         return Response(errors, status=status.HTTP_400_BAD_REQUEST)

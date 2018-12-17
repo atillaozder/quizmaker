@@ -97,7 +97,7 @@ public class CourseViewController: UIViewController {
     /// :nodoc:
     private func appendTapped(_ indexPath: IndexPath) {
         let course = viewModel.items.value[indexPath.row]
-        let viewController = CourseAddStudentViewController(courseID: course.id)
+        let viewController = CourseAddStudentViewController(course: course)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

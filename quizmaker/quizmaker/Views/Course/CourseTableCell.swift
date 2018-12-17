@@ -5,15 +5,15 @@ import UIKit
 public class CourseTableCell: UITableViewCell {
     
     let nameLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .boldSystemFont(ofSize: 14), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .boldSystemFont(ofSize: 16), true, false)
     }()
     
     let studentsLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 12), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 14), true, false)
     }()
     
     let quizzesLabel: UILabel = {
-        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 12), true, false)
+        return UILabel.uiLabel(1, .byTruncatingTail, "", .left, .black, .systemFont(ofSize: 14), true, false)
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

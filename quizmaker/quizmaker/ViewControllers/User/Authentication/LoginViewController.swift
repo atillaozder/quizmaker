@@ -110,6 +110,8 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         super.viewWillDisappear(animated)
         usernameOrEmailTextField.text = ""
         passwordTextField.text = ""
+        loginButton.isEnabled = false
+        loginButton.alpha = 0.5
         removeObservers()
     }
     

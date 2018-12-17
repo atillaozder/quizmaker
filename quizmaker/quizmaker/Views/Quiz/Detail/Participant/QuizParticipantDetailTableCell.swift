@@ -95,12 +95,5 @@ public class QuizParticipantDetailTableCell: UITableViewCell {
                 studentIdLabel.text = "Student ID: \(studentID)"
             }
         }
-        
-//        completionLabel.text = "Completed \(element.completion)%"
-//        gradesLabel.text = "Grade: \(element.grade)"
-//        
-//        if let finishedIn = element.finishedIn {
-//            finishedInLabel.text = "Finished in: \(finishedIn) min"
-//        }
     }
 }

@@ -34,31 +34,31 @@ class QuizEndListAPIView(ListAPIView):
     """
     Return a list of ended quizzes.
     """
-    queryset = Quiz.objects.all()
+    queryset = Quiz.objects.all().filter(is_deleted=False)
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__lte=timezone.now()).order_by('end')
+        return Quiz.objects.filter(participants__id=self.request.user.id).filter(end__lte=timezone.now()).filter(is_deleted=False).order_by('end')
 
 class QuizWaitingListAPIView(ListAPIView):
     """
     Return a list of waiting quizzes.
     """
-    queryset = Quiz.objects.all()
+    queryset = Quiz.objects.all().filter(is_deleted=False)
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        return Quiz.objects.filter(participants__id=self.request.user.id).filter(start__gt=timezone.now()).order_by('end')
+        return Quiz.objects.filter(participants__id=self.request.user.id).filter(end__gt=timezone.now()).filter(is_deleted=False).order_by('end')
 
 class QuizOwnerListAPIView(ListAPIView):
     """
     Return a list of quizzes that was created by request user.
     """
-    queryset = Quiz.objects.all()
+    queryset = Quiz.objects.all().filter(is_deleted=False)
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        return Quiz.objects.filter(owner=self.request.user).order_by('-end').all()
+        return Quiz.objects.filter(owner=self.request.user).filter(is_deleted=False).order_by('-end').all()
 
 class QuizRetrieveAPIView(RetrieveAPIView):
     """
@@ -71,15 +71,15 @@ class QuizListAPIView(ListAPIView):
     """
     Return a list of quizzes either belongs a course or are public.
     """
-    queryset = Quiz.objects.all()
+    queryset = Quiz.objects.all().filter(is_deleted=False)
     serializer_class = QuizSerializer
 
     def get_queryset(self):
         course_id = self.request.GET.get("course_id")
         if course_id:
-            return Quiz.objects.filter(course_id=course_id).order_by('end')
+            return Quiz.objects.filter(course_id=course_id).filter(is_deleted=False).order_by('end')
         else:
-            return Quiz.objects.annotate(num_questions=Count('questions')).filter(num_questions__gt=0).filter(is_private=False).filter(end__gt=timezone.now()).order_by('end')
+            return Quiz.objects.annotate(num_questions=Count('questions')).filter(num_questions__gt=0).filter(is_private=False).filter(is_deleted=False).filter(end__gt=timezone.now()).order_by('end')
 
 class QuizParticipantsListAPIView(ListAPIView):
     """
@@ -103,7 +103,7 @@ class QuizParticipantAnswerAPIView(APIView):
     """
     def get(self, request, format='json', *args, **kwargs):
         quiz_id = request.GET.get("quiz_id")
-        qs = Quiz.objects.all().filter(id=quiz_id)
+        qs = Quiz.objects.all().filter(is_deleted=False).filter(id=quiz_id)
         if qs.exists():
             end_qs = qs.filter(end__lte=timezone.now())
             if end_qs.exists():
@@ -147,7 +147,7 @@ class QuizOwnerGetAnswersAPIView(APIView):
     def get(self, request, format='json', *args, **kwargs):
         quiz_id = request.GET.get("quiz_id")
         user_id = request.GET.get("user_id")
-        qs = Quiz.objects.all().filter(id=quiz_id)
+        qs = Quiz.objects.all().filter(id=quiz_id).filter(is_deleted=False)
 
         if qs.exists():
             end_qs = qs.filter(end__lte=timezone.now())
@@ -204,7 +204,7 @@ class QuizOwnerAnswerAPIView(APIView):
         quiz_id = request.GET.get("quiz_id")
         user_id = request.GET.get("user_id")
 
-        qs = Quiz.objects.filter(id=quiz_id).filter(owner=request.user)
+        qs = Quiz.objects.filter(id=quiz_id).filter(owner=request.user).filter(is_deleted=False)
         if qs.exists():
             quiz = qs.first()
             data = []
@@ -227,7 +227,7 @@ class QuizOwnerAnswerAPIView(APIView):
         )
 
 class QuizAppendView(UpdateAPIView):
-    queryset = Quiz.objects.all()
+    queryset = Quiz.objects.all().filter(is_deleted=False)
     serializer_class = QuizAppendSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -243,11 +243,13 @@ class QuizAppendView(UpdateAPIView):
                 {'message': _('You cannot participate in your own quiz.')},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
         if object.is_private:
-            return Response(
-                {'message': _('You cannot participate in a private quiz.')},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            if object.course is None:
+                return Response(
+                    {'message': _('You cannot participate in a private quiz.')},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
         if object.end < timezone.now():
             return Response(
                 {'message': _('Quiz has ended.')},
@@ -273,24 +275,28 @@ class QuizAppendView(UpdateAPIView):
         qp, created = QuizParticipant.objects.get_or_create(quiz=object, participant=self.request.user)
         serializer.save()
 
-class QuizDeleteAPIView(DestroyAPIView):
+class QuizDeleteAPIView(APIView):
     queryset = Quiz.objects.all()
 
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         qs = Quiz.objects.filter(pk=kwargs['pk'])
         if qs.filter(start__lte=timezone.now()).filter(end__gte=timezone.now()).exists():
             return Response(
                 {'message': _('You cannot delete the selected quiz because it has already started. You have to wait until it ends.')},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        return super(QuizDeleteAPIView, self).delete(request, *args, **kwargs)
+
+        quiz = qs.first()
+        quiz.is_deleted = True
+        quiz.save()
+        return Response()
 
 class QuizUpdateAPIView(UpdateAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizCreateUpdateSerializer
 
     def put(self, request, *args, **kwargs):
-        qs = Quiz.objects.filter(pk=kwargs['pk'])
+        qs = Quiz.objects.filter(pk=kwargs['pk']).filter(is_deleted=False)
         if qs.filter(start__lte=timezone.now()).filter(end__gte=timezone.now()).exists():
             return Response(
                 {'message': _('You cannot update the selected quiz because it has already started. You have to wait until it ends.')},

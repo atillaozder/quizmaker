@@ -14,6 +14,7 @@ class LoginSerializer(serializers.ModelSerializer):
     username    = serializers.CharField(required=False, allow_blank=True)
     password    = serializers.CharField(style={'input_type': 'password'}, write_only=True)
     user_type   = serializers.CharField(read_only=True)
+    gender      = serializers.CharField(read_only=True)
     student_id  = serializers.CharField(required=False, read_only=True, allow_blank=True)
     is_approved = serializers.CharField(required=False, read_only=True, allow_blank=True)
     is_staff    = serializers.BooleanField(required=False, read_only=True)
@@ -29,6 +30,7 @@ class LoginSerializer(serializers.ModelSerializer):
             'password',
             'user_type',
             'student_id',
+            'gender',
             'is_staff',
             'is_approved',
         )
@@ -62,6 +64,7 @@ class LoginSerializer(serializers.ModelSerializer):
                 data['last_name'] = user.last_name
                 data['user_type'] = user.user_type
                 data['is_staff'] = user.is_staff
+                data['gender'] = user.gender
 
                 if user.is_student:
                     data['student_id'] = user.student.student_id
@@ -78,6 +81,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     password    = serializers.CharField(min_length=8, style={'input_type': 'password'}, write_only=True)
     student_id  = serializers.CharField(required=False, allow_blank=True)
     is_staff    = serializers.BooleanField(required=False, read_only=True)
+    gender      = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
@@ -89,6 +93,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             'email',
             'password',
             'user_type',
+            'gender',
             'student_id',
             'is_staff',
         )

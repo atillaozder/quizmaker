@@ -217,6 +217,12 @@ public final class NetworkManager {
                     
                     let errorResponse = try decoder.decode(QuizCreateErrorResponse.self, from: data)
                     completion(.quiz(.create(response: errorResponse)))
+                    
+                case .answerValidate:
+                    
+                    let errorResponse = try decoder.decode(GradeErrorResponse.self, from: data)
+                    completion(.quiz(.validate(response: errorResponse)))
+                    
                 }
             }
         } catch {

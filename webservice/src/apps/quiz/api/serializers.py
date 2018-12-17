@@ -88,6 +88,7 @@ class QuizParticipantAnswerSerializer(serializers.ModelSerializer):
             'answer',
             'participant_id',
             'is_correct',
+            'is_validated',
             'point',
         )
 

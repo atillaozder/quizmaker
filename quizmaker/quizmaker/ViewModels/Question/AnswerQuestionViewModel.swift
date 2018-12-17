@@ -119,13 +119,14 @@ public class AnswerQuestionsViewModel {
      Participant's answers will be saved.
      */
     func sendAnswers(time: String) {
+        let completion: Double = (Double(answers.count) / Double(questions.value.count)) * 100
         questions.value.forEach { (q) in
             if !answers.contains(where: { $0.questionID == q.id }) {
                 answers.append(Answer(answer: "", questionID: q.id))
             }
         }
         
-        let endpoint = QuestionEndpoint.answer(id: quizID, finishedIn: time, answers: answers)
+        let endpoint = QuestionEndpoint.answer(id: quizID, finishedIn: time, completion: completion, answers: answers)
         NetworkManager.shared.requestJSON(endpoint)
             .subscribe(onNext: { [weak self] (result) in
                 guard let strongSelf = self else { return }
@@ -156,13 +157,14 @@ public class AnswerQuestionsViewModel {
      Participant's answers will be saved. System will be available again.
      */
     func timeIsUp(time: String) {
+        let completion: Double = (Double(answers.count) / Double(questions.value.count)) * 100
         questions.value.forEach { (q) in
             if !answers.contains(where: { $0.questionID == q.id }) {
                 answers.append(Answer(answer: "", questionID: q.id))
             }
         }
         
-        let endpoint = QuestionEndpoint.answer(id: quizID, finishedIn: time, answers: answers)
+        let endpoint = QuestionEndpoint.answer(id: quizID, finishedIn: time, completion: completion, answers: answers)
         NetworkManager.shared.requestJSON(endpoint)
             .subscribe().disposed(by: disposeBag)
     }

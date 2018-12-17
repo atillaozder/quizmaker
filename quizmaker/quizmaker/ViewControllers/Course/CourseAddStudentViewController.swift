@@ -38,16 +38,15 @@ public class CourseAddStudentViewController: UIViewController, UITableViewDataSo
      Constructor of the class.
      
      - Parameters:
-        - courseID: the course identifier.
+        - course: the course instance.
      
-     - Precondition: `id` must be non-nil.
-     - Precondition: `id` must be greater than 0.
+     - Precondition: `course` must be non-nil.
      
      - Postcondition:
      Controller will be initialized.
      */
-    init(courseID: Int) {
-        viewModel = CourseAddStudentViewModel(courseID: courseID)
+    init(course: Course) {
+        viewModel = CourseAddStudentViewModel(course: course)
         super.init(nibName: nil, bundle: nil)
     }
     

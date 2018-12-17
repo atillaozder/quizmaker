@@ -36,21 +36,21 @@ public class CourseAddStudentViewModel {
      Constructor of viewmodel. Initializes all attributes, subscriptions, observables etc.
      
      - Parameters:
-        - courseID: Identifier of course helps to request to API when we add students to it.
+        - course: Identifier of course helps to request to API when we add students to it.
      
-     - Precondition: `courseID` must be non-nil and greater than 0.
+     - Precondition: `course` must be non-nil.
      
      - Postcondition:
      ViewModel object will be initialized. Subscriptions, triggers and subjects will be created.
      */
-    init(courseID: Int) {
+    init(course: Course) {
         success = PublishSubject()
         failure = PublishSubject()
         loadPageTrigger = PublishSubject()
         appendStudentsTrigger = PublishSubject()
         filteredStudents = BehaviorRelay(value: [])
         students = BehaviorRelay(value: [])
-        selectedStudents = BehaviorRelay(value: [])
+        selectedStudents = BehaviorRelay(value: course.students)
         
         loadPageTrigger.asObservable()
             .flatMap { [unowned self] (_) -> Observable<[User]> in
@@ -63,7 +63,7 @@ public class CourseAddStudentViewModel {
             .filter { [unowned self] (_) -> Bool in
                 return self.selectedStudents.value.count > 0
             }.subscribe(onNext: { [unowned self] (_) in
-                let endpoint = CourseEndpoint.appendStudent(courseID: courseID, students: self.selectedStudents.value)
+                let endpoint = CourseEndpoint.appendStudent(courseID: course.id, students: self.selectedStudents.value)
                 self.addStudents(endpoint)
             }).disposed(by: disposeBag)
     }

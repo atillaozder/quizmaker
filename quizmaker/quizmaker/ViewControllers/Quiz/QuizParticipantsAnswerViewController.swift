@@ -5,8 +5,13 @@ import RxSwift
 private let quizAnswerCell = "quizAnswerCell"
 
 /// Provider to get specific participant answers in a specific quiz.
-public class QuizParticipantAnswersViewController: UIViewController {
+public class QuizParticipantAnswersViewController: UIViewController, KeyboardHandler {
     
+    /// :nodoc:
+    public var scrollView: UIScrollView = UIScrollView()
+    /// :nodoc:
+    public var contentView: UIView = UIView()
+
     /// :nodoc:
     private let disposeBag = DisposeBag()
     
@@ -25,6 +30,12 @@ public class QuizParticipantAnswersViewController: UIViewController {
         tv.bounces = false
         return tv
     }()
+    
+    /// :nodoc:
+    private var gradePapers: UIBarButtonItem = UIBarButtonItem()
+    
+    /// :nodoc:
+    weak var delegate: UpdateQuizFromParticipant?
     
     /**
      Constructor of the class.
@@ -47,6 +58,11 @@ public class QuizParticipantAnswersViewController: UIViewController {
         viewModel = ParticipantAnswerViewModel(quizID: quizID, userID: userID)
         super.init(nibName: nil, bundle: nil)
         self.navigationItem.title = "\(name)'s Answers"
+        
+        if UserDefaults.standard.getUserType() == "I" {
+            gradePapers = UIBarButtonItem(title: "Grade", style: .plain, target: self, action: #selector(gradeTapped))
+            self.navigationItem.setRightBarButton(gradePapers, animated: false)
+        }
     }
     
     /// :nodoc:
@@ -62,11 +78,6 @@ public class QuizParticipantAnswersViewController: UIViewController {
         let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
         
-        if UserDefaults.standard.getUserType() == "I" {
-            let gradePapers = UIBarButtonItem(title: "Grade", style: .plain, target: self, action: #selector(gradeTapped))
-            self.navigationItem.setRightBarButton(gradePapers, animated: false)
-        }
-        
         tableView.register(QuizParticipantAnswerTableCell.self, forCellReuseIdentifier: quizAnswerCell)
         self.view.addSubview(tableView)
         tableView.fillSafeArea()
@@ -74,7 +85,15 @@ public class QuizParticipantAnswersViewController: UIViewController {
         var frame = CGRect.zero
         frame.size.height = .leastNormalMagnitude
         tableView.tableFooterView = UIView(frame: frame)
+        
+        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
         bindUI()
+    }
+    
+    /// :nodoc:
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeObservers()
     }
     
     /**
@@ -84,14 +103,29 @@ public class QuizParticipantAnswersViewController: UIViewController {
      UIComponents will be binded to `viewModel` and some `viewModel` attributes will be binded to UIComponents.
      */
     public func bindUI() {
+        viewModel.success.asObservable()
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] (_) in
+                let title = "Participant answers validated successfully."
+                self.delegate?.updateParticipant()
+                self.showDismissAlert(title)
+            }).disposed(by: disposeBag)
+        
         viewModel.failure
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] (error) in
+                self.gradePapers.isEnabled = true
+                self.view.isUserInteractionEnabled = true
                 switch error {
                 case .apiMessage(let response):
                     self.showErrorAlert(message: response.message)
                 case .api(let response):
                     self.showErrorAlert(message: response.errorDesc)
+                case .quiz(.validate(let response)):
+                    let q = response.questionPoint
+                    let p = response.point
+                    let msg = response.message + " \(q), \(p)"
+                    self.showErrorAlert(message: msg)
                 default:
                     self.showErrorAlert()
                 }
@@ -101,6 +135,7 @@ public class QuizParticipantAnswersViewController: UIViewController {
             .asDriver()
             .drive(tableView.rx.items(cellIdentifier: quizAnswerCell, cellType: QuizParticipantAnswerTableCell.self)) { (row, element, cell) in
                 cell.configure(element)
+                cell.delegate = self
             }.disposed(by: disposeBag)
     }
     
@@ -108,6 +143,13 @@ public class QuizParticipantAnswersViewController: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadPageTrigger.onNext(())
+        addObservers()
+    }
+    
+    /// :nodoc:
+    @objc
+    private func viewTapped() {
+        self.view.endEditing(true)
     }
     
     /// :nodoc:
@@ -126,7 +168,7 @@ public class QuizParticipantAnswersViewController: UIViewController {
         completionLabel.font = UIFont.systemFont(ofSize: 16)
         
         gradeLabel.text = "Grade: \(participant.grade)"
-        finishedInLabel.text = "Finished in: \(participant.finishedIn ?? "-") min"
+        finishedInLabel.text = "Finished in: \(participant.finishedIn ?? "-")"
         completionLabel.text = "Completion: \(participant.completion)%"
         
         let stackView = UIStackView(arrangedSubviews: [gradeLabel, completionLabel, finishedInLabel])
@@ -158,10 +200,65 @@ public class QuizParticipantAnswersViewController: UIViewController {
         tableView.tableHeaderView = container
     }
     
+    /// :nodoc:
+    public func keyboardWillShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            var frame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
+        }
+        
+        if #available(iOS 11.0, *) {
+            frame.size.height -= view.safeAreaInsets.bottom
+        } else {
+            frame.size.height -= bottomLayoutGuide.length
+        }
+        
+        var contentInset: UIEdgeInsets = .zero
+        contentInset.bottom = frame.size.height
+        tableView.contentInset = contentInset
+        tableView.scrollIndicatorInsets = contentInset
+    }
+    
+    /// :nodoc:
+    public func keyboardWillHide(notification: Notification) {
+        var contentInset: UIEdgeInsets = self.tableView.contentInset
+        contentInset.bottom = 50
+        tableView.contentInset = contentInset
+        tableView.scrollIndicatorInsets = .zero
+    }
+    
     @objc
     private func gradeTapped() {
         guard !viewModel.answers.value.isEmpty else { return }
-//        let viewController = GradeAnswersViewController()
-//        self.navigationController?.pushViewController(viewController, animated: true)
+        self.view.endEditing(true)
+        let alertController = UIAlertController(title: "Are you sure you want to finish validating?", message: "Your current points will be saved.", preferredStyle: .alert)
+        let yes = UIAlertAction(title: "Yes", style: .default) { (_) in
+            self.view.isUserInteractionEnabled = false
+            self.viewModel.validateAndGrade()
+            self.gradePapers.isEnabled = false
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(yes)
+        alertController.addAction(cancel)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
+}
+
+/// :nodoc:
+extension QuizParticipantAnswersViewController: GradeQuestion {
+    func gradeQuestion(answer: Answer) {
+        viewModel.setPoints(point: answer)
+    }
+}
+
+/// :nodoc:
+protocol GradeQuestion: class {
+    func gradeQuestion(answer: Answer)
+}
+
+/// :nodoc:
+protocol UpdateQuizFromParticipant: class {
+    func updateParticipant()
 }

@@ -58,7 +58,7 @@ public class MyAnswersViewController: UIViewController {
         let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
         
-        tableView.register(QuizParticipantAnswerTableCell.self, forCellReuseIdentifier: quizAnswerCell)
+        tableView.register(MyAnswersTableCell.self, forCellReuseIdentifier: quizAnswerCell)
         self.view.addSubview(tableView)
         tableView.fillSafeArea()
         
@@ -97,7 +97,7 @@ public class MyAnswersViewController: UIViewController {
         
         viewModel.answers
             .asDriver()
-            .drive(tableView.rx.items(cellIdentifier: quizAnswerCell, cellType: QuizParticipantAnswerTableCell.self)) { (row, element, cell) in
+            .drive(tableView.rx.items(cellIdentifier: quizAnswerCell, cellType: MyAnswersTableCell.self)) { (row, element, cell) in
                 cell.configure(element)
             }.disposed(by: disposeBag)
     }
