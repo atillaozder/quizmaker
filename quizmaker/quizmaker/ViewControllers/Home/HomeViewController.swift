@@ -9,6 +9,8 @@ public class HomeViewController: UIViewController {
         button.setTitle("Create Quiz", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
         return button
     }()
     
@@ -17,6 +19,8 @@ public class HomeViewController: UIViewController {
         button.setTitle("Edit Profile", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
         return button
     }()
     
@@ -25,7 +29,18 @@ public class HomeViewController: UIViewController {
         button.setTitle("Created Quizzes", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
         return button
+    }()
+    
+    let rootStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.distribution = .fillEqually
+        sv.alignment = .fill
+        sv.axis = .vertical
+        sv.spacing = 10
+        return sv
     }()
     
     let lastStackView: UIStackView = {
@@ -36,13 +51,6 @@ public class HomeViewController: UIViewController {
         sv.spacing = 10
         return sv
     }()
-    
-    override public func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        showMyQuizzesButton.roundCorners(.allCorners, radius: 5)
-        editProfileButton.roundCorners(.allCorners, radius: 5)
-        createQuizButton.roundCorners(.allCorners, radius: 5)
-    }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -63,14 +71,20 @@ public class HomeViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.spacing = 10
         
-        view.addSubview(stackView)
-        stackView.setAnchors(top: view.safeAreaLayoutGuide.topAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
+        view.addSubview(rootStackView)
+        rootStackView.addArrangedSubview(stackView)
+        rootStackView.fillSafeArea(spacing: .init(top: 10, left: 10, bottom: -10, right: -10), size:    .zero)
+//        stackView.setAnchors(top: view.safeAreaLayoutGuide.topAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
         
         editProfileButton.addTarget(self, action: #selector(editProfileTapped(_:)), for: .touchUpInside)
         
         showMyQuizzesButton.addTarget(self, action: #selector(showMyQuizzesTapped(_:)), for: .touchUpInside)
         
         createQuizButton.addTarget(self, action: #selector(createQuizTapped(_:)), for: .touchUpInside)
+        
+        editProfileButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        showMyQuizzesButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        createQuizButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
     }
     
     @objc

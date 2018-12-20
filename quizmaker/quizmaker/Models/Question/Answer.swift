@@ -11,7 +11,18 @@ public struct Answer {
     var questionID: Int
     
     /// Holds the point of answer.
-    var point: Int
+    var point: Int?
+    
+    /**
+     Constructor of the class.
+     
+     - Postcondition: An object will be created.
+     */
+    init() {
+        answer = ""
+        questionID = -1
+        point = nil
+    }
     
     /**
      Constructor of the class
@@ -26,7 +37,7 @@ public struct Answer {
      */
     init(answer: String, questionID: Int) {
         self.answer = answer
-        self.point = 0
+        self.point = nil
         self.questionID = questionID
     }
     
@@ -43,7 +54,7 @@ public struct Answer {
      
      - Postcondition: An object will be created.
      */
-    init(point: Int, questionID: Int) {
+    init(point: Int?, questionID: Int) {
         self.point = point
         self.questionID = questionID
         self.answer = ""

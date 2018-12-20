@@ -2,11 +2,12 @@
 import UIKit
 
 /// :nodoc:
-public class QuizParticipantAnswerTableCell: UITableViewCell {
+public class QuizParticipantAnswerTableCell: UITableViewCell, UITextFieldDelegate {
     
     weak var delegate: GradeQuestion?
     
     var participantAnswer: ParticipantAnswer?
+    private var answer = Answer()
     
     let answerLabel: UILabel = {
         return UILabel.uiLabel(0, .byWordWrapping, "", .left, .black, .boldSystemFont(ofSize: 15), true, false)
@@ -71,6 +72,8 @@ public class QuizParticipantAnswerTableCell: UITableViewCell {
         gradeTextField.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
         gradeTextField.addTarget(self, action: #selector(didChangeTextField(_:)), for: .editingChanged)
+        
+        gradeTextField.delegate = self
     }
     
     @objc
@@ -79,19 +82,31 @@ public class QuizParticipantAnswerTableCell: UITableViewCell {
         guard let txt = textField.text else { return }
         if txt.isNumeric {
             if var point = Int(txt) {
+                if point == 0 {
+                    gradeTextField.text = "\(0)"
+                }
+                
                 if let qPoint = p.question.point, point > qPoint {
                     textField.text = "\(qPoint)"
                     point = qPoint
                 }
                 
-                let answer = Answer(point: point, questionID: p.question.id)
-                delegate?.gradeQuestion(answer: answer)
+                answer = Answer(point: point, questionID: p.question.id)
             } else {
+                answer = Answer(point: nil, questionID: p.question.id)
                 textField.text = ""
             }
         } else {
+            answer = Answer(point: nil, questionID: p.question.id)
             textField.text = ""
         }
+    }
+    
+    /// :nodoc:
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let p = self.participantAnswer else { return }
+        answer.questionID = p.question.id
+        delegate?.gradeQuestion(answer: answer)
     }
     
     func configure(_ element: ParticipantAnswer) {
@@ -127,9 +142,12 @@ public class QuizParticipantAnswerTableCell: UITableViewCell {
                         gradeTextField.text = "\(pPoint)"
                         let answer = Answer(point: pPoint, questionID: element.question.id)
                         delegate?.gradeQuestion(answer: answer)
+                    } else {
+                        gradeTextField.text = ""
                     }
+                } else {
+                    gradeTextField.text = ""
                 }
-
             }
         }
     }

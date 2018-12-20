@@ -9,6 +9,9 @@ public class JoinedQuizzesChoiceViewController: UIViewController {
         button.setTitle("Ended Quizzes", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
+        button.titleLabel?.font = .boldSystemFont(ofSize: 25)
         return button
     }()
     
@@ -17,14 +20,11 @@ public class JoinedQuizzesChoiceViewController: UIViewController {
         button.setTitle("Waiting Quizzes", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
+        button.titleLabel?.font = .boldSystemFont(ofSize: 25)
         return button
     }()
-    
-    override public func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        finishedButton.roundCorners(.allCorners, radius: 5)
-        waitingButton.roundCorners(.allCorners, radius: 5)
-    }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -41,11 +41,11 @@ public class JoinedQuizzesChoiceViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [finishedButton, waitingButton])
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
-        stackView.axis = .horizontal
+        stackView.axis = .vertical
         stackView.spacing = 10
         
         view.addSubview(stackView)
-        stackView.setAnchors(top: view.safeAreaLayoutGuide.topAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
+        stackView.setAnchors(top: view.safeAreaLayoutGuide.topAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: self.view.frame.size.height / 2))
         
         waitingButton.addTarget(self, action: #selector(waitingTapped), for: .touchUpInside)
         finishedButton.addTarget(self, action: #selector(finishedTapped), for: .touchUpInside)

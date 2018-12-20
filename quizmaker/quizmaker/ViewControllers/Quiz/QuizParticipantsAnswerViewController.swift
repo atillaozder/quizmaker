@@ -60,7 +60,7 @@ public class QuizParticipantAnswersViewController: UIViewController, KeyboardHan
         self.navigationItem.title = "\(name)'s Answers"
         
         if UserDefaults.standard.getUserType() == "I" {
-            gradePapers = UIBarButtonItem(title: "Grade", style: .plain, target: self, action: #selector(gradeTapped))
+            gradePapers = UIBarButtonItem(title: "Submit", style: .plain, target: self, action: #selector(gradeTapped))
             self.navigationItem.setRightBarButton(gradePapers, animated: false)
         }
     }

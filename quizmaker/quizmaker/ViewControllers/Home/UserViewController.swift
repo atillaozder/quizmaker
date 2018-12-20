@@ -9,6 +9,8 @@ public class UserViewController: HomeViewController {
         button.setTitle("Public Quizzes", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
         return button
     }()
     
@@ -17,14 +19,10 @@ public class UserViewController: HomeViewController {
         button.setTitle("Joined Quizzes", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
         return button
     }()
-    
-    override public func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        showPublicQuizzesButton.roundCorners(.allCorners, radius: 5)
-        showJoinedQuizzesButton.roundCorners(.allCorners, radius: 5)
-    }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -41,12 +39,19 @@ public class UserViewController: HomeViewController {
         stackView.axis = .horizontal
         stackView.spacing = 10
         
-        view.addSubview(stackView)
-        stackView.setAnchors(top: createQuizButton.bottomAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
+//        view.addSubview(stackView)
+//        stackView.setAnchors(top: createQuizButton.bottomAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
         
-        view.addSubview(lastStackView)
+//        view.addSubview(lastStackView)
+//        lastStackView.setAnchors(top: stackView.bottomAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
+        
         lastStackView.addArrangedSubview(editProfileButton)
-        lastStackView.setAnchors(top: stackView.bottomAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
+        
+        rootStackView.addArrangedSubview(stackView)
+        rootStackView.addArrangedSubview(lastStackView)
+        
+        showJoinedQuizzesButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        showPublicQuizzesButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
     }
     
     @objc

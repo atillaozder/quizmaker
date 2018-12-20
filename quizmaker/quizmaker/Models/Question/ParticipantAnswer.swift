@@ -20,10 +20,10 @@ public struct ParticipantAnswer: Codable {
     let isCorrect: Bool?
     
     /// Holds the answer is validated or not.
-    let isValidated: Bool?
+    var isValidated: Bool?
     
     /// Holds the point of answer.
-    let point: Int?
+    var point: Int?
     
     /// :nodoc:
     enum CodingKeys: String, CodingKey {

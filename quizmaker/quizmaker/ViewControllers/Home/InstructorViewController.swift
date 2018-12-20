@@ -9,13 +9,10 @@ public class InstructorViewController: HomeViewController {
         button.setTitle("My Courses", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
         return button
     }()
-    
-    override public func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        myCoursesButton.roundCorners(.allCorners, radius: 5)
-    }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +21,15 @@ public class InstructorViewController: HomeViewController {
     override public func setupViews() {
         super.setupViews()
         
-        view.addSubview(lastStackView)
+//        view.addSubview(lastStackView)
+//        lastStackView.setAnchors(top: createQuizButton.bottomAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
+        
         lastStackView.addArrangedSubview(editProfileButton)
         lastStackView.addArrangedSubview(myCoursesButton)
-        lastStackView.setAnchors(top: createQuizButton.bottomAnchor, bottom: nil, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, spacing: .init(top: 10, left: 10, bottom: 0, right: -10), size: .init(width: 0, height: 50))
+        rootStackView.addArrangedSubview(lastStackView)
         
         myCoursesButton.addTarget(self, action: #selector(coursesTapped), for: .touchUpInside)
+        myCoursesButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
     }
     
     @objc

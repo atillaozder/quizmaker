@@ -172,7 +172,7 @@ class GradeParticipantPaperAPIView(APIView):
                 if qs.exists():
                     obj = qs.first()
 
-                if obj:
+                if obj and a_point is not None:
                     if obj.question.point >= a_point:
                         obj.point = a_point
                         obj.is_validated = True
@@ -186,6 +186,10 @@ class GradeParticipantPaperAPIView(APIView):
                                 'point': a_point,
                             }
                         )
+                else:
+                    obj.point = None
+                    obj.is_validated = False
+                    obj.save()
 
         if len(errors) == 0:
             user_qs = User.objects.filter(id=participant_id)
@@ -203,7 +207,8 @@ class GradeParticipantPaperAPIView(APIView):
             answer_qs = ParticipantAnswer.objects.filter(quiz_id=quiz_id, participant_id=participant_id)
             if answer_qs.exists():
                 for a in answer_qs:
-                    overall_grade = overall_grade + a.point
+                    if a.point:
+                        overall_grade = overall_grade + a.point
 
             p, created = QuizParticipant.objects.get_or_create(quiz_id=quiz_id, participant_id=participant_id)
             p.grade = overall_grade

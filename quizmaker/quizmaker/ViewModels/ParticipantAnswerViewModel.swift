@@ -149,5 +149,19 @@ public class ParticipantAnswerViewModel {
         } else {
             points.append(point)
         }
+        
+        var updated = false
+        var current = self.answers.value
+        for (index, a) in current.enumerated() {
+            if a.question.id == point.questionID && a.point != point.point {
+                updated = true
+                current[index].point = point.point
+                current[index].isValidated = true
+            }
+        }
+        
+        if updated {
+            self.answers.accept(current)
+        }
     }
 }

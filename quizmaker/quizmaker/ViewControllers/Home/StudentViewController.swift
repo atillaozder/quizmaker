@@ -9,14 +9,11 @@ public class StudentViewController: UserViewController {
         button.setTitle("Lecture Quizzes", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.AppColors.main.rawValue
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 5
         return button
     }()
-    
-    override public func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        lectureQuizzesButton.roundCorners(.allCorners, radius: 5)
-    }
-    
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         lectureQuizzesButton.addTarget(self, action: #selector(lectureQuizzesTapped), for: .touchUpInside)
@@ -25,6 +22,7 @@ public class StudentViewController: UserViewController {
     override public func setupViews() {
         super.setupViews()
         lastStackView.addArrangedSubview(lectureQuizzesButton)
+        lectureQuizzesButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
     }
     
     @objc
