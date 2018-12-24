@@ -381,6 +381,9 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         
         loginRedirectLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loginRedirect(_:))))
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:))))
+        
+        
+        studentIdTextField.delegate = self
     }
     
     /// :nodoc:
@@ -445,6 +448,8 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         
         let set = CharacterSet(charactersIn: "abcçdefgğhıijklmnoöpqrsştuüvwxyzABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZ")
         
+        let studentIDSet = CharacterSet(charactersIn: "abcçdefgğhıijklmnoöpqrsştuüvwxyzABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789")
+        
         Observable.combineLatest(viewModel.username.asObservable(), viewModel.password.asObservable(), viewModel.firstName.asObservable(), viewModel.lastName.asObservable(), viewModel.email.asObservable(), viewModel.studentId.asObservable())
             .map { (username, password, firstname, lastname, email, studentId) -> Bool in
                 
@@ -474,6 +479,15 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
                 } else {
                     self.lastNameErrorLabel.text = ""
                     self.lastNameErrorWrapper.isHidden = true
+                }
+                
+                if studentId?.rangeOfCharacter(from: studentIDSet.inverted) != nil {
+                    self.studentIdErrorLabel.text = "Student id can contains only letters and numbers"
+                    self.studentIdErrorWrapper.isHidden = false
+                    return false
+                } else {
+                    self.studentIdErrorLabel.text = ""
+                    self.studentIdErrorWrapper.isHidden = true
                 }
                 
                 return !username.isEmpty && !password.isEmpty && !email.isEmpty && !firstname.isEmpty && !lastname.isEmpty

@@ -29,7 +29,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super(CourseSerializer, self).to_representation(instance)
-        queryset = Quiz.objects.filter(course__id=instance.id).all()
+        queryset = Quiz.objects.filter(course__id=instance.id).filter(is_deleted=False).all()
         serializer = QuizSerializer(instance=queryset, many=True, context={'request': self.context['request']})
         data['quizzes'] = serializer.data
         return data

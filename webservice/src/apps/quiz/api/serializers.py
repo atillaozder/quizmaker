@@ -66,7 +66,7 @@ class QuizCreateUpdateSerializer(serializers.ModelSerializer):
             'start',
             'end',
             'be_graded',
-            'percentage',
+            'percentage'
         )
 
 class QuizAppendSerializer(serializers.ModelSerializer):
