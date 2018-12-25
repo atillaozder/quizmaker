@@ -193,14 +193,16 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
     
     /// :nodoc:
     private var selectedRow: Int = 0 {
-        willSet {
-            if userTypes[newValue] == .student {
+        didSet {
+            if userTypes[selectedRow] == .student {
                 studentIdTextField.isHidden = false
+                viewModel.studentId.accept("")
             } else {
                 studentIdTextField.isHidden = true
+                viewModel.studentId.accept(nil)
             }
             
-            pickerButton.setTitle("User Type: \(userTypes[newValue].description)", for: .normal)
+            pickerButton.setTitle("USER TYPE: \(userTypes[selectedRow].description.uppercased())", for: .normal)
         }
     }
     
@@ -224,7 +226,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
     /// :nodoc:
     private lazy var pickerButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("User Type: Normal", for: .normal)
+        button.setTitle("USER TYPE: NORMAL", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(openPickerView), for: .touchUpInside)
@@ -274,7 +276,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         super.viewDidLayoutSubviews()
         updateContent()
         registerButton.layoutIfNeeded()
-        registerButton.roundCorners(.allCorners, radius: registerButton.frame.size.height / 2)
+        registerButton.roundCorners(.allCorners, radius: 5)
     }
     
     /**
@@ -284,7 +286,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
      User Interface will be set and ready to use.
      */
     public func setup() {
-        self.view.backgroundColor = UIColor(red: 59, green: 89, blue: 152)
+        self.view.backgroundColor = UIColor(red: 59, green: 136, blue: 152)
         setupPickerView()
         usernameTextField.delegate = self
         passwordTextField.delegate = self
@@ -296,7 +298,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         scrollView.showsVerticalScrollIndicator = false
         
         let loginRedirectLabel = UILabel()
-        loginRedirectLabel.text = "Return Login"
+        loginRedirectLabel.text = "Back to Login"
         loginRedirectLabel.font = UIFont.boldSystemFont(ofSize: 18)
         loginRedirectLabel.textColor = UIColor.white
         loginRedirectLabel.textAlignment = .center
@@ -319,7 +321,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
         let titleLabel = UILabel()
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        titleLabel.text = "Register"
+        titleLabel.text = "REGISTER"
         titleLabel.numberOfLines = 2
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.textAlignment = .center
@@ -360,7 +362,7 @@ public class RegisterViewController: UIViewController, KeyboardHandler {
             emailTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             studentIdTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             pickerButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            registerButton.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 3/4),
+            registerButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             usernameTextField.heightAnchor.constraint(equalTo: registerButton.heightAnchor),
             emailTextField.heightAnchor.constraint(equalTo: registerButton.heightAnchor),
             passwordTextField.heightAnchor.constraint(equalTo: registerButton.heightAnchor),

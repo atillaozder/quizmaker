@@ -164,7 +164,7 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         super.viewDidLayoutSubviews()
         updateContent()
         changePasswordButton.layoutIfNeeded()
-        changePasswordButton.roundCorners(.allCorners, radius: changePasswordButton.frame.size.height / 2)
+        changePasswordButton.roundCorners(.allCorners, radius: 5)
     }
     
     /**
@@ -218,7 +218,7 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
             oldPasswordTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             newPasswordTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             confirmPasswordTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            changePasswordButton.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 3/4),
+            changePasswordButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             
             oldPasswordTextField.heightAnchor.constraint(equalTo: changePasswordButton.heightAnchor),
             newPasswordTextField.heightAnchor.constraint(equalTo: changePasswordButton.heightAnchor),

@@ -120,9 +120,9 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         super.viewDidLayoutSubviews()
         updateContent()
         loginButton.layoutIfNeeded()
-        loginButton.roundCorners(.allCorners, radius: loginButton.frame.size.height / 2)
+        loginButton.roundCorners(.allCorners, radius: 5)
         registerButton.layoutIfNeeded()
-        registerButton.roundCorners(.allCorners, radius: registerButton.frame.size.height / 2)
+        registerButton.roundCorners(.allCorners, radius: 5)
     }
     
     /**
@@ -132,7 +132,7 @@ public class LoginViewController: UIViewController, KeyboardHandler {
      User Interface will be set and ready to use.
      */
     public func setup() {
-        self.view.backgroundColor = UIColor(red: 59, green: 89, blue: 152)
+        self.view.backgroundColor = UIColor(red: 59, green: 136, blue: 152)
         usernameOrEmailTextField.delegate = self
         passwordTextField.delegate = self
         
@@ -164,13 +164,13 @@ public class LoginViewController: UIViewController, KeyboardHandler {
         NSLayoutConstraint.activate([
             usernameOrEmailTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             passwordTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            loginButton.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 3/4)
+            loginButton.widthAnchor.constraint(equalTo: stackView.widthAnchor)
             ])
         
         let titleLabel = UILabel()
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        titleLabel.text = "Login"
+        titleLabel.text = "LOGIN"
         titleLabel.numberOfLines = 2
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.textAlignment = .center

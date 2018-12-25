@@ -179,7 +179,7 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
         super.viewDidLayoutSubviews()
         updateContent()
         updateButton.layoutIfNeeded()
-        updateButton.roundCorners(.allCorners, radius: updateButton.frame.size.height / 2)
+        updateButton.roundCorners(.allCorners, radius: 5)
     }
     
     /**
@@ -255,7 +255,7 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
             emailTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             pickerButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             changePasswordButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            updateButton.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 3/4),
+            updateButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             emailTextField.heightAnchor.constraint(equalTo: updateButton.heightAnchor),
             firstNameTextField.heightAnchor.constraint(equalTo: updateButton.heightAnchor),
             lastNameTextField.heightAnchor.constraint(equalTo: updateButton.heightAnchor),
