@@ -60,8 +60,9 @@ public class MyAnswersTableCell: UITableViewCell {
     }
     
     func configure(_ element: ParticipantAnswer) {
-        questionLabel.text = "Question: \(element.question.question)"
-        realAnswerLabel.text = "Answer: \(element.question.answer)"
+        let number = "\(element.question.number)"
+        questionLabel.text = "Question \(number): \(element.question.question)"
+        realAnswerLabel.text = "Answer \(number): \(element.question.answer)"
         answerLabel.text = "Your Answer: \(element.answer)"
         
         if let qPoint = element.question.point {

@@ -227,7 +227,7 @@ public class EditProfileViewController: UIViewController, KeyboardHandler {
         setupViews()
         scrollView.showsVerticalScrollIndicator = false
         
-        self.navigationItem.title = "Update Profile"
+        self.navigationItem.title = "Update Profile (\(UserDefaults.standard.getUserTypeDesc() ?? ""))"
         
         let subviews = [
             emailTextField,

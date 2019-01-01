@@ -147,6 +147,10 @@ extension QuestionEndpoint: EndpointType {
                 parameters["point"] = point
             }
             
+            if let number = question.questionNumber {
+                parameters["question_number"] = number
+            }
+            
             if let type = QuestionType(rawValue: question.questionType), type == .multichoice {
                 if let a = question.A {
                     parameters["A"] = a
@@ -179,6 +183,10 @@ extension QuestionEndpoint: EndpointType {
             
             if let point = question.point {
                 parameters["point"] = point
+            }
+            
+            if let number = question.questionNumber {
+                parameters["question_number"] = number
             }
             
             if let type = QuestionType(rawValue: question.questionType), type == .multichoice {

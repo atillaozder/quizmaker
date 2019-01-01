@@ -39,16 +39,14 @@ class Quiz(models.Model):
     def __str__(self):
         return self.name
 
-    def update_percentage(self):
-        quizzes = Quiz.objects.filter(course=self.course).filter(owner=self.owner).all()
-        quiz_count = quizzes.count()
-        new_value = 100
-        if quiz_count > 0:
-            new_value = 100 / quiz_count
+    def update_percentage(self, value):
+        new_value = value - self.percentage
+        if value - self.percentage > 100:
+            self.percentage = 0
+        else:
+            self.percentage = 100 - new_value
 
-        for quiz in quizzes:
-            quiz.percentage = new_value
-            quiz.save()
+        self.save()
 
 class QuizParticipant(models.Model):
     quiz        = models.ForeignKey(Quiz, on_delete=models.SET_NULL, null=True, blank=True)

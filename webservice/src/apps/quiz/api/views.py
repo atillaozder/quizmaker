@@ -243,7 +243,11 @@ class QuizAppendView(UpdateAPIView):
                 {'message': _('You cannot participate in your own quiz.')},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+        if object.questions.count() == 0:
+            return Response(
+                {'message': _('There are no questions to answer. Please contact your instructor to add questions.')},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         if object.is_private:
             if object.course is None:
                 return Response(
@@ -280,11 +284,13 @@ class QuizDeleteAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         qs = Quiz.objects.filter(pk=kwargs['pk'])
-        if qs.filter(start__lte=timezone.now()).filter(end__gte=timezone.now()).exists():
-            return Response(
-                {'message': _('You cannot delete the selected quiz because it has already started. You have to wait until it ends.')},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        if qs.exists():
+            quiz = qs.first()
+            if quiz.start <= timezone.now() and quiz.end >= timezone.now():
+                return Response(
+                    {'message': _('You cannot delete the selected quiz because it has already started. You have to wait until it ends.')},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         quiz = qs.first()
         quiz.is_deleted = True

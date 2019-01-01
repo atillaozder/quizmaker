@@ -47,8 +47,8 @@ public class QuizQuestionDetailTableCell: UITableViewCell {
     }
     
     func configure(_ element: Question, idx: Int) {
-        questionLabel.text = "\(element.question)"
+        questionLabel.text = element.question
         questionTypeLabel.text = "Type of question: \(element.questionType)"
-        qNumberLabel.text = "\(idx)-"
+        qNumberLabel.text = "\(element.questionNumber ?? idx)-"
     }
 }

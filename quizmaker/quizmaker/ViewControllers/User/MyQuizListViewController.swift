@@ -31,7 +31,7 @@ public class MyQuizListViewController: UIViewController {
     init() {
         self.viewModel = QuizListViewModel()
         super.init(nibName: nil, bundle: nil)
-        self.navigationItem.title = "My Quizzes"
+        self.navigationItem.title = "My Quizzes (\(UserDefaults.standard.getUserTypeDesc() ?? ""))"
     }
     
     /**

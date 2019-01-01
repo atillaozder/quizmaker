@@ -72,7 +72,7 @@ class TruefalseTableCell: UITableViewCell {
     
     func configure(_ element: Question, _ row: Int, answer: Answer?) {
         self.question = element
-        questionLabel.text = "\(row + 1)- \(element.question)"
+        questionLabel.text = "\(element.questionNumber ?? (row + 1))- \(element.question)"
         
         if let a = answer {
             if a.answer == "T" {

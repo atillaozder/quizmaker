@@ -24,6 +24,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             'B',
             'C',
             'D',
+            'question_number',
         )
 
     def validate_quiz_id(self, id):
@@ -40,7 +41,8 @@ class QuestionSerializer(serializers.ModelSerializer):
             question=validated_data['question'],
             question_type=type,
             point=validated_data['point'],
-            answer=validated_data['answer']
+            answer=validated_data['answer'],
+            question_number=validated_data['question_number']
         )
 
         if type == "multichoice":

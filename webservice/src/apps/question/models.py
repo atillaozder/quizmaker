@@ -25,6 +25,7 @@ class Question(models.Model):
     answer          = models.TextField(_('Answer'), blank=True)
     question        = models.TextField(_('Question'), null=False, blank=False)
     point           = models.PositiveIntegerField(default=0)
+    question_number = models.PositiveIntegerField(null=True, blank=True)
 
     A = models.TextField(_('A'), null=True, blank=True)
     B = models.TextField(_('B'), null=True, blank=True)

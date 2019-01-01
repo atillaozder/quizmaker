@@ -111,8 +111,9 @@ public class QuizParticipantAnswerTableCell: UITableViewCell, UITextFieldDelegat
     
     func configure(_ element: ParticipantAnswer) {
         self.participantAnswer = element
-        questionLabel.text = "Question: \(element.question.question)"
-        realAnswerLabel.text = "Answer: \(element.question.answer)"
+        let number = "\(element.question.number)"
+        questionLabel.text = "Question \(number): \(element.question.question)"
+        realAnswerLabel.text = "Answer \(number): \(element.question.answer)"
         answerLabel.text = "Participant Answer: \(element.answer)"
         
         if let qPoint = element.question.point {

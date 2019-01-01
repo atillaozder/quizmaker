@@ -589,17 +589,33 @@ public class QuizCreateViewController: UIViewController, KeyboardHandler {
             .do(onNext: { [unowned self] () in
                 self.view.endEditing(true)
             }).subscribe(onNext: { [unowned self] (_) in
-                let title = (self.viewModel.quiz != nil) ? "Update Quiz" : "Create Quiz"
-                let alertController = UIAlertController(title: "Are you sure?", message: "This operation cannot be undo", preferredStyle: .alert)
-                let ok = UIAlertAction(title: title, style: .default, handler: { (_) in
-                    self.createButton.isEnabled = false
-                    self.viewModel.createTrigger.onNext(())
+                let qs = self.viewModel.questions.value
+                
+                var point = 0
+                qs.forEach({ (q) in
+                    point += q.point ?? 0
                 })
                 
-                let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
-                alertController.addAction(cancel)
-                alertController.addAction(ok)
-                self.present(alertController, animated: true, completion: nil)
+                if point > 100 {
+                    let alertController = UIAlertController(title: "Warning!", message: "Question's total point must be smaller than 100", preferredStyle: .alert)
+                    let cancel = UIAlertAction(title: "OK", style: .destructive, handler: nil)
+                    alertController.addAction(cancel)
+                    self.present(alertController, animated: true, completion: nil)
+                    
+                } else {
+                    let title = (self.viewModel.quiz != nil) ? "Update Quiz" : "Create Quiz"
+                    let alertController = UIAlertController(title: "Are you sure?", message: "This operation cannot be undo", preferredStyle: .alert)
+                    let ok = UIAlertAction(title: title, style: .default, handler: { (_) in
+                        self.createButton.isEnabled = false
+                        self.viewModel.createTrigger.onNext(())
+                    })
+                    
+                    let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+                    alertController.addAction(cancel)
+                    alertController.addAction(ok)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+
             }).disposed(by: disposeBag)
         
         viewModel.courses.asObservable()

@@ -185,7 +185,7 @@ public class ChangePasswordViewController: UIViewController, KeyboardHandler {
         setupViews()
         scrollView.showsVerticalScrollIndicator = false
         
-        self.navigationItem.title = "Change Password"
+        self.navigationItem.title = "Change Password (\(UserDefaults.standard.getUserTypeDesc() ?? ""))"
         
         if #available(iOS 12, *) {
             oldPasswordTextField.textContentType = .oneTimeCode

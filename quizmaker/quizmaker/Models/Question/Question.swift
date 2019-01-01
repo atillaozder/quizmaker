@@ -33,6 +33,18 @@ public struct Question: Codable {
     
     /// For multichoice question type holds the D.
     var D: String?
+
+    /// :nodoc:
+    var questionNumber: Int?
+    
+    /// :nodoc:
+    var number: String {
+        if let n = questionNumber {
+            return "\(n)"
+        }
+        
+        return ""
+    }
     
     /// :nodoc:
     public init() {
@@ -46,6 +58,7 @@ public struct Question: Codable {
         B = nil
         C = nil
         D = nil
+        questionNumber = nil
     }
     
     /// :nodoc:
@@ -58,5 +71,6 @@ public struct Question: Codable {
         case B
         case C
         case D
+        case questionNumber = "question_number"
     }
 }

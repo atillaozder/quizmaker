@@ -31,7 +31,7 @@ public class CourseViewController: UIViewController {
     /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "My Courses"
+        self.navigationItem.title = "My Courses (\(UserDefaults.standard.getUserTypeDesc() ?? ""))"
         self.view.backgroundColor = .white
         
         let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)

@@ -9,6 +9,7 @@ extension UserDefaults {
         self.set(user.id, forKey: "id")
         self.set(user.username, forKey: "username")
         self.set(user.userType.rawValue, forKey: "type")
+        self.set(user.userType.description, forKey: "userType")
         self.setEmail(email: user.email)
         self.setFirstname(name: user.firstName)
         self.setLastname(name: user.lastName)
@@ -28,6 +29,11 @@ extension UserDefaults {
     /// :nodoc:
     func getUserType() -> String? {
         return self.string(forKey: "type")
+    }
+    
+    /// :nodoc:
+    func getUserTypeDesc() -> String? {
+        return self.string(forKey: "userType")
     }
     
      /**

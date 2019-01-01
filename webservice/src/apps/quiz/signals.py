@@ -38,10 +38,11 @@ def quiz_post_save_receiver(sender, instance, created, *args, **kwargs):
 		else:
 			instance.course = None
 
-	# for participant in instance.participants.all():
-	# 	profile = participant.profile
-	# 	profile.quizzes.add(instance)
-	# 	profile.save()
-	#
-	# if instance.be_graded and instance.percentage == 0:
-	# 	instance.update_percentage()
+	quizzes = Quiz.objects.filter(course=instance.course).filter(owner=instance.owner).all()
+	quiz_count = quizzes.count()
+	total_value = 0
+	for quiz in quizzes:
+	    total_value = total_value + quiz.percentage
+
+	if total_value > 100 and instance.be_graded:
+		instance.update_percentage(value=total_value)

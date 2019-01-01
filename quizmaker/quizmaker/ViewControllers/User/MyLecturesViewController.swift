@@ -30,7 +30,7 @@ public class MyLecturesViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "My Lectures"
+        self.navigationItem.title = "My Lectures (\(UserDefaults.standard.getUserTypeDesc() ?? ""))"
         self.view.backgroundColor = .white
         
         let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)

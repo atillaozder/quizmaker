@@ -58,7 +58,7 @@ public class HomeViewController: UIViewController {
     }
     
     public func setupViews() {
-        self.navigationItem.title = "Home"
+        self.navigationItem.title = UserDefaults.standard.getUserTypeDesc()
         let logoutBarButton = UIBarButtonItem(title: "Sign Out", style: .done, target: self, action: #selector(logoutTapped(_:)))
         self.navigationItem.setRightBarButton(logoutBarButton, animated: false)
         

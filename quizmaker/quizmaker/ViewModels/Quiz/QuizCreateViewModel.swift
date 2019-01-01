@@ -237,9 +237,10 @@ public class QuizCreateViewModel {
         var deleted: [Question] = []
         
         // Sets the updated and newly created questions
-        questions.value.forEach { (q) in
+        questions.value.enumerated().forEach { (offset, q) in
             var copy = q
             copy.quizId = quiz.id
+            copy.questionNumber = offset + 1
             if !questionsBefore.value.contains(where: { $0.id == q.id }) {
                 created.append(copy)
             } else {
@@ -340,6 +341,7 @@ public class QuizCreateViewModel {
         
         var q = qs[index]
         q.quizId = id
+        q.questionNumber = index + 1
         let endpoint = QuestionEndpoint.create(question: q)
         
         NetworkManager.shared.requestJSON(endpoint)
