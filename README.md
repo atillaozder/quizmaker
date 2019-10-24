@@ -1,1 +1,1 @@
-# SE301 Project QuizMaker
+# It's a project of SE course
